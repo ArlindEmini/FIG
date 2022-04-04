@@ -1,8 +1,6 @@
-import moment from "moment";
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native"
 import {
-  ExpandableCalendar,
   Agenda,
 } from "react-native-calendars";
 
@@ -15,6 +13,7 @@ function Calendar() {
 
   const timeToString = (time) => {
     const date = new Date(time);
+
     return date.toISOString().split('T')[0];
   }
 
@@ -47,11 +46,12 @@ function Calendar() {
   const renderItem = ({ reservation = {}, isFirst }) => {
     const fontSize = isFirst ? 16 : 14;
     const color = isFirst ? 'black' : '#43515c';
+
     return (<TouchableOpacity
       onPress={() => alert(reservation.name)}
-      style={[ {height: reservation.height || 50}]}
+      style={[{ height: reservation.height || 50 }]}
     >
-      <Text style={{fontSize, color}}>{reservation.name}</Text>
+      <Text style={{ fontSize, color }}>{reservation.name}</Text>
     </TouchableOpacity>)
   }
 
@@ -69,7 +69,7 @@ function Calendar() {
       items={items}
       loadItemsForMonth={loadItems}
       selected={'2022-04-04'}
-      renderItem={(reservation, isFirst) => renderItem({reservation, isFirst})}
+      renderItem={(reservation, isFirst) => renderItem({ reservation, isFirst })}
       renderEmptyDate={renderEmptyDate}
       // rowHasChanged={this.rowHasChanged}
       showClosingKnob={true}
@@ -86,7 +86,7 @@ function Calendar() {
       }}
       monthFormat={'yyyy'}
       // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-      renderDay={(day, item) => (<Text>{day ? day.day : 'item'}</Text>)}
+      renderDay={(day) => (<Text>{day ? day.day : 'item'}</Text>)}
       hideExtraDays={false}
       showOnlySelectedDayItems
     />
