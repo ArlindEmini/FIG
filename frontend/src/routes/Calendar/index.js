@@ -18,7 +18,7 @@ function Calendar() {
       <CalendarNative
         onDayPress={(day = "") => {
           const format = moment(day).format("lll");
-          alert(format);
+          console.log("format",format)
         }}
         firstDay={1}
         enableSwipeMonths={true}

@@ -5,10 +5,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import { NativeRouter, Route, Routes } from "react-router-native";
 import Login from "./src/routes/Login";
 import Calendar from "./src/routes/Calendar";
-import {  CALENDAR_PATH_NAME, LOGIN_PATH_NAME } from "./src/utils/constant";
-import  { usePersistedStore } from "./src/store";
+import { CALENDAR_PATH_NAME, LOGIN_PATH_NAME } from "./src/utils/constant";
+import { usePersistedStore } from "./src/store";
+import { Button, IconButton, Text } from "react-native-paper";
+import { Feather } from '@expo/vector-icons'; 
 
-LogBox.ignoreLogs(['Warning: ...']);
+
+LogBox.ignoreLogs(['zustand']);
 
 // url to debug expo
 // http://localhost:19000/debugger-ui/
@@ -21,13 +24,18 @@ const App = () => {
     // Added react navigation check docs here 
     // # https://reactnavigation.org/docs/getting-started
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName={LOGIN_PATH_NAME}>
         <Stack.Screen name={CALENDAR_PATH_NAME} component={Calendar} options={{
-          title: "My Calendar",
-          headerTitleAlign: "center"  
-        }} /> 
-        <Stack.Screen name={LOGIN_PATH_NAME} component={Login}  />
-        
+          // title: "My Calendar",
+          // headerTitleAlign: "center",
+          headerRight: () => (
+            // <Icon name="rocket" size={30} color="#900" />
+            <Button onPress={() => console.log("menu")} icon="menu"loading={false}></Button>
+            
+          )
+        }} />
+        <Stack.Screen name={LOGIN_PATH_NAME} component={Login}   />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

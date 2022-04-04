@@ -13,7 +13,7 @@ store = devtools(store)
 
 export const useStore = create(store)
 
-export const usePersistedStore = create(persist(
+export const usePersistedStore = create(devtools(persist(
   (set) => ({
     auth_token: "",
     setAuthToken: (token) => set(({ auth_token: token })),
@@ -21,5 +21,5 @@ export const usePersistedStore = create(persist(
   {
     name: "fig-storage", // unique name
     getStorage: () => AsyncStorage, // Add this here!
-  }))
+  })))
 
