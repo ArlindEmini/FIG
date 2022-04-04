@@ -25,16 +25,16 @@ const App = () => {
     // # https://reactnavigation.org/docs/getting-started
     <NavigationContainer>
       <Stack.Navigator initialRouteName={LOGIN_PATH_NAME}>
+        <Stack.Screen name={LOGIN_PATH_NAME} component={Login}   />
         <Stack.Screen name={CALENDAR_PATH_NAME} component={Calendar} options={{
           // title: "My Calendar",
           // headerTitleAlign: "center",
           headerRight: () => (
             // <Icon name="rocket" size={30} color="#900" />
-            <Button onPress={() => console.log("menu")} icon="menu"loading={false}></Button>
+            <Button onPress={() => console.log("menu")} icon="mail"loading={false}></Button>
             
           )
         }} />
-        <Stack.Screen name={LOGIN_PATH_NAME} component={Login}   />
 
       </Stack.Navigator>
     </NavigationContainer>
