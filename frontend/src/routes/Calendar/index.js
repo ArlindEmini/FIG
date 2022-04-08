@@ -7,7 +7,7 @@ import {
 // use CalendarList to display calendar horizontally
 // use Agenda to display details of appointments when a date is clicked
 // docs: https://github.com/wix/react-native-calendars#readme
-function Calendar() {
+const Calendar = () => {
   // const text = "TeST";
   const [items, setItems] = useState([])
 
