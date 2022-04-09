@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { List, Text } from 'react-native-paper';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import { warning } from '../../utils/colors';
+import PropTypes from 'prop-types';
+import { CLIENT_DETAILS_PATH_NAME } from '../../utils/constant';
 
-const ClientList = ({ type }) => {
+function ClientList({ type, navigation }) {
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
@@ -32,9 +34,16 @@ const ClientList = ({ type }) => {
         style={{
           marginLeft: 10
         }}
-        onPress={() => alert(`Selected ${i.name}`)} />)}
+        onPress={() => navigation.navigate(CLIENT_DETAILS_PATH_NAME, {
+          clientId: i.id
+        })} />)}
     </>
   )
+}
+
+ClientList.propTypes = {
+  type:  PropTypes.string,
+  navigation: PropTypes.object,
 }
 
 export default ClientList
