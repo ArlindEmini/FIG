@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { List, Text } from 'react-native-paper';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import { warning } from '../../utils/colors';
 import PropTypes from 'prop-types';
+import { clientStore } from '../../store';
 
 const ClientList = ({ type }) => {
-  const [clients, setClients] = useState([]);
+  const clients = clientStore(state => type === 'prive' ? state.priveClients : state.enterpriseClients) || [];
+  const addClient = clientStore(state => state.addClient);
 
-  useEffect(() => {
-    console.log("Rendered", type);
-    if (type == 'prive') {
-      setClients([])
-    } else {
-      setClients(
-        [{
-          id: 1,
-          name: 'PPE Bel-orne'
-        }]
-      )
-    }
-  }, []);
-
-  if (!clients.length) return (
+  if (!clients || !clients.length) return (
     <Text style={{ marginLeft: 20, marginTop: 5, color: warning }}><IonIcons name="warning" color={warning} /> No Clients</Text>
   )
 
@@ -33,7 +21,7 @@ const ClientList = ({ type }) => {
         style={{
           marginLeft: 10
         }}
-        onPress={() => alert(`Selected ${i.name}`)} />)}
+        onPress={() => addClient({id: Math.random(), name: "testali" + Math.random()}, type)} />)}
     </>
   )
 }

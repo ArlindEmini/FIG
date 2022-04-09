@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import { FontAwesome } from '@expo/vector-icons'; 
 import Client from '../../routes/Client';
-import { CHECK_LIST_PATH_NAME, CLIENT_PATH_NAME, NOTIFICATIONS_PATH_NAME, REPORT_PATH_NAME, URGENCIES_PATH_NAME, VACATIONS_PATH_NAME } from '../../utils/constant';
+import { CHECK_LIST_PATH_NAME, CLIENT_PATH_NAME, REPORT_PATH_NAME, URGENCIES_PATH_NAME, VACATIONS_PATH_NAME } from '../../utils/constant';
 import CheckList from '../../routes/Checklist';
 import Report from '../../routes/Report';
 import Urgencies from '../../routes/Urgencies';
