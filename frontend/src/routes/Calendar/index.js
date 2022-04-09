@@ -9,7 +9,7 @@ import {
 // docs: https://github.com/wix/react-native-calendars#readme
 const Calendar = () => {
   // const text = "TeST";
-  const [items, setItems] = useState([])
+  const [items, setItems] = useState({})
 
   const timeToString = (time) => {
     const date = new Date(time);
