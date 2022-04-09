@@ -106,18 +106,19 @@ export function getErrorMessage(error, status) {
 }
 
 export function handleError(error, _callback) {
-  console.log(error);
+
   let status = 401;
   if (error && error.response && error.response.status) {
     status = error.response.status;
   }
 
   if (status == 401) {
-    let msg = getErrorMessage(error, status);
-    MsgBox.alert({ message: msg, title: "Error" });
+    // let msg = getErrorMessage(error, status);
+    // Where is this MsgBox coming from ??
+    // MsgBox.alert({ message: msg, title: "Error" });
   } else if (status == 403) {
-    let msg = getErrorMessage(error, status);
-    MsgBox.alert({ message: msg, title: "Error" });
+    // let msg = getErrorMessage(error, status);
+    // MsgBox.alert({ message: msg, title: "Error" });
   } else {
     if (_callback) {
       _callback(error.response.data);

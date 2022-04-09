@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 import { List, Searchbar } from 'react-native-paper';
+
 import ClientList from "./ClientList";
 import { styles } from "./styles";
+import PropTypes from "prop-types"
 
-const Client = () => {
+const Client = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedEnterprise, setExpandedEnterprise] = useState(true);
   const [expandedPrive, setExpandedPrive] = useState(true);
@@ -30,19 +32,24 @@ const Client = () => {
             expanded={expandedEnterprise}
             onPress={handlePressEnterprise}
           >
-            <ClientList type="enterprise" />
+            <ClientList type="enterprise" navigation={navigation} />
           </List.Accordion>
 
           <List.Accordion
             title="Client Privé"
             expanded={expandedPrive}
             onPress={handlePressPrive}>
-            <ClientList type="prive" />
+            <ClientList type="prive" navigation={navigation}/>
           </List.Accordion>
         </List.Section>
       </View>
+      
     </>
   );
-};
+}
+
+Client.propTypes = {
+  navigation: PropTypes.object
+}
 
 export default Client;

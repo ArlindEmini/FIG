@@ -11,7 +11,7 @@ export const renderBottomNavIcon = (route, focused, color, size) => {
   }
 
   if(routeName === CHECK_LIST_PATH_NAME) {
-    iconName = focused ? 'list' : 'list-outline'
+    iconName =  focused ? 'list' : 'list-outline'
   }
 
   if(routeName === REPORT_PATH_NAME) {
