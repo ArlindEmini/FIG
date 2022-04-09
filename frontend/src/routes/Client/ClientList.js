@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { List, Text } from 'react-native-paper';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import { warning } from '../../utils/colors';
+import PropTypes from 'prop-types';
 
 const ClientList = ({ type }) => {
   const [clients, setClients] = useState([]);
@@ -35,6 +36,10 @@ const ClientList = ({ type }) => {
         onPress={() => alert(`Selected ${i.name}`)} />)}
     </>
   )
+}
+
+ClientList.propTypes = {
+  type: PropTypes.string
 }
 
 export default ClientList
