@@ -12,12 +12,6 @@ export const renderBottomNavIcon = (route, focused, color, size) => {
     return <IonIcons name={iconName} size={size} color={color} />;
   }
 
-  if(routeName === CLIENT_PATH_NAME) {
-    iconName = focused ? 'people' : 'people-outline'
-
-    return <IonIcons name={iconName} size={size} color={color} />;
-  }
-
   if(routeName === CHECK_LIST_PATH_NAME) {
     iconName =  focused ? 'list' : 'list-outline'
 

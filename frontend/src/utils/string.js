@@ -4,6 +4,7 @@
  *  */
 export const hasSpecialCharacters = (str) => {
   const reg = /^[A-Za-z0-9 ]+$/;
+
   return !reg.test(str);
 };
 
