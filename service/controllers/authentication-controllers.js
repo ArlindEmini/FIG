@@ -4,7 +4,15 @@ const Users = require("../models/Users");
 const jwt = require("jsonwebtoken");
 
 const signup = async (req, res, next) => {
-  const { fullName, email, password, userType, contact,qrCode, timeOfAvailable } = req.body;
+  const {
+    fullName,
+    email,
+    password,
+    userType,
+    contact,
+    qrCode,
+    timeOfAvailable,
+  } = req.body;
 
   let hashedPassword;
 
@@ -23,20 +31,19 @@ const signup = async (req, res, next) => {
   try {
     createdUser = await Users.create({
       full_name: fullName,
-      email:email,
+      email: email,
       password: hashedPassword,
       user_type: userType,
-      contact:contact,
-      created_date : Date.now(),
+      contact: contact,
+      created_date: Date.now(),
       qr_code: qrCode,
-      timeoff_available: timeOfAvailable
+      timeoff_available: timeOfAvailable,
     });
   } catch (err) {
     const error = new HttpError(
       "Could not create User, please try again.",
       500
     );
-    console.log("eroriii", err)
     return next(error);
   }
 
@@ -93,10 +100,9 @@ const login = async (req, res, next) => {
   res.json({
     userId: user.id,
     fullName: user.full_name,
-    email:user.email,
+    email: user.email,
     token: token,
   });
-
 };
 
 exports.signup = signup;
