@@ -9,7 +9,7 @@ console.log(process.env.DB_PASSWORD);
 // const DB_PASSWORD = process.env.DB_PASSWORD;
 
 const homeRoutes = require("./routes/home");
-const usersRoutes = require("./routes/users-routes");
+const authenticationRoutes = require("./routes/authentication-routes");
 const router = require("./routes/home");
 
 const sequelize = require("./config/database");
@@ -22,7 +22,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/home/", homeRoutes);
 
-app.use("/api/users", usersRoutes);
+
+app.use("/api/authentication", authenticationRoutes);
 
 sequelize
   .sync()
