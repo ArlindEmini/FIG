@@ -7,5 +7,8 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "column",
     alignItems: "stretch"
+  },
+  loader: {
+    padding: 30
   }
 })
