@@ -36,7 +36,7 @@ sequelize
   .sync()
   .then(() => {
     app.listen(3001);
-    //pending set timezone
+  
     console.log("App listening on port 3001");
   })
   .catch((err) => {
