@@ -4,12 +4,20 @@ const Users = require("../models/Users");
 const jwt = require("jsonwebtoken");
 
 const signup = async (req, res, next) => {
-  const { name, password } = req.body;
+  const {
+    fullName,
+    email,
+    password,
+    userType,
+    contact,
+    qrCode,
+    timeOfAvailable,
+  } = req.body;
 
-  let hashedPassord;
+  let hashedPassword;
 
   try {
-    hashedPassord = await bcrypt.hash(password, 12);
+    hashedPassword = await bcrypt.hash(password, 12);
   } catch (err) {
     const error = new HttpError(
       "Could not create has password, please try again.",
@@ -22,8 +30,14 @@ const signup = async (req, res, next) => {
 
   try {
     createdUser = await Users.create({
-      fullName: name,
-      password: hashedPassord,
+      full_name: fullName,
+      email: email,
+      password: hashedPassword,
+      user_type: userType,
+      contact: contact,
+      created_date: Date.now(),
+      qr_code: qrCode,
+      timeoff_available: timeOfAvailable,
     });
   } catch (err) {
     const error = new HttpError(
@@ -37,9 +51,9 @@ const signup = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-  const { name, password } = req.body;
+  const { fullName, password } = req.body;
 
-  const user = await Users.findOne({ where: { fullName: name } });
+  const user = await Users.findOne({ where: { full_name: fullName } });
 
   if (!user) {
     const error = new HttpError("User doesn't exist", 500);
@@ -69,7 +83,7 @@ const login = async (req, res, next) => {
   let token;
   try {
     token = jwt.sign(
-      { id: user.id, fullName: user.fullname },
+      { id: user.id, fullName: user.full_name },
       "jsonwebtokensecret",
       {
         expiresIn: "1h",
@@ -85,7 +99,8 @@ const login = async (req, res, next) => {
 
   res.json({
     userId: user.id,
-    name: user.fullName,
+    fullName: user.full_name,
+    email: user.email,
     token: token,
   });
 };
