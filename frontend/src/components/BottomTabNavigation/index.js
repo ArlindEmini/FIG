@@ -21,7 +21,6 @@ const BottomTabNavigation = () => {
       tabBarIcon: ({ focused, color, size }) => { return renderBottomNavIcon(route, focused, color, size) },
       tabBarActiveTintColor: teal,
       tabBarInactiveTintColor: 'gray',
-      headerShown: false
     })}>
       <Tab.Screen name={CLIENT_PATH_NAME} component={Client} options={() => ({
         title: 'Client',
