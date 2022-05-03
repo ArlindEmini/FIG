@@ -30,13 +30,6 @@ app.use((req, res, next) => {
   throw error;
 });
 
-sequelize
-  .sync()
-  .then(() => {
-    app.listen(3001);
-  
-    console.log("App listening on port 3001");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+app.listen(Number(process.env.PORT), () => {
+	console.log(`server started at http://localhost:${Number(process.env.PORT)}`);
+});
