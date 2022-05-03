@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import HttpError from '../models/http-error';
 
+dotenv.config();
 
 const authenticateToken = (req, res, next) => {
   try {

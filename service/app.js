@@ -8,12 +8,18 @@ import userRoutes from './routes/user-routes';
 import clientRoutes from './routes/client-routes';
 
 import sequelize from './config/database';
+import authenticateToken from './controllers/authentication';
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(authenticateToken.unless({
+  path: [
+    '/user/login'
+  ]
+}));
 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
