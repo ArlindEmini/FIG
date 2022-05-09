@@ -43,3 +43,7 @@ UPDATE users
 SET password = :password, updated_at = NOW()
 WHERE id = :id;
 `;
+
+export const fetchAllQuery = `
+SELECT * from users
+`;

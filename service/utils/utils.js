@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import UserController from '../controllers/user';
+import UserController from '../controllers/user.js';
 
 export const generateToken = (id) => jwt.sign({ id }, process.env.SECRET_TOKEN, {expiresIn: '1y'});
 

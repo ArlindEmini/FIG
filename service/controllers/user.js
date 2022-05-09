@@ -2,9 +2,9 @@ import bcrypt from 'bcrypt';
 import { QueryTypes } from 'sequelize';
 
 import {
-	insertUserQuery, getUserByUsername, getUserById, updatePasswordQuery,
-} from '../database/queries';
-import { database } from '../database/connection';
+	insertUserQuery, getUserByUsername, getUserById, updatePasswordQuery, fetchAllQuery,
+} from '../database/queries.js';
+import { database } from '../database/connection.js';
 
 export default class UserService {
 	static get = async (
@@ -92,5 +92,16 @@ export default class UserService {
 				type: QueryTypes.UPDATE,
 			},
 		);
+	};
+	
+	static fetchAll = async (
+		queryStringParameters
+	) => {
+		return await database.query(
+			fetchAllQuery,
+			{
+				type: QueryTypes.SELECT
+			}
+		)
 	};
 }

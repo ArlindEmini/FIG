@@ -1,8 +1,8 @@
 import express from 'express';
 
-import UserController from '../controllers/user';
-import HttpError from '../models/http-error';
-import { generateToken, validatePassword, validateAdmin } from '../utils/utils';
+import UserController from '../controllers/user.js';
+import HttpError from '../models/http-error.js';
+import { generateToken, validatePassword, validateAdmin } from '../utils/utils.js';
 
 const router = express.Router();
 

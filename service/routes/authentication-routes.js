@@ -1,9 +1,9 @@
 import express from "express";
 
-import authController from '../controllers/authentication';
+import authenticateToken from '../controllers/authentication.js';
 
 const router = express.Router();
 
-router.post("/", authController.auth);
+router.post("/", authenticateToken);
 
 export default router;

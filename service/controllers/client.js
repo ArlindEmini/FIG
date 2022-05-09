@@ -1,109 +1,96 @@
-const HttpError = require("../models/http-error");
-const Clients = require("../models/Clients");
+import bcrypt from 'bcrypt';
+import { QueryTypes } from 'sequelize';
 
-const createClient = async (req, res, next) => {
-  const { fullName, email, clientType, address, contact, city } = req.body;
+import {
+	insertUserQuery, getUserByUsername, getUserById, updatePasswordQuery,
+} from '../database/queries.js';
+import { database } from '../database/connection.js';
 
-  let createdClient;
+export default class ClientService {
+	static get = async (
+		id,
+	) => {
+		const users = await database.query(
+			getUserById,
+			{
+				replacements: {
+					id
+				},
+				type: QueryTypes.SELECT,
+				raw: true,
+			},
+		);
 
-  try {
-    createdClient = await Clients.create({
-      full_name: fullName,
-      email: email,
-      client_type: clientType,
-      address: address,
-      contact: contact,
-      created_date: Date.now(),
-      city: city,
-    });
-  } catch (err) {
-    const error = new HttpError(
-      "Could not create Client, please try again.",
-      500
-    );
-    console.log("createdddd error", err);
-    return next(error);
-  }
-  res.json({ Client: createdClient });
-};
+		return users.length ? users[0] : null;
+	};
 
-const getPrivateClients = async (req, res, next) => {
-  let privateClients;
+	static getByUsername = async (
+		username,
+	) => {
+		const users = await database.query(
+			getUserByUsername,
+			{
+				replacements: {
+					username
+				},
+				type: QueryTypes.SELECT,
+				raw: true,
+			},
+		);
 
-  try {
-    privateClients = await Clients.findAll({
-      where: {
-        client_type: 0,
-      },
-    });
-  } catch (err) {
-    const error = new HttpError(
-      "Fetching privateClients failed, please try again later.",
-      500
-    );
-    return next(error);
-  }
+		return users.length ? users[0] : null;
+	};
 
-  if (!privateClients || privateClients.length === 0) {
-    return next(new HttpError("Could not find privateClients", 404));
-  }
+	static create = async (
+        body
+	) => {
+		try {
+			const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
-  res.json({
-    privateClients: privateClients,
-  });
-};
+			await database.query(
+				insertUserQuery,
+				{
+					replacements: {
+						username,
+						password: hashedPassword,
+						QueryTestId: QueryTestId.CreateUser,
+					},
+					type: QueryTypes.INSERT,
+				},
+			);
 
-const getEnterpriseClients = async (req, res, next) => {
-  let enterpriseClients;
+			const createdUser = await UserService.getByUsername(username);
 
-  try {
-    enterpriseClients = await Clients.findAll({
-      where: {
-        client_type: 1,
-      },
-    });
-  } catch (err) {
-    const error = new HttpError(
-      "Fetching enterpriseClients failed, please try again later.",
-      500
-    );
-    return next(error);
-  }
+			if (createdUser) {
+				return createdUser;
+			}
 
-  if (!enterpriseClients || enterpriseClients.length === 0) {
-    return next(new HttpError("Could not find privateClients", 404));
-  }
+			return {
+				error: ERROR.UserCreationFailed,
+			};
+		} catch (err) {
+			return {
+				error: ERROR.UserCreationFailed,
+			};
+		}
+	};
 
-  res.json({
-    enterpriseClients: enterpriseClients,
-  });
-};
+	static update = async (
+		id,
+		body,
+        existingUser
+	) => {
+		const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-const getClientById = async (req, res, next) => {
-  const clientId = req.params.cid;
-
-  let client;
-  try {
-    client = await Clients.findOne({ where: { id: clientId } });
-  } catch (err) {
-    const error = new HttpError(
-      "Something went wrong, could not find a place.",
-      500
-    );
-    return next(error);
-  }
-  if (!client || client.length === 0) {
-    return next(
-      new HttpError("Could not find client for the provided id.", 404)
-    );
-  }
-
-  res.json({
-    client: client,
-  });
-};
-
-exports.createClient = createClient;
-exports.getPrivateClients = getPrivateClients;
-exports.getEnterpriseClients = getEnterpriseClients;
-exports.getClientById = getClientById;
+		await database.query(
+			updatePasswordQuery,
+			{
+				replacements: {
+					id,
+					password: hashedPassword,
+				},
+				type: QueryTypes.UPDATE,
+			},
+		);
+	};
+}
