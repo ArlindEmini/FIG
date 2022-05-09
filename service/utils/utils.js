@@ -4,7 +4,7 @@ import UserController from '../controllers/user.js';
 
 export const generateToken = (id) => jwt.sign({ id }, process.env.SECRET_TOKEN, {expiresIn: '1y'});
 
-export const validatePassword = async () => bcrypt.compare(password, dbPassword);
+export const validatePassword = async (password, dbPassword) => bcrypt.compare(password, dbPassword);
 
 export const validateAdmin = async (authorization) => {
 
@@ -12,6 +12,7 @@ export const validateAdmin = async (authorization) => {
 
     if (response && response.id) {
         const user = await UserController.get(response.id);
+        console.log("USER", user);
         return user && user.user_type === 0 ? true : false;
     }
     return false;

@@ -3,9 +3,12 @@ SELECT
 id,
 email,
 username,
+full_name,
 password,
-created_at AS createdAt,
-updated_at AS updatedAt
+user_type,
+contact
+created_at,
+updated_at
 FROM users
 WHERE username = :username
 and is_deleted = 0
@@ -17,9 +20,12 @@ SELECT
 id,
 email,
 username,
+full_name,
 password,
-created_at AS createdAt,
-updated_at AS updatedAt
+user_type,
+contact,
+created_at,
+updated_at
 FROM users
 WHERE id = :id
 and is_deleted = 0
@@ -28,14 +34,8 @@ LIMIT 1;
 
 export const insertUserQuery = `
 INSERT INTO
-users (username, password, created_at, updated_at, is_deleted)
-VALUES (:username, :password, NOW(), NOW(), 0);
-`;
-
-export const reInsertUserQuery = `
-UPDATE users
-SET username = :username, password = :password, updated_at = NOW(), is_deleted = 1
-WHERE id = :id
+users (full_name, email, username, password, user_type, contact, created_at, updated_at, is_deleted)
+VALUES (:full_name, :email, :username, :password, 1, :contact, NOW(), NOW(), 0);
 `;
 
 export const updatePasswordQuery = `
@@ -45,5 +45,22 @@ WHERE id = :id;
 `;
 
 export const fetchAllQuery = `
-SELECT * from users
+SELECT * from users where is_deleted = 0
+`;
+
+export const updateUserQuery = `
+UPDATE users
+SET full_name = :full_name, email = :email, username = :username, password = :password, contact = :contact, is_deleted = 0, updated_at = NOW()
+WHERE id = :id;
+`;
+
+export const deleteUserQuery = `
+UPDATE users
+SET is_deleted = 1, updated_at = NOW()
+WHERE id = :id;
+`;
+
+export const checkUserExistenceQuery = `
+SELECT * from users where username = :username AND email = :email
+LIMIT 1
 `;

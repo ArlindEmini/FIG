@@ -3,95 +3,128 @@ import express from 'express';
 import UserController from '../controllers/user.js';
 import HttpError from '../models/http-error.js';
 import { generateToken, validatePassword, validateAdmin } from '../utils/utils.js';
+import authenticateToken from '../controllers/authentication.js';
+import validateUser from '../validators/user-validator.js';
 
 const router = express.Router();
 
 router.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-
-    const user = await UserController.getByUsername(username);
-
-    if(!user) {
-        return res.status(HttpError('Unable to find the user with provided username', 404)).json(err).end();
+    try {
+        const { username, password } = req.body;
+    
+        const user = await UserController.getByUsername(username);
+    
+        if(!user) {
+            return res.status(new HttpError('Unable to find the user with provided username', 404)).json(err).end();
+        }
+    
+        const isValid = await validatePassword(password, user.password);
+    
+        if(!isValid) {
+            return res.status(401).json({error: "invalid password"}).end();
+        }
+    
+        const token = generateToken(user.id);
+    
+        return res.status(200).json({token}).end();
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({error}).end();
     }
-
-    const isValid = await validatePassword(password, user.password);
-
-    if(!isValid) {
-        return res.status(HttpError('Invalid password', 401)).json(err).end();
-    }
-
-    const token = generateToken(user.id);
-
-    return res.status(200).json({token}).end();
 });
 
-router.get('/', async (req, res) => {
-    const { queryStringParameters, headers } = req;
+router.get('/', authenticateToken, async (req, res) => {
+    try {
+        const { query, headers } = req;
 
-    const response = await UserController.fetchAll(queryStringParameters);
-
-    return res.status(200).json({response}).end();
+        const response = await UserController.fetchAll(query);
+    
+        return res.status(200).json({response}).end();
+    } catch (error) {
+        return res.status(400).json({error}).end();
+    }
 });
 
-router.post('/', async (req, res) => {
-    const { params, headers } = req;
+router.post('/', authenticateToken, async (req, res) => {
+    try {
+        const { body, headers } = req;
+        validateUser(body);
 
-    if (!await validateAdmin(headers.authorization)) {
-        return res.status(HttpError('Unauthorised action for this user', 401)).json(err).end();
+        if (!await validateAdmin(headers.authorization)) {
+            return res.status(401).json({error: 'Unauthorised action for this user'}).end();
+        }
+    
+        const user = await UserController.create(body);
+    
+        return res.status(200).json({user}).end();
+    } catch (error) {
+        console.log("ERROr", error);
+        return res.status(400).json({error}).end();
     }
-
-    const user = await UserController.create(params);
-
-    return res.status(200).json({user}).end();
 });
 
-router.put('/:id', async (req, res) => {
-    const { params, headers, id } = req;
+router.put('/:id', authenticateToken, async (req, res) => {
+    try {
+        const { body, headers, params } = req;
+        const { id } = params;
 
-    if(!await validateAdmin(headers.authorization)) {
-        return res.status(HttpError('Unauthorised action for this user', 401)).json(err).end();
+        if(!await validateAdmin(headers.authorization)) {
+            return res.status(401).json({error: 'Unauthorised action for this user'}).end();
+        }
+    
+        const existingUser = await UserController.get(id);
+    
+        if(!existingUser) {
+            return res.status(404).json({error: 'Unable to find the user'}).end();
+        }
+    
+        const user = await UserController.update(id, body, existingUser);
+    
+        return res.status(200).json({user}).end();
+    } catch (error) {
+        return res.status(400).json({error}).end();
     }
-
-    const existingUser = await UserController.get(id);
-
-    if(!existingUser) {
-        return res.status(HttpError('User doesn\'t exist', 404)).json(err).end();
-    }
-
-    const user = await UserController.update(id, params, existingUser);
-
-    return res.status(200).json({user}).end();
 });
 
-router.get('/:id', async (req, res) => {
-    const { id } = req;
+router.get('/:id', authenticateToken, async (req, res) => {
+    try {
+        const { params } = req;
+        const { id } = params;
 
-    const user = await UserController.get(id);
-
-    if(!user) {
-        return res.status(HttpError('User doesn\'t exist', 404)).json(err).end();
+        const user = await UserController.get(id);
+    
+        if(!user) {
+            return res.status(404).json({error: 'Unable to find the user'}).end();
+        }
+    
+        return res.status(200).json({user}).end();
+    } catch (error) {
+        console.log("ERROr", error);
+        return res.status(400).json({error}).end();
     }
-
-    return res.status(200).json({user}).end();
 });
 
-router.delete('/:id', async (req, res) => {
-    const { params, headers, id } = req;
+router.delete('/:id', authenticateToken, async (req, res) => {
+    try {
+        const { params, headers } = req;
+        const { id } = params;
 
-    if(!await validateAdmin(headers.authorization)) {
-        return res.status(HttpError('Unauthorised action for this user', 401)).json(err).end();
+        if(!await validateAdmin(headers.authorization)) {
+            return res.status(401).json({error: 'Unauthorised action for this user'}).end();
+        }
+    
+        const existingUser = await UserController.get(id);
+    
+        if(!existingUser) {
+            return res.status(404).json({error: 'Unable to find the user'}).end();
+        }
+    
+        await UserController.delete(id);
+    
+        return res.status(200).json({res: 'User deleted successfully'}).end();
+    } catch (error) {
+        return res.status(400).json({error}).end()
     }
-
-    const existingUser = await UserController.get(id);
-
-    if(!existingUser) {
-        return res.status(HttpError('User doesn\'t exist', 404)).json(err).end();
-    }
-
-    const user = await UserController.delete(id);
-
-    return res.status(200).json({res: 'User deleted successfully'}).end();
 });
 
 export default router;

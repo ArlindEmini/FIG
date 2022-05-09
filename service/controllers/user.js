@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { QueryTypes } from 'sequelize';
 
 import {
-	insertUserQuery, getUserByUsername, getUserById, updatePasswordQuery, fetchAllQuery,
+	insertUserQuery, getUserByUsername, getUserById, updateUserQuery, fetchAllQuery, deleteUserQuery, checkUserExistenceQuery
 } from '../database/queries.js';
 import { database } from '../database/connection.js';
 
@@ -44,35 +44,45 @@ export default class UserService {
 	static create = async (
         body
 	) => {
-		try {
-			const hashedPassword = await bcrypt.hash(plainPassword, 10);
+		const {
+			full_name,
+			username,
+			email,
+			password,
+			contact
+		} = body;
 
+		const user = await database.query(
+			checkUserExistenceQuery,
+			{
+				replacements: {
+					username,
+					email
+				},
+				type: QueryTypes.SELECT,
+			},
+		);
+
+		if (user && user.length) {
+			await UserService.update(user[0].id, body, user[0]);
+		} else {
+			const hashedPassword = await bcrypt.hash(password, 10);
 			await database.query(
 				insertUserQuery,
 				{
 					replacements: {
+						full_name,
 						username,
+						email,
 						password: hashedPassword,
-						QueryTestId: QueryTestId.CreateUser,
+						contact
 					},
 					type: QueryTypes.INSERT,
 				},
 			);
-
-			const createdUser = await UserService.getByUsername(username);
-
-			if (createdUser) {
-				return createdUser;
-			}
-
-			return {
-				error: ERROR.UserCreationFailed,
-			};
-		} catch (err) {
-			return {
-				error: ERROR.UserCreationFailed,
-			};
 		}
+
+		return await UserService.getByUsername(username);
 	};
 
 	static update = async (
@@ -80,14 +90,22 @@ export default class UserService {
 		body,
         existingUser
 	) => {
-		const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+		let password = existingUser.password;
+		if (body.password) {
+			password = await bcrypt.hash(body.password, 10);
+		}
 
 		await database.query(
-			updatePasswordQuery,
+			updateUserQuery,
 			{
 				replacements: {
-					id,
-					password: hashedPassword,
+					full_name: body.full_name || existingUser.full_name,
+					username: body.username || existingUser.username,
+					email: body.email || existingUser.email,
+					contact: body.contact || existingUser.contact,
+					password,
+					id
 				},
 				type: QueryTypes.UPDATE,
 			},
@@ -95,12 +113,37 @@ export default class UserService {
 	};
 	
 	static fetchAll = async (
-		queryStringParameters
+		query
 	) => {
+		const { username, email } = query;
+		let customQuery = fetchAllQuery;
+
+		if (username) {
+			customQuery += ` AND username = '${username}'`
+		}
+
+		if (email) {
+			customQuery += ` AND email = '${email}'`;
+		}
+
 		return await database.query(
-			fetchAllQuery,
+			customQuery,
 			{
 				type: QueryTypes.SELECT
+			}
+		)
+	};
+
+	static delete = async (
+		id
+	) => {
+		return await database.query(
+			deleteUserQuery,
+			{
+				replacements: {
+					id
+				},
+				type: QueryTypes.UPDATE
 			}
 		)
 	};

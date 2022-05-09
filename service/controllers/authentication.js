@@ -13,15 +13,11 @@ const authenticateToken = (req, res, next) => {
 
       jwt.verify(token, process.env.SECRET_TOKEN, (err, data) => {
         if (err || !data.id || data.exp > new Date().getTime()) {
-          return res.status(HttpError('Invalid token', 401)).json(err).end();
+          return res.status(401).json({error: "Invalid token"}).end();
         }
-        req.id = data.id;
-
         return next();
       });
     }
-
-    return next();
   } catch (error) {
     res.status(HttpError('Invalid server request', 401)).json(err).end();
   }
