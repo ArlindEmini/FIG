@@ -16,8 +16,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
-app.use("/client", clientRoutes);
+app.use("/users", userRoutes);
+app.use("/clients", clientRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);

@@ -20,4 +20,4 @@ const validateUser = (params) => {
    return true;
 }
   
-  export default validateUser;
+export default validateUser;
