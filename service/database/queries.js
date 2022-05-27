@@ -123,3 +123,10 @@ export const checkClientExistenceQuery = `
 SELECT * from users where full_name = :full_name AND email = :email
 LIMIT 1
 `;
+
+// pto queries
+export const insertPtoQuery = `
+INSERT INTO
+time_off (user_id, type, comment,  created_at, started_date, end_date , is_approved)
+VALUES (:user_id, :type, :comment, :NOW(),  :started_date, end_date, is_approved, 0);
+`;
