@@ -15,9 +15,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
-app.use("/clients", clientRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/clients", clientRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);
