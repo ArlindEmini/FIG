@@ -151,32 +151,27 @@ router.post("/time-off/:id", authenticateToken, async (req, res) => {
     const { id } = params;
 
     const pto = await UserController.requestPto(body, id);
+
+    return res.status(200).json({ pto }).end();
   } catch (error) {
+    console.log("error", error)
     return res.status(400).json({ error }).end();
   }
 });
 
 router.get("/:id/time-off", authenticateToken, async (req, res) => {
   try {
-  } catch (error) {}
+    const {params} = req
+    const {id} = params
+    console.log("idddd", id)
+    const pto = await UserController.getPtoByUserId(id)
+
+    return res.status(200).json({pto}).end();
+  } catch (error) {
+      console.log("error", error)
+      return res.status(400).json({error}).end();
+  }
 });
 
 export default router;
 
-// router.post('/', authenticateToken, async (req, res) => {
-//     try {
-//         const { body, headers } = req;
-//         validateUser(body);
-
-//         if (!await validateAdmin(headers.authorization)) {
-//             return res.status(401).json({error: 'Unauthorised action for this user'}).end();
-//         }
-
-// const user = await UserController.create(body);
-
-//         return res.status(200).json({user}).end();
-//     } catch (error) {
-//         console.log("ERROr", error);
-//         return res.status(400).json({error}).end();
-//     }
-// });

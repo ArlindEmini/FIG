@@ -10,6 +10,7 @@ import {
   deleteUserQuery,
   checkUserExistenceQuery,
   insertPtoQuery,
+  getPtoByUserId
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -114,16 +115,30 @@ export default class UserService {
     });
   };
 
-  static requestPto = async (body, id) => {
+  static requestPto = async (body, user_id) => {
     //qitu
-    const { type, comment } = body;
-    await database.query(insertPtoQuery, {
+   
+    return await database.query(insertPtoQuery, {
       replacements: {
-        user_id,
-        type,
-        comment,
+        user_id : user_id,
+        type : body.type,
+        comment : body.comment,
+		start_date: body.start_date,
+		end_date : body.end_date,
+		is_approved : false
       },
       type: QueryTypes.INSERT,
     });
   };
+
+  static getPtoByUserId = async (user_id) => {
+	
+	const ptos =  await database.query(getPtoByUserId, {
+		replacements:{
+			user_id : user_id
+		},
+		type: QueryTypes.SELECT
+	})
+	return ptos
+  }
 }
