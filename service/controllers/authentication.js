@@ -17,9 +17,11 @@ const authenticateToken = (req, res, next) => {
         }
         return next();
       });
+    } else {
+      res.status(401).json({error: "Token is missing in the request"}).end();
     }
   } catch (error) {
-    res.status(HttpError('Invalid server request', 401)).json(err).end();
+    res.status(401).json({error}).end();
   }
 }
 

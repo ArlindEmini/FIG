@@ -49,7 +49,8 @@ export default class UserService {
 			username,
 			email,
 			password,
-			contact
+			contact,
+			user_type
 		} = body;
 
 		const user = await database.query(
@@ -75,7 +76,8 @@ export default class UserService {
 						username,
 						email,
 						password: hashedPassword,
-						contact
+						contact,
+						user_type
 					},
 					type: QueryTypes.INSERT,
 				},

@@ -63,7 +63,18 @@ export default class ClientService {
 			);
 		}
 
-		return await ClientService.getByEmail(email);
+		const response = await database.query(
+			checkClientExistenceQuery,
+			{
+				replacements: {
+					full_name,
+					email
+				},
+				type: QueryTypes.SELECT,
+			},
+		);
+
+		return response.length ? response[0] : null;
 	};
 
 	static update = async (
