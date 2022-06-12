@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import HttpError from '../models/http-error.js';
+import { getTokenValue } from '../utils/utils.js';
 
 dotenv.config();
 
@@ -10,8 +11,9 @@ const authenticateToken = (req, res, next) => {
 
     if (authorization) {
       const token = authorization;
+      const tokenValue = getTokenValue(token)
 
-      jwt.verify(token, process.env.SECRET_TOKEN, (err, data) => {
+      jwt.verify(tokenValue, process.env.SECRET_TOKEN, (err, data) => {
         if (err || !data.id || data.exp > new Date().getTime()) {
           return res.status(401).json({error: "Invalid token"}).end();
         }
