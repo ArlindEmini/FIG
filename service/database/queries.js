@@ -8,8 +8,8 @@ full_name,
 password,
 user_type,
 contact
-created_at,
-updated_at
+created_date,
+updated_date
 FROM users
 WHERE username = :username
 and is_deleted = 0
@@ -25,8 +25,8 @@ full_name,
 password,
 user_type,
 contact,
-created_at,
-updated_at
+created_date,
+updated_date
 FROM users
 WHERE id = :id
 and is_deleted = 0
@@ -35,7 +35,7 @@ LIMIT 1;
 
 export const insertUserQuery = `
 INSERT INTO
-users (full_name, email, username, password, user_type, contact, created_at, updated_at, is_deleted)
+users (full_name, email, username, password, user_type, contact, created_date, updated_date, is_deleted)
 VALUES (:full_name, :email, :username, :password, 1, :contact, NOW(), NOW(), 0);
 `;
 
@@ -74,8 +74,8 @@ email,
 full_name,
 client_type,
 contact,
-created_at,
-updated_at
+created_date,
+updated_date
 FROM clients
 WHERE email = :email
 and is_deleted = 0
@@ -89,8 +89,8 @@ email,
 full_name,
 client_type,
 contact,
-created_at,
-updated_at
+created_date,
+updated_date
 FROM clients
 WHERE id = :id
 and is_deleted = 0
@@ -99,7 +99,7 @@ LIMIT 1;
 
 export const insertClientQuery = `
 INSERT INTO
-clients (full_name, email, client_type, contact, created_at, updated_at, is_deleted)
+clients (full_name, email, client_type, contact, created_date, updated_date, is_deleted)
 VALUES (:full_name, :email, :client_type, :contact, NOW(), NOW(), 0);
 `;
 

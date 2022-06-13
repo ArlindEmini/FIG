@@ -55,6 +55,7 @@ router.get("/", authenticateToken, async (req, res) => {
 });
 
 router.post("/", authenticateToken, async (req, res) => {
+    console.log("createUsers", req.body)
   try {
     const { body, headers } = req;
     validateUser(body);
@@ -163,7 +164,7 @@ router.get("/:id/time-off", authenticateToken, async (req, res) => {
   try {
     const {params} = req
     const {id} = params
-    console.log("idddd", id)
+    
     const pto = await UserController.getPtoByUserId(id)
 
     return res.status(200).json({pto}).end();

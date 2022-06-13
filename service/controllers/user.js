@@ -16,6 +16,7 @@ import { database } from "../database/connection.js";
 
 export default class UserService {
   static get = async (id) => {
+    console.log("111111111")
     const users = await database.query(getUserById, {
       replacements: {
         id,
@@ -28,6 +29,7 @@ export default class UserService {
   };
 
   static getByUsername = async (username) => {
+    console.log("22222222")
     const users = await database.query(getUserByUsername, {
       replacements: {
         username,
@@ -41,7 +43,7 @@ export default class UserService {
 
   static create = async (body) => {
     const { full_name, username, email, password, contact } = body;
-
+    console.log("333333333")
     const user = await database.query(checkUserExistenceQuery, {
       replacements: {
         username,
@@ -72,6 +74,7 @@ export default class UserService {
 
   static update = async (id, body, existingUser) => {
     let password = existingUser.password;
+    console.log("4444444")
     if (body.password) {
       password = await bcrypt.hash(body.password, 10);
     }
@@ -91,8 +94,9 @@ export default class UserService {
 
   static fetchAll = async (query) => {
     const { username, email } = query;
+    console.log("55555555")
     let customQuery = fetchAllQuery;
-
+    console.log("fetch all")
     if (username) {
       customQuery += ` AND username = '${username}'`;
     }
@@ -125,7 +129,7 @@ export default class UserService {
         comment : body.comment,
 		start_date: body.start_date,
 		end_date : body.end_date,
-		is_approved : false
+		is_approved : 0
       },
       type: QueryTypes.INSERT,
     });
