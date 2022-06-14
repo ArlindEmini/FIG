@@ -15,109 +15,149 @@ import {
 import { database } from "../database/connection.js";
 
 export default class UserService {
-  static get = async (id) => {
-    console.log("111111111")
-    const users = await database.query(getUserById, {
-      replacements: {
-        id,
-      },
-      type: QueryTypes.SELECT,
-      raw: true,
-    });
+	static get = async (
+		id,
+	) => {
+		const users = await database.query(
+			getUserById,
+			{
+				replacements: {
+					id
+				},
+				type: QueryTypes.SELECT,
+				raw: true,
+			},
+		);
 
-    return users.length ? users[0] : null;
-  };
+		return users.length ? users[0] : null;
+	};
 
-  static getByUsername = async (username) => {
-    console.log("22222222")
-    const users = await database.query(getUserByUsername, {
-      replacements: {
-        username,
-      },
-      type: QueryTypes.SELECT,
-      raw: true,
-    });
+	static getByUsername = async (
+		username,
+	) => {
+		const users = await database.query(
+			getUserByUsername,
+			{
+				replacements: {
+					username
+				},
+				type: QueryTypes.SELECT,
+				raw: true,
+			},
+		);
 
-    return users.length ? users[0] : null;
-  };
+		return users.length ? users[0] : null;
+	};
 
-  static create = async (body) => {
-    const { full_name, username, email, password, contact } = body;
-    console.log("333333333")
-    const user = await database.query(checkUserExistenceQuery, {
-      replacements: {
-        username,
-        email,
-      },
-      type: QueryTypes.SELECT,
-    });
+	static create = async (
+        body
+	) => {
+		const {
+			full_name,
+			username,
+			email,
+			password,
+			contact,
+			user_type
+		} = body;
 
-    if (user && user.length) {
-      await UserService.update(user[0].id, body, user[0]);
-    } else {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      //qitu
-      await database.query(insertUserQuery, {
-        replacements: {
-          full_name,
-          username,
-          email,
-          password: hashedPassword,
-          contact,
-        },
-        type: QueryTypes.INSERT,
-      });
-    }
+		const user = await database.query(
+			checkUserExistenceQuery,
+			{
+				replacements: {
+					username,
+					email
+				},
+				type: QueryTypes.SELECT,
+			},
+		);
 
-    return await UserService.getByUsername(username);
-  };
+		if (user && user.length) {
+			await UserService.update(user[0].id, body, user[0]);
+		} else {
+			const hashedPassword = await bcrypt.hash(password, 10);
+			await database.query(
+				insertUserQuery,
+				{
+					replacements: {
+						full_name,
+						username,
+						email,
+						password: hashedPassword,
+						contact,
+						user_type
+					},
+					type: QueryTypes.INSERT,
+				},
+			);
+		}
 
-  static update = async (id, body, existingUser) => {
-    let password = existingUser.password;
-    console.log("4444444")
-    if (body.password) {
-      password = await bcrypt.hash(body.password, 10);
-    }
+		return await UserService.getByUsername(username);
+	};
 
-    await database.query(updateUserQuery, {
-      replacements: {
-        full_name: body.full_name || existingUser.full_name,
-        username: body.username || existingUser.username,
-        email: body.email || existingUser.email,
-        contact: body.contact || existingUser.contact,
-        password,
-        id,
-      },
-      type: QueryTypes.UPDATE,
-    });
-  };
+	static update = async (
+		id,
+		body,
+        existingUser
+	) => {
 
-  static fetchAll = async (query) => {
-    const { username, email } = query;
-    console.log("55555555")
-    let customQuery = fetchAllQuery;
-    console.log("fetch all")
-    if (username) {
-      customQuery += ` AND username = '${username}'`;
-    }
+		let password = existingUser.password;
+		if (body.password) {
+			password = await bcrypt.hash(body.password, 10);
+		}
 
-    if (email) {
-      customQuery += ` AND email = '${email}'`;
-    }
+		await database.query(
+			updateUserQuery,
+			{
+				replacements: {
+					full_name: body.full_name || existingUser.full_name,
+					username: body.username || existingUser.username,
+					email: body.email || existingUser.email,
+					contact: body.contact || existingUser.contact,
+					password,
+					id
+				},
+				type: QueryTypes.UPDATE,
+			},
+		);
+	};
+	
+	static fetchAll = async (
+		query
+	) => {
+		const { username, email } = query;
+		let customQuery = fetchAllQuery;
 
-    return await database.query(customQuery, {
-      type: QueryTypes.SELECT,
-    });
-  };
+		if (username) {
+			customQuery += ` AND username = '${username}'`
+		}
 
-  static delete = async (id) => {
-    return await database.query(deleteUserQuery, {
-      replacements: {
-        id,
-      },
-      type: QueryTypes.UPDATE,
-    });
-  };
+		if (email) {
+			customQuery += ` AND email = '${email}'`;
+		}
+
+		return await database.query(
+			customQuery,
+			{
+				type: QueryTypes.SELECT
+			}
+		)
+	};
+
+	static delete = async (
+		id
+	) => {
+		return await database.query(
+			deleteUserQuery,
+			{
+				replacements: {
+					id
+				},
+				type: QueryTypes.UPDATE
+			}
+		)
+	};
+
 
   static requestPto = async (body, user_id) => {
     //qitu

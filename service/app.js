@@ -6,8 +6,7 @@ import HttpError from './models/http-error.js';
 import authRoutes from './routes/authentication-routes.js';
 import userRoutes from './routes/user-routes.js';
 import clientRoutes from './routes/client-routes.js';
-
-import authenticateToken from './controllers/authentication.js';
+// import contractRoutes from './routes/contract-routes.js';
 
 export const app = express();
 
@@ -15,9 +14,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
-app.use("/clients", clientRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/clients', clientRoutes);
+// app.use('/api/contracts', contractRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);
