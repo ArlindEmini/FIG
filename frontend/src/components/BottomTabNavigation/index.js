@@ -10,8 +10,10 @@ import Urgencies from '../../routes/Urgencies';
 import Vacations from '../../routes/Vacations';
 import { teal } from '../../utils/colors';
 import { renderBottomNavIcon } from './helpers';
+import { usePersistedStore } from '../../store';
 
 const BottomTabNavigation = () => {
+  const setAuthToken = usePersistedStore((state) => state.setAuthToken)
 
   const Tab = createBottomTabNavigator();
 
@@ -22,9 +24,20 @@ const BottomTabNavigation = () => {
       tabBarActiveTintColor: teal,
       tabBarInactiveTintColor: 'gray',
     })}>
-      <Tab.Screen name={CLIENT_PATH_NAME} component={Client} options={() => ({
-        title: 'Client',
-      })} />
+      <Tab.Screen 
+        name={CLIENT_PATH_NAME} component={Client} options={() => ({
+          title: 'Client',
+
+        })
+        }
+        // TODO this is temporary just to test log out when we have logged in
+        listeners={{
+          tabPress: e => {
+            console.log("pressed",e);
+            setAuthToken(null)
+          }
+        }}
+      />
       <Tab.Screen name={CHECK_LIST_PATH_NAME} component={CheckList}
       />
       <Tab.Screen name={REPORT_PATH_NAME} component={Report}  />

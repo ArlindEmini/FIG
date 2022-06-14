@@ -17,3 +17,8 @@ export const NOTIFICATIONS_PATH_NAME = "NOTIFICATIONS"
 export const CLIENT_DETAILS_PATH_NAME = "CLIENT_DETAILS"
 
 export const HOME_PATH_NAME = "HOME"
+
+export const LOGIN_URL = 'http://localhost:3000/api/v1/users/login';
+
+export const TOKEN_KEY = 'fig4fig'
+

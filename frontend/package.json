@@ -20,6 +20,7 @@
     "expo-calendar": "~10.1.0",
     "expo-cli": "^5.3.0",
     "expo-status-bar": "~1.2.0",
+    "jsonwebtoken-promisified": "^1.0.3",
     "moment": "^2.29.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
