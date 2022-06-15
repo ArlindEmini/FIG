@@ -29,6 +29,8 @@ export default class UserService {
 			},
 		);
 
+    console.log("userss", users[0].username)
+
 		return users.length ? users[0] : null;
 	};
 
@@ -160,8 +162,8 @@ export default class UserService {
 
 
   static requestPto = async (body, user_id) => {
-    //qitu
-   
+
+
     return await database.query(insertPtoQuery, {
       replacements: {
         user_id : user_id,
@@ -185,4 +187,6 @@ export default class UserService {
 	})
 	return ptos
   }
+
+
 }

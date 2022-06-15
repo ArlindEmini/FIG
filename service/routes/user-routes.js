@@ -147,7 +147,25 @@ router.delete("/:id", authenticateToken, async (req, res) => {
   }
 });
 
-router.post("/time-off/:id", authenticateToken, async (req, res) => {
+//   put("/time-off/:tid")
+
+// kur admini ben kerkese per puntorin
+router.post("/:id/time-off", authenticateToken, async (req, res) => {
+  try {
+    const { body, params } = req;
+    const { id } = params;
+
+    const pto = await UserController.requestPto(body, id);
+
+    return res.status(200).json({ pto }).end();
+  } catch (error) {
+    console.log("error", error)
+    return res.status(400).json({ error }).end();
+  }
+});
+
+// kur puntori bon kerkese vet
+router.post("/time-off", authenticateToken, async (req, res) => {
   try {
     const { body, params } = req;
     const { id } = params;
@@ -176,4 +194,3 @@ router.get("/:id/time-off", authenticateToken, async (req, res) => {
 });
 
 export default router;
-
