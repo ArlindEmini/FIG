@@ -28,3 +28,9 @@ export const getTokenValue = (token) => {
       token
   );
 };
+
+export const getIdFromToken = (authorization) => {
+    const response = jwt.verify(authorization, process.env.SECRET_TOKEN);
+
+    return response && response.id;
+}
