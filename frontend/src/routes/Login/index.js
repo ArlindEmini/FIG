@@ -4,7 +4,12 @@ import { Button, Card, Paragraph, TextInput, Title } from "react-native-paper";
 import { loginStyles } from "./styles";
 import PropTypes from 'prop-types';
 import { CALENDAR_PATH_NAME } from "../../utils/constant";
-import {usePersistedStore}  from "../../store";
+import { usePersistedStore } from "../../store";
+import Api from "../../utils/api";
+import { LOGIN_URL } from "../../utils/constant";
+import { verifyToken } from "../../utils/jwt";
+
+const api = new Api();
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -12,9 +17,22 @@ const Login = ({ navigation }) => {
 
   const setAuthToken = usePersistedStore((state) => state.setAuthToken)
 
-  const submitLogin = useCallback(() => {
-    setAuthToken("123token")
-    navigation.navigate(CALENDAR_PATH_NAME)
+  const submitLogin = useCallback(async () => {
+    const credentials = {
+      username: username,
+      password: password
+    }
+
+    const loginResponse = await api.POST(LOGIN_URL, credentials)
+    const { data } = loginResponse;
+
+    const tokenIsValid = await verifyToken(data && data.token || '');
+
+    if (tokenIsValid) {
+      setAuthToken(data)
+      navigation.navigate(CALENDAR_PATH_NAME)
+    }
+
   }, [username, password]);
 
   return (
