@@ -56,6 +56,7 @@ const Login = ({ navigation }) => {
             mode="outlined"
             label="Identifiant"
             onChange={(e) => setUsername(e.nativeEvent.text)}
+            onSubmitEditing={submitLogin}
           />
 
           <TextInput
@@ -65,6 +66,7 @@ const Login = ({ navigation }) => {
             label="Identifiant"
             secureTextEntry={true}
             onChange={(e) => setPassword(e.nativeEvent.text)}
+            onSubmitEditing={submitLogin}
           />
 
           <Button
