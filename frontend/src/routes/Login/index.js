@@ -54,9 +54,11 @@ const Login = ({ navigation }) => {
             mode="outlined"
             label="Identifiant"
             onChange={(e) => setUsername(e.nativeEvent.text)}
-            onSubmitEditing={submitLogin}
+            onSubmitEditing={() => this.passwordInput.focus()}
             keyboardType="default"
             keyboardAppearance="default"
+            returnKeyType="next"
+            blurOnSubmit={false}
           />
 
           <TextInput
@@ -70,6 +72,7 @@ const Login = ({ navigation }) => {
             keyboardType="visible-password"
             returnKeyType="send"
             keyboardAppearance="default"
+            ref={(input) => {this.passwordInput = input}}
           />
 
           <Button
