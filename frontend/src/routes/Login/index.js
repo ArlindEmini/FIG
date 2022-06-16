@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Button, Card, Paragraph, TextInput, Title } from "react-native-paper";
 import { loginStyles } from "./styles";
 import PropTypes from 'prop-types';
-import { CALENDAR_PATH_NAME } from "../../utils/constant";
+import { CLIENT_PATH_NAME } from "../../utils/constant";
 import { usePersistedStore } from "../../store";
 import Api from "../../utils/api";
 import { LOGIN_URL } from "../../utils/constant";
@@ -22,17 +22,20 @@ const Login = ({ navigation }) => {
       username: username,
       password: password
     }
+    let tokenIsValid = false;
+    try {
+      const loginResponse = await api.POST(LOGIN_URL, credentials) || {};
+      const { data = {} } = loginResponse;
+      const token = data && data.token;
 
-    const loginResponse = await api.POST(LOGIN_URL, credentials)
-    const { data } = loginResponse;
-
-    const tokenIsValid = await verifyToken(data && data.token || '');
-
-    if (tokenIsValid) {
-      setAuthToken(data)
-      navigation.navigate(CALENDAR_PATH_NAME)
+      tokenIsValid = await verifyToken(token || '');
+      if (tokenIsValid) {
+        setAuthToken(data)
+        navigation.navigate(CLIENT_PATH_NAME);
+      }
+    } catch (error) {
+      console.error("Error @submitLogin", error);
     }
-
   }, [username, password]);
 
   return (
