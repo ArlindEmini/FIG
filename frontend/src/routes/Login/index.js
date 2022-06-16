@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { View } from "react-native";
 import { Button, Card, Paragraph, TextInput, Title } from "react-native-paper";
 import { loginStyles } from "./styles";
@@ -13,6 +13,7 @@ const api = new Api();
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const passwordRef = useRef();
 
   const setAuthToken = usePersistedStore((state) => state.setAuthToken)
 
@@ -54,7 +55,7 @@ const Login = ({ navigation }) => {
             mode="outlined"
             label="Identifiant"
             onChange={(e) => setUsername(e.nativeEvent.text)}
-            onSubmitEditing={() => this.passwordInput.focus()}
+            onSubmitEditing={() => passwordRef.current.focus()}
             keyboardType="default"
             keyboardAppearance="default"
             returnKeyType="next"
@@ -63,16 +64,16 @@ const Login = ({ navigation }) => {
 
           <TextInput
             style={loginStyles.container}
-            placeholder="Identifiant"
+            placeholder="Password"
             mode="outlined"
-            label="Identifiant"
+            label="Password"
             secureTextEntry={true}
             onChange={(e) => setPassword(e.nativeEvent.text)}
             onSubmitEditing={submitLogin}
             keyboardType="visible-password"
             returnKeyType="send"
             keyboardAppearance="default"
-            ref={(input) => {this.passwordInput = input}}
+            ref={passwordRef}
           />
 
           <Button
