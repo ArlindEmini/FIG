@@ -10,7 +10,9 @@ class Api {
       return response;
         
     } catch (error) {
-      return error
+      console.error("Error @GET", error);
+      
+      return error;
     }
       
   }
@@ -21,6 +23,8 @@ class Api {
         
       return response;
     } catch (error) {
+      console.error("Error @Api.POST", error);
+
       return error;
     }
     

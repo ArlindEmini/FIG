@@ -48,7 +48,7 @@ const Login = ({ navigation }) => {
           </Card.Content>
         </Card>
 
-        <View style={{ ...loginStyles.view, marginTop: "30%" }}>
+        <View style={loginStyles.view}>
           <TextInput
             style={loginStyles.container}
             placeholder="Identifiant"
@@ -60,6 +60,9 @@ const Login = ({ navigation }) => {
             keyboardAppearance="default"
             returnKeyType="next"
             blurOnSubmit={false}
+            autoComplete="username"
+            autoFocus={true}
+            enablesReturnKeyAutomatically={true}
           />
 
           <TextInput
@@ -74,6 +77,7 @@ const Login = ({ navigation }) => {
             returnKeyType="send"
             keyboardAppearance="default"
             ref={passwordRef}
+            enablesReturnKeyAutomatically={true}
           />
 
           <Button
@@ -81,6 +85,7 @@ const Login = ({ navigation }) => {
             mode="contained"
             color="#2497af"
             onPress={submitLogin}
+            disabled={!username || !password}
           >
             Connexion
           </Button>
