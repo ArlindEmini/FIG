@@ -13,7 +13,7 @@ const ClientList = ({ type, navigation }) => {
   useEffect(() => {
     setTimeout(() => {
       let newClients = [];
-      const size = type === 'prive' ? 5 : 3;
+      const size = type === 'prive' ? 15 : 3;
       for (let i = 0; i < size; i++) {
         newClients.push({
           type,

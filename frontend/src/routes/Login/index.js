@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
-import { View } from "react-native";
+import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { Button, Card, Paragraph, TextInput, Title } from "react-native-paper";
 import { loginStyles } from "./styles";
 import PropTypes from 'prop-types';
@@ -39,58 +39,60 @@ const Login = ({ navigation }) => {
 
   return (
     <>
-      {/* Used for linear background colors */}
-      <View style={loginStyles.mainView}>
-        <Card style={loginStyles.card}>
-          <Card.Content style={loginStyles.cardContent}>
-            <Title style={loginStyles.title}>FIG</Title>
-            <Paragraph>Multiservices Sàrl</Paragraph>
-          </Card.Content>
-        </Card>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        {/* Used for linear background colors */}
+        <View style={loginStyles.mainView}>
+          <Card style={loginStyles.card}>
+            <Card.Content style={loginStyles.cardContent}>
+              <Title style={loginStyles.title}>FIG</Title>
+              <Paragraph>Multiservices Sàrl</Paragraph>
+            </Card.Content>
+          </Card>
 
-        <View style={loginStyles.view}>
-          <TextInput
-            style={loginStyles.container}
-            placeholder="Identifiant"
-            mode="outlined"
-            label="Identifiant"
-            onChange={(e) => setUsername(e.nativeEvent.text)}
-            onSubmitEditing={() => passwordRef.current.focus()}
-            keyboardType="default"
-            keyboardAppearance="default"
-            returnKeyType="next"
-            blurOnSubmit={false}
-            autoComplete="username"
-            autoFocus={true}
-            enablesReturnKeyAutomatically={true}
-          />
+          <View style={loginStyles.view}>
+            <TextInput
+              style={loginStyles.container}
+              placeholder="Identifiant"
+              mode="outlined"
+              label="Identifiant"
+              onChange={(e) => setUsername(e.nativeEvent.text)}
+              onSubmitEditing={() => passwordRef.current.focus()}
+              keyboardType="default"
+              keyboardAppearance="default"
+              returnKeyType="next"
+              blurOnSubmit={false}
+              autoComplete="username"
+              autoFocus={true}
+              enablesReturnKeyAutomatically={true}
+            />
 
-          <TextInput
-            style={loginStyles.container}
-            placeholder="Password"
-            mode="outlined"
-            label="Password"
-            secureTextEntry={true}
-            onChange={(e) => setPassword(e.nativeEvent.text)}
-            onSubmitEditing={submitLogin}
-            keyboardType="visible-password"
-            returnKeyType="send"
-            keyboardAppearance="default"
-            ref={passwordRef}
-            enablesReturnKeyAutomatically={true}
-          />
+            <TextInput
+              style={loginStyles.container}
+              placeholder="Password"
+              mode="outlined"
+              label="Password"
+              secureTextEntry={true}
+              onChange={(e) => setPassword(e.nativeEvent.text)}
+              onSubmitEditing={submitLogin}
+              keyboardType="visible-password"
+              returnKeyType="send"
+              keyboardAppearance="default"
+              ref={passwordRef}
+              enablesReturnKeyAutomatically={true}
+            />
 
-          <Button
-            style={loginStyles.container}
-            mode="contained"
-            color="#2497af"
-            onPress={submitLogin}
-            disabled={!username || !password}
-          >
+            <Button
+              style={loginStyles.container}
+              mode="contained"
+              color="#2497af"
+              onPress={submitLogin}
+              disabled={!username || !password}
+            >
             Connexion
-          </Button>
+            </Button>
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </>
   );
 };
