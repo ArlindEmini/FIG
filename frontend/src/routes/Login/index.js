@@ -3,7 +3,6 @@ import { View } from "react-native";
 import { Button, Card, Paragraph, TextInput, Title } from "react-native-paper";
 import { loginStyles } from "./styles";
 import PropTypes from 'prop-types';
-import { CLIENT_PATH_NAME } from "../../utils/constant";
 import { usePersistedStore } from "../../store";
 import Api from "../../utils/api";
 import { LOGIN_URL } from "../../utils/constant";
@@ -31,7 +30,6 @@ const Login = ({ navigation }) => {
       tokenIsValid = await verifyToken(token || '');
       if (tokenIsValid) {
         setAuthToken(data)
-        navigation.navigate(CLIENT_PATH_NAME);
       }
     } catch (error) {
       console.error("Error @submitLogin", error);
@@ -57,6 +55,8 @@ const Login = ({ navigation }) => {
             label="Identifiant"
             onChange={(e) => setUsername(e.nativeEvent.text)}
             onSubmitEditing={submitLogin}
+            keyboardType="default"
+            keyboardAppearance="default"
           />
 
           <TextInput
@@ -67,6 +67,9 @@ const Login = ({ navigation }) => {
             secureTextEntry={true}
             onChange={(e) => setPassword(e.nativeEvent.text)}
             onSubmitEditing={submitLogin}
+            keyboardType="visible-password"
+            returnKeyType="send"
+            keyboardAppearance="default"
           />
 
           <Button
