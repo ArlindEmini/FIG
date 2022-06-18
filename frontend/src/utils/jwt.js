@@ -1,13 +1,9 @@
-import jwt from "jsonwebtoken-promisified";
-import { TOKEN_KEY } from "./constant";
+import jwt from "jwt-decode";
 
-export const verifyToken = async (token) => {
+export const verifyToken = (token) => {
   try {
-    await jwt.verifyAsync(token, TOKEN_KEY);
-
-    return true
+    return jwt(token);
   } catch (error) {
     return false;
   }
-
 }

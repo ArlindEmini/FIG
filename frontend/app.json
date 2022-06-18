@@ -4,9 +4,9 @@
     "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ios.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/ios.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -24,10 +24,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/android.png",
         "backgroundColor": "#FFFFFF"
       },
-      "permissions": ["READ_CALENDAR"]
+      "permissions": [
+        "READ_CALENDAR"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
