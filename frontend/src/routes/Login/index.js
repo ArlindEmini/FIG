@@ -3,7 +3,6 @@ import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { Button, Card, Paragraph, TextInput, Title } from "react-native-paper";
 import { useToast } from "react-native-toast-notifications";
 import { loginStyles } from "./styles";
-import PropTypes from 'prop-types';
 import { usePersistedStore } from "../../store";
 import Api from "../../utils/api";
 import { LOGIN_URL } from "../../utils/constant";
@@ -12,7 +11,7 @@ import { toastConfig, TOAST_CONSTANTS } from "../../utils/toastconfig";
 
 const api = new Api();
 
-const Login = ({ navigation }) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -107,10 +106,6 @@ const Login = ({ navigation }) => {
       </TouchableWithoutFeedback>
     </>
   );
-};
-
-Login.propTypes = {
-  navigation: PropTypes.object
 };
 
 export default Login;
