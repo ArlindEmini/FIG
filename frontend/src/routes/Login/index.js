@@ -1,29 +1,36 @@
 import React, { useState, useCallback, useRef } from "react";
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { Button, Card, Paragraph, TextInput, Title } from "react-native-paper";
+import { useToast } from "react-native-toast-notifications";
 import { loginStyles } from "./styles";
 import PropTypes from 'prop-types';
 import { usePersistedStore } from "../../store";
 import Api from "../../utils/api";
 import { LOGIN_URL } from "../../utils/constant";
 import { verifyToken } from "../../utils/jwt";
+import { toastConfig, TOAST_CONSTANTS } from "../../utils/toastconfig";
 
 const api = new Api();
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
   const passwordRef = useRef();
 
   const setAuthToken = usePersistedStore((state) => state.setAuthToken)
 
   const submitLogin = useCallback(async () => {
+    Keyboard.dismiss();
     const credentials = {
       username: username,
       password: password
     }
     let tokenIsValid = false;
     try {
+      console.log("logging in...");
+      setLoading(true);
       const loginResponse = await api.POST(LOGIN_URL, credentials) || {};
       const { data = {} } = loginResponse;
       const token = data && data.token;
@@ -34,6 +41,9 @@ const Login = ({ navigation }) => {
       }
     } catch (error) {
       console.error("Error @submitLogin", error);
+      toast.show("Error logging in", toastConfig(TOAST_CONSTANTS.DANGER));
+    } finally {
+      setLoading(false);
     }
   }, [username, password]);
 
@@ -88,9 +98,9 @@ const Login = ({ navigation }) => {
               mode="contained"
               color="#2497af"
               onPress={submitLogin}
-              disabled={!username || !password}
+              disabled={!username || !password || loading}
             >
-            Connexion
+              {loading ? 'Please wait...' : 'Connexion'}
             </Button>
           </View>
         </View>

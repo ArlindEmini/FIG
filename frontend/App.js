@@ -5,6 +5,7 @@ import {  DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { usePersistedStore } from "./src/store";
 import AuthenticatedNavigation from "./src/components/AuthenticatedNavigation";
 import AuthenticationNavigation from "./src/components/AuthenticationNavigation";
+import { ToastProvider } from 'react-native-toast-notifications';
 
 LogBox.ignoreLogs(['zustand']);
 
@@ -24,9 +25,11 @@ const App = () => {
   return (
   // Added react navigation check docs here 
   // # https://reactnavigation.org/docs/getting-started
-    <PaperProvider theme={theme}>
-      {authToken ? <AuthenticatedNavigation /> : <AuthenticationNavigation/>}
-    </PaperProvider>
+    <ToastProvider>
+      <PaperProvider theme={theme}>
+        {authToken ? <AuthenticatedNavigation /> : <AuthenticationNavigation/>}
+      </PaperProvider>
+    </ToastProvider>
     
   );
 };
