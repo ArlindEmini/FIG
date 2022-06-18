@@ -18,7 +18,7 @@ export const CLIENT_DETAILS_PATH_NAME = "CLIENT_DETAILS"
 
 export const HOME_PATH_NAME = "HOME"
 
-export const LOGIN_URL = 'http://192.168.0.25:8000/api/v1/users/login'; // IP address is needed to test it on an android phone , please replace with localhost if it works fine for your device
+export const LOGIN_URL = 'http://192.168.0.25:3000/api/v1/users/login'; // IP address is needed to test it on an android phone , please replace with localhost if it works fine for your device
 
 export const TOKEN_KEY = 'fig4fig'
 
