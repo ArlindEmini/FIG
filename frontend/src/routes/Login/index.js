@@ -64,6 +64,7 @@ const Login = ({ navigation }) => {
               autoComplete="username"
               autoFocus={true}
               enablesReturnKeyAutomatically={true}
+              textContentType="username"
             />
 
             <TextInput
@@ -79,6 +80,7 @@ const Login = ({ navigation }) => {
               keyboardAppearance="default"
               ref={passwordRef}
               enablesReturnKeyAutomatically={true}
+              textContentType="password"
             />
 
             <Button
