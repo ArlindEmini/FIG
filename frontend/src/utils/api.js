@@ -3,7 +3,7 @@ import axios from "axios";
 class Api {
   constructor() {}
 
-  GET = async (endpoint, config) => {
+  GET = async (endpoint, config = {}) => {
     try {
       const response = await axios.get(endpoint, config);
 
@@ -28,6 +28,12 @@ class Api {
       return error;
     }
     
+  }
+
+  setRequestHeaders = (headers) => {
+    return {
+      headers
+    }
   }
   
 }
