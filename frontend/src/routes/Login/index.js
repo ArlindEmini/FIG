@@ -34,13 +34,15 @@ const Login = () => {
 
     tokenIsValid = await verifyToken(token || '');
 
+    setLoading(false);
     if (!tokenIsValid) {
       toast.show("Error logging in, please contact admin!", toastConfig(TOAST_CONSTANTS.DANGER));
 
       return;
     }
     setAuthToken(data)
-    setLoading(false);
+
+    return tokenIsValid;
   }
 
   return (

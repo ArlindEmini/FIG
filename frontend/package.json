@@ -18,6 +18,7 @@
     "@react-navigation/native-stack": "^6.6.1",
     "axios": "^0.26.1",
     "expo": "~44.0.0",
+    "expo-barcode-scanner": "^11.3.0",
     "expo-calendar": "~10.1.0",
     "expo-cli": "^5.3.0",
     "expo-status-bar": "~1.2.0",
