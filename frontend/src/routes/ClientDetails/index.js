@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
-import {  Text, ScrollView, ActivityIndicator, RefreshControl } from "react-native";
+import {  Text, ScrollView, RefreshControl } from "react-native";
 
 import CustomCard from "../../components/Card";
 import { styles } from "./styles";
@@ -8,7 +8,6 @@ import { usePersistedStore } from "../../store";
 import { GET_CLIENTS } from "../../utils/constant";
 import Api from "../../utils/api";
 import moment from "moment";
-import { wait } from "../../utils/common";
 
 function ClientDetails({ route }) {
   const { params } = route;
@@ -43,11 +42,9 @@ function ClientDetails({ route }) {
     fetchClientDetails();
     
   }, []);
-  const onRefresh = () => {
+
+  const onRefresh = () => { 
     setRefreshing(true);
-    wait(1000).then(() => {
-      setRefreshing(false);
-    })
   }
 
   return (
