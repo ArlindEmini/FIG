@@ -4,32 +4,54 @@ import {  Text, ScrollView, ActivityIndicator, RefreshControl } from "react-nati
 
 import CustomCard from "../../components/Card";
 import { styles } from "./styles";
+import { usePersistedStore } from "../../store";
+import { GET_CLIENTS } from "../../utils/constant";
+import Api from "../../utils/api";
+import moment from "moment";
 import { wait } from "../../utils/common";
 
 function ClientDetails({ route }) {
   const { params } = route;
-  const [loading, setLoading] = useState(true);
+  const api = new Api();
+  const authToken = usePersistedStore((state) => state.auth_token);
+  const [client, setClient] = useState({});
   const [refreshing, setRefreshing] = useState(true);
+  const [reloadColor, setReloadColor] = useState(true);
 
   useEffect(() => {
-    // ... fetch client details
-    console.log({ params })
-    wait(5000).then(() => setLoading(false));
-  });
-  const onRefresh = () => { 
-    setLoading(true);
+    const fetchClientDetails = async () => {
+      try {
+        setRefreshing(true);
+        const authorizationHeader = {
+          Authorization: authToken && authToken.token,
+        };
+
+        const response = await api.GET(
+          `${GET_CLIENTS}/${params.clientId}`,
+          api.setRequestHeaders(authorizationHeader)
+        );
+
+        setClient(response && response.data && response.data.client || {});
+        setReloadColor(false);
+      } catch (error) {
+        console.error("Error @ClientDetails", error);
+      } finally {
+        setRefreshing(false);
+      }
+    }
+
+    fetchClientDetails();
+    
+  }, []);
+  const onRefresh = () => {
     setRefreshing(true);
-    wait(5000).then(() => {
+    wait(1000).then(() => {
       setRefreshing(false);
-      setLoading(false);
-    });
+    })
   }
 
   return (
-    <>{loading ?
-      // show loader
-      <ActivityIndicator animating={true} style={styles.loader} size="large" /> :
-      // main page view
+    <>
       <ScrollView
         contentContainerStyle={styles.mainView}
         refreshControl={
@@ -39,39 +61,24 @@ function ClientDetails({ route }) {
           />
         }
       >
-        <CustomCard showActions={false} subTitle={""} title={"PPE Bel-orne:"}>
-          <Text>Contact: {params.clientId}</Text>
+        <CustomCard
+          showAvatar={true}
+          showActions={false}
+          subTitle={"test"}
+          title={client.full_name}
+          reloadColor={reloadColor}
+        >
+          <Text>Contact: {client.contact}</Text>
+          <Text>Email: {client.email}</Text>
+          <Text>Updated on: {moment(client.updated_date).format("lll")}</Text>
         </CustomCard>
 
         <CustomCard showActions={false} subTitle={""} title={"Cahier des charges"}>
           <Text>Tonte du gazon.. 0/15</Text>
           <Text>Tonte du gazon.. 0/15</Text>
           <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
-          <Text>Tonte du gazon.. 0/15</Text>
         </CustomCard>
-      </ScrollView>}
+      </ScrollView>
     </>
   )
 }

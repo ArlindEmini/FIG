@@ -20,31 +20,28 @@ const Login = () => {
 
   const setAuthToken = usePersistedStore((state) => state.setAuthToken)
 
-  const submitLogin = useCallback(async () => {
+  const submitLogin = async () => {
     Keyboard.dismiss();
     const credentials = {
       username: username,
       password: password
     }
     let tokenIsValid = false;
-    try {
-      console.log("logging in...");
-      setLoading(true);
-      const loginResponse = await api.POST(LOGIN_URL, credentials) || {};
-      const { data = {} } = loginResponse;
-      const token = data && data.token;
+    setLoading(true);
+    const loginResponse = await api.POST(LOGIN_URL, credentials) || {};
+    const { data = {} } = loginResponse;
+    const token = data && data.token;
 
-      tokenIsValid = await verifyToken(token || '');
-      if (tokenIsValid) {
-        setAuthToken(data)
-      }
-    } catch (error) {
-      console.error("Error @submitLogin", error);
-      toast.show("Error logging in", toastConfig(TOAST_CONSTANTS.DANGER));
-    } finally {
-      setLoading(false);
+    tokenIsValid = await verifyToken(token || '');
+
+    if (!tokenIsValid) {
+      toast.show("Error logging in, please contact admin!", toastConfig(TOAST_CONSTANTS.DANGER));
+
+      return;
     }
-  }, [username, password]);
+    setAuthToken(data)
+    setLoading(false);
+  }
 
   return (
     <>
