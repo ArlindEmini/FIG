@@ -6,6 +6,7 @@ import {
   generateToken,
   validatePassword,
   validateAdmin,
+  getIdFromToken
 } from "../utils/utils.js";
 import authenticateToken from "../controllers/authentication.js";
 import validateUser from "../validators/user-validator.js";
@@ -181,10 +182,12 @@ router.post("/time-off", authenticateToken, async (req, res) => {
 
 router.get("/:id/time-off", authenticateToken, async (req, res) => {
   try {
-    const {params} = req
+    const {params, headers} = req
     const {id} = params
-    
-    const pto = await UserController.getPtoByUserId(id)
+
+    const idFromtoken =  await getIdFromToken(headers.authorization);
+
+    const pto = await UserController.getPtoByUserId(idFromtoken)
 
     return res.status(200).json({pto}).end();
   } catch (error) {
