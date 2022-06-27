@@ -14,6 +14,7 @@ import validateUser from "../validators/user-validator.js";
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
+  console.log("55")
   try {
     const { username, password } = req.body;
 
@@ -44,6 +45,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/", authenticateToken, async (req, res) => {
+  console.log("44")
   try {
     const { query, headers } = req;
 
@@ -57,7 +59,8 @@ router.get("/", authenticateToken, async (req, res) => {
 });
 
 router.post("/", authenticateToken, async (req, res) => {
-    console.log("createUsers", req.body)
+  
+    console.log("33")
   try {
     const { body, headers } = req;
     validateUser(body);
@@ -79,6 +82,7 @@ router.post("/", authenticateToken, async (req, res) => {
 });
 
 router.put("/:id", authenticateToken, async (req, res) => {
+  console.log("22")
   try {
     const { body, headers, params } = req;
     const { id } = params;
@@ -105,11 +109,12 @@ router.put("/:id", authenticateToken, async (req, res) => {
 });
 
 router.get("/:id", authenticateToken, async (req, res) => {
+  console.log("11")
   try {
-    const { params } = req;
+    const { params, headers } = req;
     const { id } = params;
-
-    const user = await UserController.get(id);
+    const idFromtoken =  await getIdFromToken(headers.authorization);
+    const user = await UserController.get(idFromtoken);
 
     if (!user) {
       return res.status(404).json({ error: "Unable to find the user" }).end();
@@ -168,19 +173,20 @@ router.post("/:id/time-off", authenticateToken, async (req, res) => {
 // kur puntori bon kerkese vet
 router.post("/time-off", authenticateToken, async (req, res) => {
   try {
-    const { body, params } = req;
+    const { body, params, headers } = req;
     const { id } = params;
 
-    const pto = await UserController.requestPto(body, id);
+    const idFromtoken =  await getIdFromToken(headers.authorization);
+    const pto = await UserController.requestPto(body, idFromtoken);
 
     return res.status(200).json({ pto }).end();
   } catch (error) {
-    console.log("error", error)
+    
     return res.status(400).json({ error }).end();
   }
 });
 
-router.get("/:id/time-off", authenticateToken, async (req, res) => {
+router.get("/time-off", authenticateToken, async (req, res) => {
   try {
     const {params, headers} = req
     const {id} = params
@@ -191,7 +197,7 @@ router.get("/:id/time-off", authenticateToken, async (req, res) => {
 
     return res.status(200).json({pto}).end();
   } catch (error) {
-      console.log("error", error)
+     
       return res.status(400).json({error}).end();
   }
 });

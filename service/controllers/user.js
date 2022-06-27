@@ -10,7 +10,8 @@ import {
   deleteUserQuery,
   checkUserExistenceQuery,
   insertPtoQuery,
-  getPtoByUserId
+  getPtoByUserId,
+  getUserAndTimeOff
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -162,8 +163,19 @@ export default class UserService {
 
 
   static requestPto = async (body, user_id) => {
+	console.log("userIdController", user_id)
+	
+	const userAndTime = await database.query(getUserAndTimeOff, {
+		replacements:{
+			user_id : user_id
+		},
+		type : QueryTypes.SELECT
+	})
+	
+	if (userAndTime[0].req_date_off > userAndTime[0].timeoff_available) {
 
-
+	}
+	
     return await database.query(insertPtoQuery, {
       replacements: {
         user_id : user_id,

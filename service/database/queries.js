@@ -147,7 +147,19 @@ WHERE user_id = :user_id
 `;
 `
 `
+export const getUserAndTimeOff = `
+select 
+u.id,
+u.full_name,
+u.timeoff_available,
+t.start_date,
+t.end_date,
+DATEDIFF(t.end_date, t.start_date) as req_date_off,
+t.is_approved from time_off t 
+inner join users u on t.user_id = u.id where t.user_id = :user_id
+`;
 
+// select u.id, u.full_name, u.timeoff_available, t.start_date, t.end_date, DATEDIFF(t.end_date, t.start_date) as req_date, t.is_approved from time_off t inner join users u on t.user_id = u.id where t.user_id = 2
 // contract queries
 // export const insertContractQuery = `
 // `;
