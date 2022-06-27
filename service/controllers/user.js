@@ -11,7 +11,8 @@ import {
   checkUserExistenceQuery,
   insertPtoQuery,
   getPtoByUserId,
-  getUserAndTimeOff
+  getUserAndTimeOff,
+  getAvailableTimeOff
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -200,5 +201,18 @@ export default class UserService {
 	return ptos
   }
 
+  static getAvailableTimeoff = async (id) => {
+	  const response = await database.query(getAvailableTimeOff, {
+		  replacements: {
+			  id
+		  },
+		  type: QueryTypes.SELECT
+	  });
 
+	  if (response && response.length) {
+		  return response[0]["timeoff_available"];
+	  }
+	  
+	  return 0;
+  }
 }

@@ -161,6 +161,11 @@ router.post("/:id/time-off", authenticateToken, async (req, res) => {
     const { body, params } = req;
     const { id } = params;
 
+    const timeOffAvailable = await UserController.getAvailableTimeoff(id);
+    if (timeOffAvailable < body["number_of_days"]) {
+        res.status(400).json({error: "You don't have sufficient days available"});
+    }
+
     const pto = await UserController.requestPto(body, id);
 
     return res.status(200).json({ pto }).end();
@@ -177,6 +182,12 @@ router.post("/time-off", authenticateToken, async (req, res) => {
     const { id } = params;
 
     const idFromtoken =  await getIdFromToken(headers.authorization);
+
+    const timeOffAvailable = await UserController.getAvailableTimeoff(idFromtoken);
+    if (timeOffAvailable < body["number_of_days"]) {
+        res.status(400).json({error: "You don't have sufficient days available"});
+    }
+
     const pto = await UserController.requestPto(body, idFromtoken);
 
     return res.status(200).json({ pto }).end();
