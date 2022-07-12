@@ -1,0 +1,270 @@
+{
+	"variables": [],
+	"info": {
+		"name": "FIG",
+		"_postman_id": "fc2c277c-ccf6-5fd3-6bb2-090c1b853bc7",
+		"description": "APIs for FIG application",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"description": "",
+			"item": [
+				{
+					"name": "{{domain}}/api/v1/users/login",
+					"request": {
+						"url": "{{domain}}/api/v1/users/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Admin\",\n\t\"password\": \"admin1234\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "{{domain}}/api/v1/users",
+					"request": {
+						"url": {
+							"raw": "{{domain}}/api/v1/users?username=test1234&email=test@mail.com",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "test1234",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "email",
+									"value": "test@mail.com",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "{{domain}}/api/v1/users",
+					"request": {
+						"url": "{{domain}}/api/v1/users",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"full_name\": \"testg\",\n\t\"username\": \"test1234\",\n\t\"email\": \"test@mail.com\",\n\t\"password\": \"1234556789\",\n\t\"contact\": \"+38349800800\",\n\t\"user_type\": 1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "{{domain}}/api/v1/users/2",
+					"request": {
+						"url": "{{domain}}/api/v1/users/2",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"full_name\": \"testgU\",\n\t\"username\": \"test1234\",\n\t\"email\": \"test@mail.com\",\n\t\"password\": \"1234556789\",\n\t\"contact\": \"+38349800800\",\n\t\"user_type\": 1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "{{domain}}/api/v1/users/2",
+					"request": {
+						"url": "{{domain}}/api/v1/users/2",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "{{domain}}/api/v1/users/2",
+					"request": {
+						"url": "{{domain}}/api/v1/users/2",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clients",
+			"description": "",
+			"item": [
+				{
+					"name": "{{domain}}/api/v1/clients",
+					"request": {
+						"url": "{{domain}}/api/v1/clients",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "{{domain}}/api/v1/clients",
+					"request": {
+						"url": "{{domain}}/api/v1/clients",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"full_name\": \"John\",\n\t\"email\": \"john@mail.com\",\n\t\"client_type\": 1,\n\t\"contact\": \"+38349800700\",\n\t\"address\": \"rrg.Gustav Mayer, Pr, 10000\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "{{domain}}/api/v1/clients/1",
+					"request": {
+						"url": "{{domain}}/api/v1/clients/1",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"full_name\": \"John2\",\n\t\"email\": \"john@mail.com\",\n\t\"client_type\": 1,\n\t\"contact\": \"+38349800700\",\n\t\"address\": \"rrg.Gustav Mayer, Pr, 10000\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "{{domain}}/api/v1/clients/1",
+					"request": {
+						"url": "{{domain}}/api/v1/clients/1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "{{domain}}/api/v1/clients/1",
+					"request": {
+						"url": "{{domain}}/api/v1/clients/1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

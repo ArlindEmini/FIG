@@ -1,50 +1,29 @@
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
-const express = require ("express");
-const bodyParser = require("body-parser");
-const cors = require ("cors");
-const app = express();
-const mysql = require("mysql")
+import HttpError from './models/http-error.js';
+import authRoutes from './routes/authentication-routes.js';
+import userRoutes from './routes/user-routes.js';
+import clientRoutes from './routes/client-routes.js';
+// import contractRoutes from './routes/contract-routes.js';
 
-const homeRoutes = require("./routes/home");
-const router = require("./routes/home");
+export const app = express();
 
-const db = mysql.createPool({
-    host: "localhost",
-    user:"root",
-    password: "password",
-    database: "figdatabase"
-})
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cors())
- app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:true}))
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/clients', clientRoutes);
+// app.use('/api/contracts', contractRoutes);
 
-app.use("/home/", homeRoutes)
+app.use((req, res, next) => {
+  const error = new HttpError('Could not find this route.', 404);
+  throw error;
+});
 
-// app.get("/", (req,res)=> {
-//     const sqlInsert ="INSERT INTO employees (name, surname, age) VALUES ('arlind', 'emini', '24' );"
-//     db.query(sqlInsert, (err, result)=>{
-//         console.log("result", result)
-//         console.log("err55", err)
-//         res.send("Hello Nodejs")
-//     })
-// })
-
-// app.get("/", (req,res)=> {
-//     console.log("test")
-//         res.send("Hello Nodejs")
-// })
-
-
-// app.get("/api/get", (req,res)=>{
-//     const sqlSelect = "SELECT * FROM employees";
-//     db.query(sqlSelect, (err, result)=> {
-//         res.send(result)
-//     })
-// })
-
-
-
-app.listen(3001, () => {
-    console.log("server running on port 3001")
-})
+app.listen(Number(process.env.PORT), () => {
+	console.log(`server started at http://localhost:${Number(process.env.PORT)}`);
+});
