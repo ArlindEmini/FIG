@@ -12,7 +12,8 @@ import {
   insertPtoQuery,
   getPtoByUserId,
   getUserAndTimeOff,
-  getAvailableTimeOff
+  getAvailableTimeOff,
+  updatePtoStatus
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -166,16 +167,16 @@ export default class UserService {
   static requestPto = async (body, user_id) => {
 	console.log("userIdController", user_id)
 	
-	const userAndTime = await database.query(getUserAndTimeOff, {
-		replacements:{
-			user_id : user_id
-		},
-		type : QueryTypes.SELECT
-	})
+	// const userAndTime = await database.query(getUserAndTimeOff, {
+	// 	replacements:{
+	// 		user_id : user_id
+	// 	},
+	// 	type : QueryTypes.SELECT
+	// })
 	
-	if (userAndTime[0].req_date_off > userAndTime[0].timeoff_available) {
+	// if (userAndTime[0].req_date_off > userAndTime[0].timeoff_available) {
 
-	}
+	// }
 	
     return await database.query(insertPtoQuery, {
       replacements: {
@@ -184,14 +185,14 @@ export default class UserService {
         comment : body.comment,
 		start_date: body.start_date,
 		end_date : body.end_date,
-		is_approved : 0
+		status : 0
       },
       type: QueryTypes.INSERT,
     });
   };
 
   static getPtoByUserId = async (user_id) => {
-	
+		console.log("idFromtoken", user_id)
 	const ptos =  await database.query(getPtoByUserId, {
 		replacements:{
 			user_id : user_id
@@ -214,5 +215,19 @@ export default class UserService {
 	  }
 	  
 	  return 0;
+  }
+
+  static updateTimeOffStatus = async (tid, status) => {
+	const updatedTimeOff = await database.query(updatePtoStatus, {
+		replacements: {
+			id:tid,
+			status: status
+		},
+		type: QueryTypes.UPDATE
+	});
+	console.log("responseupdatedTimeOff", updatedTimeOff)
+
+	return updatedTimeOff
+
   }
 }

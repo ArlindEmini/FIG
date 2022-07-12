@@ -17,26 +17,21 @@ router.post("/login", async (req, res) => {
   console.log("55")
   try {
     const { username, password } = req.body;
-
+    
     const user = await UserController.getByUsername(username);
-
+    
     if (!user) {
-      return res
-        .status(
-          new HttpError("Unable to find the user with provided username", 404)
-        )
-        .json(err)
-        .end();
+      return   res.status(404).json({ error: "Unable to find the user with provided username" }).end();
     }
-
+    
     const isValid = await validatePassword(password, user.password);
-
+    
     if (!isValid) {
       return res.status(401).json({ error: "invalid password" }).end();
     }
-
+    
     const token = generateToken(user.id);
-
+    
     return res.status(200).json({ token }).end();
   } catch (error) {
     console.log(error);
@@ -44,6 +39,92 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// kur admini ben kerkese per puntorin
+router.post("/:id/time-off", authenticateToken, async (req, res) => {
+  try {
+    const { body, params, headers } = req;
+    const { id } = params;
+
+    if (!(await validateAdmin(headers.authorization))) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorised action for this user" })
+        .end();
+    }
+
+    const timeOffAvailable = await UserController.getAvailableTimeoff(id);
+    if (timeOffAvailable < body["number_of_days"]) {
+        res.status(400).json({error: "You don't have sufficient days available"});
+    }
+
+    const pto = await UserController.requestPto(body, id);
+
+    return res.status(200).json({ pto }).end();
+  } catch (error) {
+    console.log("error", error)
+    return res.status(400).json({ error }).end();
+  }
+});
+
+// kur puntori bon kerkese vet
+router.post("/time-off", authenticateToken, async (req, res) => {
+  try {
+    const { body, params, headers } = req;
+    const { id } = params;
+    
+    const idFromtoken =  await getIdFromToken(headers.authorization);
+
+    const timeOffAvailable = await UserController.getAvailableTimeoff(idFromtoken);
+    
+    if (timeOffAvailable < body["number_of_days"]) {
+        res.status(400).json({error: "You don't have sufficient days available"});
+    }
+
+    const pto = await UserController.requestPto(body, idFromtoken);
+
+    return res.status(200).json({ pto }).end();
+  } catch (error) {
+    
+    return res.status(400).json({ error }).end();
+  }
+});
+
+router.get("/time-off", authenticateToken, async (req, res) => {
+  try {
+    const {params, headers} = req
+    const {id} = params
+
+    const idFromtoken =  await getIdFromToken(headers.authorization);
+    console.log("idFromtoken", idFromtoken)
+    const pto = await UserController.getPtoByUserId(idFromtoken)
+
+    return res.status(200).json({pto}).end();
+  } catch (error) {
+     
+      return res.status(400).json({error}).end();
+  }
+});
+
+// admin to accept or not timeOff requests
+router.put("/time-off/:tid",authenticateToken, async (req,res) => {
+  try{
+    const {params, headers, body} = req
+    const {tid} = params
+    const { status } =body;
+
+    if (!(await validateAdmin(headers.authorization))) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorised action for this user" })
+        .end();
+    }
+    const updatedPto = await UserController.updateTimeOffStatus(tid, status);
+    
+    return res.status(200).json({updatedPto}).end();
+  }catch(error){
+    return res.status(400).json({error}).end();
+  }
+})
 router.get("/", authenticateToken, async (req, res) => {
   console.log("44")
   try {
@@ -153,64 +234,5 @@ router.delete("/:id", authenticateToken, async (req, res) => {
   }
 });
 
-//   put("/time-off/:tid")
-
-// kur admini ben kerkese per puntorin
-router.post("/:id/time-off", authenticateToken, async (req, res) => {
-  try {
-    const { body, params } = req;
-    const { id } = params;
-
-    const timeOffAvailable = await UserController.getAvailableTimeoff(id);
-    if (timeOffAvailable < body["number_of_days"]) {
-        res.status(400).json({error: "You don't have sufficient days available"});
-    }
-
-    const pto = await UserController.requestPto(body, id);
-
-    return res.status(200).json({ pto }).end();
-  } catch (error) {
-    console.log("error", error)
-    return res.status(400).json({ error }).end();
-  }
-});
-
-// kur puntori bon kerkese vet
-router.post("/time-off", authenticateToken, async (req, res) => {
-  try {
-    const { body, params, headers } = req;
-    const { id } = params;
-
-    const idFromtoken =  await getIdFromToken(headers.authorization);
-
-    const timeOffAvailable = await UserController.getAvailableTimeoff(idFromtoken);
-    if (timeOffAvailable < body["number_of_days"]) {
-        res.status(400).json({error: "You don't have sufficient days available"});
-    }
-
-    const pto = await UserController.requestPto(body, idFromtoken);
-
-    return res.status(200).json({ pto }).end();
-  } catch (error) {
-    
-    return res.status(400).json({ error }).end();
-  }
-});
-
-router.get("/time-off", authenticateToken, async (req, res) => {
-  try {
-    const {params, headers} = req
-    const {id} = params
-
-    const idFromtoken =  await getIdFromToken(headers.authorization);
-
-    const pto = await UserController.getPtoByUserId(idFromtoken)
-
-    return res.status(200).json({pto}).end();
-  } catch (error) {
-     
-      return res.status(400).json({error}).end();
-  }
-});
 
 export default router;
