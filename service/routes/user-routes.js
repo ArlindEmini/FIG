@@ -45,6 +45,8 @@ router.post("/:id/time-off", authenticateToken, async (req, res) => {
     const { body, params, headers } = req;
     const { id } = params;
 
+    console.log("number of days", body.number_of_days)
+
     if (!(await validateAdmin(headers.authorization))) {
       return res
         .status(401)
@@ -53,7 +55,7 @@ router.post("/:id/time-off", authenticateToken, async (req, res) => {
     }
 
     const timeOffAvailable = await UserController.getAvailableTimeoff(id);
-    if (timeOffAvailable < body["number_of_days"]) {
+    if (timeOffAvailable < body.number_of_days) {
         res.status(400).json({error: "You don't have sufficient days available"});
     }
 
@@ -76,8 +78,9 @@ router.post("/time-off", authenticateToken, async (req, res) => {
 
     const timeOffAvailable = await UserController.getAvailableTimeoff(idFromtoken);
     
-    if (timeOffAvailable < body["number_of_days"]) {
+    if (timeOffAvailable < body.number_of_days) {
         res.status(400).json({error: "You don't have sufficient days available"});
+        return;
     }
 
     const pto = await UserController.requestPto(body, idFromtoken);
@@ -125,6 +128,7 @@ router.put("/time-off/:tid",authenticateToken, async (req,res) => {
     return res.status(400).json({error}).end();
   }
 })
+
 router.get("/", authenticateToken, async (req, res) => {
   console.log("44")
   try {
