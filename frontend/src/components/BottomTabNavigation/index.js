@@ -27,20 +27,22 @@ const BottomTabNavigation = () => {
       <Tab.Screen 
         name={CLIENT_PATH_NAME} component={Client} options={() => ({
           title: 'Client',
-        })}
-      />
-      <Tab.Screen name={CHECK_LIST_PATH_NAME} component={CheckList}
-      />
-      <Tab.Screen name={REPORT_PATH_NAME} component={Report}  />
-      <Tab.Screen name={URGENCIES_PATH_NAME} component={Urgencies} />
-      <Tab.Screen name={VACATIONS_PATH_NAME} component={Vacations}
-      // TODO this is temporary just to test log out when we have logged in
+
+        })
+        }
+        // TODO this is temporary just to test log out when we have logged in
         listeners={{
           tabPress: e => {
             console.log("pressed",e);
             setAuthToken(null)
           }
-        }} />
+        }}
+      />
+      <Tab.Screen name={CHECK_LIST_PATH_NAME} component={CheckList}
+      />
+      <Tab.Screen name={REPORT_PATH_NAME} component={Report}  />
+      <Tab.Screen name={URGENCIES_PATH_NAME} component={Urgencies} />
+      <Tab.Screen name={VACATIONS_PATH_NAME} component={Vacations} />
     </Tab.Navigator>
 
   )

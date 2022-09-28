@@ -22,7 +22,7 @@ export const toastConfig = (type = TOAST_CONSTANTS.NORMAL, duration = TOAST_CONS
     type: type,
     placement: "top",
     duration: d,
-    offset: 50,
+    offset: 30,
     animationType: "slide-in",
   }
 };

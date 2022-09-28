@@ -25,9 +25,7 @@ const App = () => {
   return (
   // Added react navigation check docs here 
   // # https://reactnavigation.org/docs/getting-started
-    <ToastProvider
-      offset={50}
-    >
+    <ToastProvider>
       <PaperProvider theme={theme}>
         {authToken ? <AuthenticatedNavigation /> : <AuthenticationNavigation/>}
       </PaperProvider>
