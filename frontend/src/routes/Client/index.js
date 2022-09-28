@@ -20,14 +20,18 @@ const Client = ({ navigation }) => {
   const [loadingClients, setLoadingClients] = useState(true);
   const [clientsList, setClientsList] = useState([]);
   const [expandedPrive, setExpandedPrive] = useState(true);
-  const [refreshEnterprise, setRefreshEnterprise] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   useEffect(() => {
-    const fetchClients = async () => {
-      const authorizationHeader = {
-        Authorization: authToken && authToken.token,
-      };
+    fetchClients();
+  }, []);
 
-      setLoadingClients(true);
+  const fetchClients = async () => {
+    const authorizationHeader = {
+      Authorization: authToken && authToken.token,
+    };
+
+    setLoadingClients(true);
+    try {
       const response = await api.GET(
         GET_CLIENTS,
         api.setRequestHeaders(authorizationHeader)
@@ -36,13 +40,15 @@ const Client = ({ navigation }) => {
       const clientsList = formatClientsDataForView(
         response.data.response || []
       );
-     
-      setLoadingClients(false);
-      setClientsList(clientsList);
-    };
 
-    fetchClients();
-  }, []);
+      setClientsList(clientsList);
+    } catch (error) {
+      console.error("Error @Client", error);
+    } finally {
+      setLoadingClients(false);
+      setRefresh(false);
+    }
+  };
 
   const onChangeSearch = (query) => {
     setSearchQuery(query);
@@ -51,43 +57,41 @@ const Client = ({ navigation }) => {
   const handlePressEnterprise = () => setExpandedEnterprise(!expandedEnterprise);
   const handlePressPrive = () => setExpandedPrive(!expandedPrive);
 
-  const onRefreshEnterprise = () => {
-    setRefreshEnterprise(true);
-    wait(5000).then(() => setRefreshEnterprise(false));
+  const onRefresh = () => {
+    setRefresh(true);
+    fetchClients();
   };
 
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <View style={styles.mainView}>
-          <Searchbar
-            placeholder="Search"
-            onChangeText={onChangeSearch}
-            value={searchQuery}
-          />
+        <Searchbar
+          placeholder="Search"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
+        />
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          refreshControl={
+            <RefreshControl
+              refreshing={refresh}
+              onRefresh={onRefresh}
+            />
+          }
+        >
           <List.Section>
             <List.Accordion
               title="Client Enterprise"
               expanded={expandedEnterprise}
               onPress={handlePressEnterprise}
             >
-              <ScrollView
-                contentContainerStyle={styles.scrollView}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={refreshEnterprise}
-                    onRefresh={onRefreshEnterprise}
-                  />
-                }
-              >
-                <ClientList
-                  type="enterprise"
-                  searchQuery={searchQuery}
-                  navigation={navigation}
-                  loading={loadingClients}
-                  clients={clientsList}
-                />
-              </ScrollView>
+              <ClientList
+                type="enterprise"
+                searchQuery={searchQuery}
+                navigation={navigation}
+                loading={loadingClients}
+                clients={clientsList}
+              />
             </List.Accordion>
 
             <List.Accordion
@@ -95,26 +99,16 @@ const Client = ({ navigation }) => {
               expanded={expandedPrive}
               onPress={handlePressPrive}
             >
-              <ScrollView
-                contentContainerStyle={styles.scrollView}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={refreshEnterprise}
-                    onRefresh={onRefreshEnterprise}
-                  />
-                }
-              >
-                <ClientList
-                  type="private"
-                  searchQuery={searchQuery}
-                  navigation={navigation}
-                  loading={loadingClients}
-                  clients={clientsList}
-                />
-              </ScrollView>
+              <ClientList
+                type="private"
+                searchQuery={searchQuery}
+                navigation={navigation}
+                loading={loadingClients}
+                clients={clientsList}
+              />
             </List.Accordion>
           </List.Section>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </>
   );
