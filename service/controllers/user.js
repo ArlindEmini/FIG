@@ -1,10 +1,18 @@
-import bcrypt from 'bcrypt';
-import { QueryTypes } from 'sequelize';
+import bcrypt from "bcrypt";
+import { QueryTypes } from "sequelize";
 
 import {
-	insertUserQuery, getUserByUsername, getUserById, updateUserQuery, fetchAllQuery, deleteUserQuery, checkUserExistenceQuery
-} from '../database/queries.js';
-import { database } from '../database/connection.js';
+  insertUserQuery,
+  getUserByUsername,
+  getUserById,
+  updateUserQuery,
+  fetchAllQuery,
+  deleteUserQuery,
+  checkUserExistenceQuery,
+  insertPtoQuery,
+  getPtoByUserId
+} from "../database/queries.js";
+import { database } from "../database/connection.js";
 
 export default class UserService {
 	static get = async (
@@ -149,4 +157,32 @@ export default class UserService {
 			}
 		)
 	};
+
+
+  static requestPto = async (body, user_id) => {
+    //qitu
+   
+    return await database.query(insertPtoQuery, {
+      replacements: {
+        user_id : user_id,
+        type : body.type,
+        comment : body.comment,
+		start_date: body.start_date,
+		end_date : body.end_date,
+		is_approved : 0
+      },
+      type: QueryTypes.INSERT,
+    });
+  };
+
+  static getPtoByUserId = async (user_id) => {
+	
+	const ptos =  await database.query(getPtoByUserId, {
+		replacements:{
+			user_id : user_id
+		},
+		type: QueryTypes.SELECT
+	})
+	return ptos
+  }
 }

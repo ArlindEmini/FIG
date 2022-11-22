@@ -19,6 +19,11 @@ module.exports = {
     "react",
     "react-native"
   ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "rules": {
     "indent": [
       "error",

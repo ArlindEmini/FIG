@@ -124,6 +124,27 @@ SELECT * from clients where full_name = :full_name AND email = :email
 LIMIT 1
 `;
 
+//     <<<==== pto(time_off) queries ====>>>
+
+export const insertPtoQuery = `
+INSERT INTO
+time_off (user_id, type, comment,  created_date, start_date, end_date , is_approved)
+VALUES (:user_id, :type, :comment, NOW(),  :start_date, :end_date, :is_approved);
+`;
+
+export const getPtoByUserId = `
+SELECT
+id,
+user_id,
+type,
+comment,
+created_date,
+start_date,
+end_date,
+is_approved
+FROM time_off
+WHERE user_id = :user_id
+`;
 
 //contract queries
 export const insertContractQuery = `

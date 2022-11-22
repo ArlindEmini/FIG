@@ -3,7 +3,7 @@ import express from 'express';
 import ClientController from '../controllers/client.js';
 import { generateToken, validatePassword, validateAdmin } from '../utils/utils.js';
 import authenticateToken from '../controllers/authentication.js';
-import validateClient from '../validators/client-validator.js';
+// import validateClient from '../validators/client-validator.js';
 
 const router = express.Router();
 
@@ -22,7 +22,7 @@ router.get('/', authenticateToken, async (req, res) => {
 router.post('/', authenticateToken, async (req, res) => {
     try {
         const { body, headers } = req;
-        validateClient(body);
+        // validateClient(body);
 
         if (!await validateAdmin(headers.authorization)) {
             return res.status(401).json({error: 'Unauthorised action for this user'}).end();
@@ -100,4 +100,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     }
 });
 
+
+
 export default router;
+
