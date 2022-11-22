@@ -12,8 +12,15 @@ export const validateAdmin = async (authorization) => {
 
     if (response && response.id) {
         const user = await UserController.get(response.id);
-        console.log("USER", user);
         return user && user.user_type === 0 ? true : false;
     }
     return false;
+}
+
+export const getUserIdFromToken = (authorization) => {
+    const response = jwt.verify(authorization, process.env.SECRET_TOKEN);
+
+    if (response && response.id) {
+        return response.id;
+    }
 }
