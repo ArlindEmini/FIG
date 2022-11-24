@@ -11,10 +11,8 @@ export default class NotificationsService {
     return notifications;
   };
 
-  static createNotification = async (body, user_id) => {
+  static createNotification = async (body, user_id, affair_id) => {
     const {
-      affair_id,
-      time_off_id,
       created_date,
       next_run,
       notification_type,
@@ -24,7 +22,7 @@ export default class NotificationsService {
     const notification = await database.query(insertNotificationQuery, {
       replacements: {
         affair_id: affair_id,
-        time_off_id: time_off_id,
+        time_off_id: null,
         created_by: user_id,
         created_date: created_date,
         next_run: next_run,

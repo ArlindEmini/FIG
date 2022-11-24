@@ -22,13 +22,14 @@ router.get("/", authenticateToken, async (req, res) => {
   }
 });
 
-router.post("/", authenticateToken, async (req, res) => {
+router.post("/:affair_id", authenticateToken, async (req, res) => {
   try {
     const { body, params, headers } = req;
-    const { id } = params;
-
+    
+    const {affair_id} = params;
+    console.log("params", affair_id);
     const idFromtoken = await getIdFromToken(headers.authorization);
-    const response = await NotificationsController.createNotification(body, idFromtoken);
+    const response = await NotificationsController.createNotification(body, idFromtoken,affair_id);
 
     return res.status(200).json(response).end();
   } catch (error) {
