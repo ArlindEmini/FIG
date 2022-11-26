@@ -178,8 +178,8 @@ SELECT * from notifications
 
 export const insertNotificationQuery = `
 INSERT INTO
-notifications (affair_id, time_off_id, created_by, created_date,  next_run, notification_type, run_all )
-VALUES (:affair_id, :time_off_id, :created_by, NOW(),  :next_run, :notification_type, :run_all);
+notifications (affair_id, time_off_id, created_by, created_date,  next_run, notification_type, run_all, message )
+VALUES (:affair_id, :time_off_id, :created_by, NOW(),  :next_run, :notification_type, :run_all, :message);
 `;
 
 //     <<<==== pto(time_off) queries ====>>>

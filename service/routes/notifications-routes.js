@@ -22,14 +22,30 @@ router.get("/", authenticateToken, async (req, res) => {
   }
 });
 
-router.post("/:affair_id", authenticateToken, async (req, res) => {
+router.post("/affair/:affair_id", authenticateToken, async (req, res) => {
   try {
     const { body, params, headers } = req;
     
     const {affair_id} = params;
     console.log("params", affair_id);
     const idFromtoken = await getIdFromToken(headers.authorization);
-    const response = await NotificationsController.createNotification(body, idFromtoken,affair_id);
+    const response = await NotificationsController.createAffairNotification(body, idFromtoken,affair_id);
+
+    return res.status(200).json(response).end();
+  } catch (error) {
+    console.log("errorrrrrr12345789", error)
+    return res.status(400).json({ error }).end();
+  }
+});
+
+router.post("/time-off/:time_off_id", authenticateToken, async (req, res) => {
+  try {
+    const { body, params, headers } = req;
+    
+    const {time_off_id} = params;
+    console.log("params", time_off_id);
+    const idFromtoken = await getIdFromToken(headers.authorization);
+    const response = await NotificationsController.createTimeOffNotification(body, idFromtoken,time_off_id);
 
     return res.status(200).json(response).end();
   } catch (error) {
