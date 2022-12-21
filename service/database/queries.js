@@ -167,10 +167,27 @@ WHERE id = :id
 LIMIT 1;
 `;
 
-export const updatePtoStatus  = `
+export const updatePtoStatus = `
 UPDATE time_off SET status= :status WHERE id= :id
-`
+`;
 
+//     <<<==== notifications(Notifications) queries ====>>>
+export const getAllNotifications = `
+SELECT * from notifications
+`;
+
+export const insertNotificationQuery = `
+INSERT INTO
+notifications (affair_id, time_off_id, created_by, created_date,  next_run, notification_type, run_all, message )
+VALUES (:affair_id, :time_off_id, :created_by, NOW(),  :next_run, :notification_type, :run_all, :message);
+`;
+
+//     <<<==== pto(time_off) queries ====>>>
+
+// select u.id, u.full_name, u.timeoff_available, t.start_date, t.end_date, DATEDIFF(t.end_date, t.start_date) as req_date, t.is_approved from time_off t inner join users u on t.user_id = u.id where t.user_id = 2
+// contract queries
+// export const insertContractQuery = `
+// `;
 //contract queries
 export const insertContractQuery = `
 INSERT INTO
