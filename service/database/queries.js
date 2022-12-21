@@ -171,31 +171,33 @@ export const updatePtoStatus  = `
 UPDATE time_off SET status= :status WHERE id= :id
 `
 
-// select u.id, u.full_name, u.timeoff_available, t.start_date, t.end_date, DATEDIFF(t.end_date, t.start_date) as req_date, t.is_approved from time_off t inner join users u on t.user_id = u.id where t.user_id = 2
-// contract queries
-// export const insertContractQuery = `
-// `;
+//contract queries
+export const insertContractQuery = `
+INSERT INTO
+contracts (client_id, contract_details, created_by, affair_limit, signed_date, end_date, created_date)
+VALUES (:client_id, :contract_details, :created_by, :affair_limit, :signed_date, :end_date, NOW());
+`;
 
-// export const getContractById = `
-// `;
+export const getContractById = `
+SELECT *
+FROM contracts
+WHERE id = :id limit 1;
+`;
 
-// export const updateContractQuery = `
-// `;
+export const updateContractQuery = `
+UPDATE contracts
+SET client_id = :client_id, contract_details = :contract_details, affair_limit = :affair_limit, signed_date = :signed_date, end_date = :end_date, updated_date = NOW()
+WHERE id = :id;
+`;
 
-// export const fetchAllContracts = `
-// `;
+export const fetchAllContracts = `
+SELECT * FROM contracts
+`;
 
-// export const deleteContract = `
-// `;
+export const deleteContract = `
+DELETE FROM contracts WHERE id = :id;
+`;
 
-// export const checkContractExistence = `
-// `;
-
-// export const getContractByClientId = `
-// `;
-
-// export const getByClientAndUserId = `
-// `;
-
-// export const fetchByUserId = `
-// `;
+export const checkContractExistence = `
+SELECT * FROM contracts WHERE client_id = :client_id AND signed_date = :signed_date AND end_date = :end_date AND affair_limit = :affair_limit limit 1;
+`;
