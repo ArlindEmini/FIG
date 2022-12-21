@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "9b68ae35-7471-421b-98bd-a661991596c9",
+		"_postman_id": "666bd8ba-0da3-40c8-9787-0bd891efd048",
 		"name": "FIG",
 		"description": "APIs for FIG application",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "9458520"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -335,144 +334,187 @@
 			]
 		},
 		{
-			"name": "timeOff",
+			"name": "Contracts",
 			"item": [
 				{
-					"name": "getPtoByUserId",
+					"name": "Get all contracts",
 					"request": {
 						"method": "GET",
 						"header": [
 							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjU1MjkxMTkyLCJleHAiOjE2ODY4NDg3OTJ9.N1wrFj_WoGohhofoIbEqtJsEpLTkaMQLKqC4fvNv4XQ",
-								"type": "text"
+								"value": "{{token}}",
+								"type": "default"
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/time-off",
-							"protocol": "http",
+							"raw": "{{domain}}/api/v1/contracts",
 							"host": [
-								"localhost"
+								"{{domain}}"
 							],
-							"port": "3000",
 							"path": [
 								"api",
 								"v1",
-								"users",
-								"time-off"
+								"contracts"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "New Request TimeOff by admin",
+					"name": "Get contract by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/api/v1/contracts/:id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contracts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create contract",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjU1MjkxMTkyLCJleHAiOjE2ODY4NDg3OTJ9.N1wrFj_WoGohhofoIbEqtJsEpLTkaMQLKqC4fvNv4XQ",
-								"type": "text"
+								"value": "{{token}}",
+								"type": "default"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"type\" : 0,\r\n    \"comment\" : \"Pushim veror\",\r\n    \"start_date\" : \"2022-08-12 16:48:14\",\r\n    \"end_date\" : \"2022-08-25 16:48:14\",\r\n    \"number_of_days\" : 5\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n    \"signed_date\": \"2022-06-08 00:25:24\",\n    \"end_date\": \"2023-06-08 00:25:24\",\n    \"contract_details\": {\n        \"price\": 1234,\n        \"type\": \"land\"\n    },\n    \"affair_limit\": 15\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/2/time-off",
-							"protocol": "http",
+							"raw": "{{domain}}/api/v1/contracts/clients/2",
 							"host": [
-								"localhost"
+								"{{domain}}"
 							],
-							"port": "3000",
 							"path": [
 								"api",
 								"v1",
-								"users",
-								"2",
-								"time-off"
+								"contracts",
+								"clients",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "/time-off/:tid",
+					"name": "Update contract",
 					"request": {
 						"method": "PUT",
 						"header": [
 							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU3NTQ3MTI0LCJleHAiOjE2ODkxMDQ3MjR9.w3t9p0QU7T9MJHA8Q5kCRrnXqQPnosG4nvlb4wJzh2o",
-								"type": "text"
+								"value": "{{token}}",
+								"type": "default"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"status\" : \"1\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/time-off/2",
-							"protocol": "http",
+							"raw": "{{domain}}/api/v1/contracts/:id",
 							"host": [
-								"localhost"
+								"{{domain}}"
 							],
-							"port": "3000",
 							"path": [
 								"api",
 								"v1",
-								"users",
-								"time-off",
-								"2"
+								"contracts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "New Request TimeOff by user",
+					"name": "Delete Contract",
 					"request": {
-						"method": "POST",
+						"method": "DELETE",
 						"header": [
 							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjU1MjkxMTkyLCJleHAiOjE2ODY4NDg3OTJ9.N1wrFj_WoGohhofoIbEqtJsEpLTkaMQLKqC4fvNv4XQ",
-								"type": "text"
+								"value": "{{token}}",
+								"type": "default"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"type\" : 0,\r\n    \"comment\" : \"Pushim veror\",\r\n    \"start_date\" : \"2022-08-12 16:48:14\",\r\n    \"end_date\" : \"2022-08-25 16:48:14\",\r\n    \"number_of_days\" :87\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/time-off",
-							"protocol": "http",
+							"raw": "{{domain}}/api/v1/contracts/:id",
 							"host": [
-								"localhost"
+								"{{domain}}"
 							],
-							"port": "3000",
 							"path": [
 								"api",
 								"v1",
-								"users",
-								"time-off"
+								"contracts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
 							]
 						}
 					},
