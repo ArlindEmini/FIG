@@ -10,7 +10,10 @@ import {
   deleteUserQuery,
   checkUserExistenceQuery,
   insertPtoQuery,
-  getPtoByUserId
+  getPtoByUserId,
+  getUserAndTimeOff,
+  getAvailableTimeOff,
+  updatePtoStatus
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -28,6 +31,8 @@ export default class UserService {
 				raw: true,
 			},
 		);
+
+    console.log("userss", users[0].username)
 
 		return users.length ? users[0] : null;
 	};
@@ -160,8 +165,19 @@ export default class UserService {
 
 
   static requestPto = async (body, user_id) => {
-    //qitu
-   
+	console.log("userIdController", user_id)
+	
+	// const userAndTime = await database.query(getUserAndTimeOff, {
+	// 	replacements:{
+	// 		user_id : user_id
+	// 	},
+	// 	type : QueryTypes.SELECT
+	// })
+	
+	// if (userAndTime[0].req_date_off > userAndTime[0].timeoff_available) {
+
+	// }
+	
     return await database.query(insertPtoQuery, {
       replacements: {
         user_id : user_id,
@@ -169,14 +185,14 @@ export default class UserService {
         comment : body.comment,
 		start_date: body.start_date,
 		end_date : body.end_date,
-		is_approved : 0
+		status : 0
       },
       type: QueryTypes.INSERT,
     });
   };
 
   static getPtoByUserId = async (user_id) => {
-	
+		console.log("idFromtoken", user_id)
 	const ptos =  await database.query(getPtoByUserId, {
 		replacements:{
 			user_id : user_id
@@ -184,5 +200,34 @@ export default class UserService {
 		type: QueryTypes.SELECT
 	})
 	return ptos
+  }
+
+  static getAvailableTimeoff = async (id) => {
+	  const response = await database.query(getAvailableTimeOff, {
+		  replacements: {
+			  id
+		  },
+		  type: QueryTypes.SELECT
+	  });
+
+	  if (response && response.length) {
+		  return response[0]["timeoff_available"];
+	  }
+	  
+	  return 0;
+  }
+
+  static updateTimeOffStatus = async (tid, status) => {
+	const updatedTimeOff = await database.query(updatePtoStatus, {
+		replacements: {
+			id:tid,
+			status: status
+		},
+		type: QueryTypes.UPDATE
+	});
+	console.log("responseupdatedTimeOff", updatedTimeOff)
+
+	return updatedTimeOff
+
   }
 }
