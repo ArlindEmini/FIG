@@ -1,39 +1,53 @@
 {
-	"variables": [],
 	"info": {
+		"_postman_id": "666bd8ba-0da3-40c8-9787-0bd891efd048",
 		"name": "FIG",
-		"_postman_id": "fc2c277c-ccf6-5fd3-6bb2-090c1b853bc7",
 		"description": "APIs for FIG application",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Users",
-			"description": "",
 			"item": [
 				{
 					"name": "{{domain}}/api/v1/users/login",
 					"request": {
-						"url": "{{domain}}/api/v1/users/login",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"username\": \"Admin\",\n\t\"password\": \"admin1234\"\n}"
 						},
-						"description": ""
+						"url": {
+							"raw": "{{domain}}/api/v1/users/login",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"login"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "{{domain}}/api/v1/users",
 					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
 						"url": {
 							"raw": "{{domain}}/api/v1/users?username=test1234&email=test@mail.com",
 							"host": [
@@ -47,113 +61,129 @@
 							"query": [
 								{
 									"key": "username",
-									"value": "test1234",
-									"equals": true,
-									"description": ""
+									"value": "test1234"
 								},
 								{
 									"key": "email",
-									"value": "test@mail.com",
-									"equals": true,
-									"description": ""
+									"value": "test@mail.com"
 								}
-							],
-							"variable": []
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"description": ""
-							}
-						],
-						"body": {},
-						"description": ""
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "{{domain}}/api/v1/users",
 					"request": {
-						"url": "{{domain}}/api/v1/users",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"full_name\": \"testg\",\n\t\"username\": \"test1234\",\n\t\"email\": \"test@mail.com\",\n\t\"password\": \"1234556789\",\n\t\"contact\": \"+38349800800\",\n\t\"user_type\": 1\n}"
 						},
-						"description": ""
+						"url": {
+							"raw": "{{domain}}/api/v1/users",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "{{domain}}/api/v1/users/2",
 					"request": {
-						"url": "{{domain}}/api/v1/users/2",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"full_name\": \"testgU\",\n\t\"username\": \"test1234\",\n\t\"email\": \"test@mail.com\",\n\t\"password\": \"1234556789\",\n\t\"contact\": \"+38349800800\",\n\t\"user_type\": 1\n}"
 						},
-						"description": ""
+						"url": {
+							"raw": "{{domain}}/api/v1/users/2",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"2"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "{{domain}}/api/v1/users/2",
 					"request": {
-						"url": "{{domain}}/api/v1/users/2",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
-						"body": {},
-						"description": ""
+						"url": {
+							"raw": "{{domain}}/api/v1/users/2",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"2"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "{{domain}}/api/v1/users/2",
 					"request": {
-						"url": "{{domain}}/api/v1/users/2",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
-						"body": {},
-						"description": ""
+						"url": {
+							"raw": "{{domain}}/api/v1/users/2",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"2"
+							]
+						}
 					},
 					"response": []
 				}
@@ -161,106 +191,332 @@
 		},
 		{
 			"name": "Clients",
-			"description": "",
 			"item": [
 				{
 					"name": "{{domain}}/api/v1/clients",
 					"request": {
-						"url": "{{domain}}/api/v1/clients",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
-						"body": {},
-						"description": ""
+						"url": {
+							"raw": "{{domain}}/api/v1/clients",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"clients"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "{{domain}}/api/v1/clients",
 					"request": {
-						"url": "{{domain}}/api/v1/clients",
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"full_name\": \"John\",\n\t\"email\": \"john@mail.com\",\n\t\"client_type\": 1,\n\t\"contact\": \"+38349800700\",\n\t\"address\": \"rrg.Gustav Mayer, Pr, 10000\"\n}"
 						},
-						"description": ""
+						"url": {
+							"raw": "{{domain}}/api/v1/clients",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"clients"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "{{domain}}/api/v1/clients/1",
 					"request": {
-						"url": "{{domain}}/api/v1/clients/1",
 						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"full_name\": \"John2\",\n\t\"email\": \"john@mail.com\",\n\t\"client_type\": 1,\n\t\"contact\": \"+38349800700\",\n\t\"address\": \"rrg.Gustav Mayer, Pr, 10000\"\n}"
 						},
-						"description": ""
+						"url": {
+							"raw": "{{domain}}/api/v1/clients/1",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"clients",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "{{domain}}/api/v1/clients/1",
 					"request": {
-						"url": "{{domain}}/api/v1/clients/1",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
-						"body": {},
-						"description": ""
+						"url": {
+							"raw": "{{domain}}/api/v1/clients/1",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"clients",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "{{domain}}/api/v1/clients/1",
 					"request": {
-						"url": "{{domain}}/api/v1/clients/1",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"description": ""
+								"value": "{{token}}"
 							}
 						],
-						"body": {},
-						"description": ""
+						"url": {
+							"raw": "{{domain}}/api/v1/clients/1",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"clients",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contracts",
+			"item": [
+				{
+					"name": "Get all contracts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/api/v1/contracts",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contracts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get contract by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/api/v1/contracts/:id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contracts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create contract",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"signed_date\": \"2022-06-08 00:25:24\",\n    \"end_date\": \"2023-06-08 00:25:24\",\n    \"contract_details\": {\n        \"price\": 1234,\n        \"type\": \"land\"\n    },\n    \"affair_limit\": 15\n}"
+						},
+						"url": {
+							"raw": "{{domain}}/api/v1/contracts/clients/2",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contracts",
+								"clients",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update contract",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/api/v1/contracts/:id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contracts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Contract",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{domain}}/api/v1/contracts/:id",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contracts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
 					},
 					"response": []
 				}

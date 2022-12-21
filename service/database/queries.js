@@ -145,33 +145,34 @@ is_approved
 FROM time_off
 WHERE user_id = :user_id
 `;
-`
-`
 
-// contract queries
-// export const insertContractQuery = `
-// `;
+//contract queries
+export const insertContractQuery = `
+INSERT INTO
+contracts (client_id, contract_details, created_by, affair_limit, signed_date, end_date, created_date)
+VALUES (:client_id, :contract_details, :created_by, :affair_limit, :signed_date, :end_date, NOW());
+`;
 
-// export const getContractById = `
-// `;
+export const getContractById = `
+SELECT *
+FROM contracts
+WHERE id = :id limit 1;
+`;
 
-// export const updateContractQuery = `
-// `;
+export const updateContractQuery = `
+UPDATE contracts
+SET client_id = :client_id, contract_details = :contract_details, affair_limit = :affair_limit, signed_date = :signed_date, end_date = :end_date, updated_date = NOW()
+WHERE id = :id;
+`;
 
-// export const fetchAllContracts = `
-// `;
+export const fetchAllContracts = `
+SELECT * FROM contracts
+`;
 
-// export const deleteContract = `
-// `;
+export const deleteContract = `
+DELETE FROM contracts WHERE id = :id;
+`;
 
-// export const checkContractExistence = `
-// `;
-
-// export const getContractByClientId = `
-// `;
-
-// export const getByClientAndUserId = `
-// `;
-
-// export const fetchByUserId = `
-// `;
+export const checkContractExistence = `
+SELECT * FROM contracts WHERE client_id = :client_id AND signed_date = :signed_date AND end_date = :end_date AND affair_limit = :affair_limit limit 1;
+`;
