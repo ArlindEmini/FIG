@@ -46,7 +46,7 @@ export default class UserService {
 
   static create = async (body) => {
     const { full_name, username, email, password, contact, user_type } = body;
-
+    
     const user = await database.query(checkUserExistenceQuery, {
       replacements: {
         username,

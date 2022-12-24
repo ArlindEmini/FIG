@@ -163,6 +163,7 @@ router.post("/", authenticateToken, async (req, res) => {
     }
 
     const user = await UserController.create(body);
+    console.log("user", user);
 
     return res.status(200).json({ user }).end();
   } catch (error) {
