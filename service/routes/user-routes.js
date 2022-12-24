@@ -205,7 +205,8 @@ router.get("/:id", authenticateToken, async (req, res) => {
     const { params, headers } = req;
     const { id } = params;
     const idFromtoken = await getIdFromToken(headers.authorization);
-    const user = await UserController.get(idFromtoken);
+    
+    const user = await UserController.get(id);
 
     if (!user) {
       return res.status(404).json({ error: "Unable to find the user" }).end();
