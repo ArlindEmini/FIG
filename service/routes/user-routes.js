@@ -34,8 +34,8 @@ router.post("/login", async (req, res) => {
     }
 
     const token = generateToken(user.id);
-
-    return res.status(200).json({ token }).end();
+    console.log("user", user);
+    return res.status(200).json({ token,user }).end();
   } catch (error) {
     console.log(error);
     return res.status(400).json({ error }).end();
