@@ -14,7 +14,6 @@ import validateUser from "../validators/user-validator.js";
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
-  console.log("55");
   try {
     const { username, password } = req.body;
 
@@ -34,8 +33,17 @@ router.post("/login", async (req, res) => {
     }
 
     const token = generateToken(user.id);
-    console.log("user", user);
-    return res.status(200).json({ token,user }).end();
+
+    return res
+      .status(200)
+      .json({
+        token,
+        id: user.id,
+        full_name: user.full_name,
+        username: user.username,
+        user_type: user.user_type,
+      })
+      .end();
   } catch (error) {
     console.log(error);
     return res.status(400).json({ error }).end();
@@ -150,7 +158,6 @@ router.get("/", authenticateToken, async (req, res) => {
 });
 
 router.post("/", authenticateToken, async (req, res) => {
-  console.log("33");
   try {
     const { body, headers } = req;
     validateUser(body);
@@ -200,7 +207,6 @@ router.put("/:id", authenticateToken, async (req, res) => {
 });
 
 router.get("/:id", authenticateToken, async (req, res) => {
-  console.log("11");
   try {
     const { params, headers } = req;
     const { id } = params;
