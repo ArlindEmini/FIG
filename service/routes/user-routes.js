@@ -35,7 +35,16 @@ router.post("/login", async (req, res) => {
 
     const token = generateToken(user.id);
 
-    return res.status(200).json({ token }).end();
+    return res
+      .status(200)
+      .json({
+        token,
+        id: user.id,
+        full_name: user.full_name,
+        username: user.username,
+        user_type: user.user_type,
+      })
+      .end();
   } catch (error) {
     console.log(error);
     return res.status(400).json({ error }).end();
@@ -50,13 +59,13 @@ router.get("/", authenticateToken, async (req, res) => {
 
     return res.status(200).json({ response }).end();
   } catch (error) {
-    console.log("error", error)
+    console.log("error", error);
     return res.status(400).json({ error }).end();
   }
 });
 
 router.post("/", authenticateToken, async (req, res) => {
-    console.log("createUsers", req.body)
+  console.log("createUsers", req.body);
   try {
     const { body, headers } = req;
     validateUser(body);
@@ -156,24 +165,23 @@ router.post("/time-off/:id", authenticateToken, async (req, res) => {
 
     return res.status(200).json({ pto }).end();
   } catch (error) {
-    console.log("error", error)
+    console.log("error", error);
     return res.status(400).json({ error }).end();
   }
 });
 
 router.get("/:id/time-off", authenticateToken, async (req, res) => {
   try {
-    const {params} = req
-    const {id} = params
-    
-    const pto = await UserController.getPtoByUserId(id)
+    const { params } = req;
+    const { id } = params;
 
-    return res.status(200).json({pto}).end();
+    const pto = await UserController.getPtoByUserId(id);
+
+    return res.status(200).json({ pto }).end();
   } catch (error) {
-      console.log("error", error)
-      return res.status(400).json({error}).end();
+    console.log("error", error);
+    return res.status(400).json({ error }).end();
   }
 });
 
 export default router;
-
