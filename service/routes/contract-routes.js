@@ -3,7 +3,7 @@ import express from "express";
 import ContractController from "../controllers/contract.js";
 import {
   validateAdmin,
-  getUserIdFromToken
+  getIdFromToken
 } from "../utils/utils.js";
 import authenticateToken from "../controllers/authentication.js";
 import validateContract from "../validators/contract-validator.js";
@@ -42,7 +42,7 @@ router.post(
           .end();
       }
 
-      const created_by = getUserIdFromToken(headers.authorization);
+      const created_by = getIdFromToken(headers.authorization);
       const contract = await ContractController.create(id, body, created_by);
 
       return res.status(200).json({ contract }).end();
