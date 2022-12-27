@@ -7,9 +7,10 @@ username,
 full_name,
 password,
 user_type,
-contact
+contact,
 created_date,
-updated_date
+updated_date,
+timeoff_available
 FROM users
 WHERE username = :username
 and is_deleted = 0
@@ -26,7 +27,8 @@ password,
 user_type,
 contact,
 created_date,
-updated_date
+updated_date,
+timeoff_available
 FROM users
 WHERE id = :id
 and is_deleted = 0
@@ -35,8 +37,8 @@ LIMIT 1;
 
 export const insertUserQuery = `
 INSERT INTO
-users (full_name, email, username, password, user_type, contact, created_date, updated_date, is_deleted)
-VALUES (:full_name, :email, :username, :password, :user_type, :contact, NOW(), NOW(), 0);
+users (full_name, email, username, password, user_type, contact, created_date, updated_date, timeoff_available, is_deleted)
+VALUES (:full_name, :email, :username, :password, :user_type, :contact, NOW(), NOW(), :timeoff_available, 0);
 `;
 
 export const updatePasswordQuery = `
@@ -51,7 +53,7 @@ SELECT * from users where is_deleted = 0
 
 export const updateUserQuery = `
 UPDATE users
-SET full_name = :full_name, email = :email, username = :username, password = :password, contact = :contact, is_deleted = 0, updated_date = NOW()
+SET full_name = :full_name, email = :email, username = :username, password = :password, contact = :contact, is_deleted = 0, updated_date = NOW(), timeoff_available = :timeoff_available
 WHERE id = :id;
 `;
 

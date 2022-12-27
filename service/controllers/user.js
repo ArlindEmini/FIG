@@ -45,7 +45,7 @@ export default class UserService {
   };
 
   static create = async (body) => {
-    const { full_name, username, email, password, contact, user_type } = body;
+    const { full_name, username, email, password, contact, user_type, timeoff_available } = body;
     
     const user = await database.query(checkUserExistenceQuery, {
       replacements: {
@@ -67,6 +67,7 @@ export default class UserService {
           password: hashedPassword,
           contact,
           user_type,
+		  timeoff_available
         },
         type: QueryTypes.INSERT,
       });
@@ -87,6 +88,7 @@ export default class UserService {
         username: body.username || existingUser.username,
         email: body.email || existingUser.email,
         contact: body.contact || existingUser.contact,
+		timeoff_available: body.timeoff_available || existingUser.timeoff_available,
         password,
         id,
       },
