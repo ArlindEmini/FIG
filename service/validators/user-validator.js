@@ -6,7 +6,8 @@ const validation = joi.object({
     email: joi.string().email().trim(true).required(),
     password: joi.string().min(8).trim(true).required(),
     contact: joi.string().pattern(/[6-9]{1}[0-9]{9}/).required(),
-    user_type: joi.number().integer().min(1).max(2)
+    user_type: joi.number().integer().min(1).max(2),
+    timeoff_available: joi.number().integer().min(0).max(40)
 .default([]),
    is_deleted: joi.boolean().default(false),
 });
