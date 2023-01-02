@@ -188,8 +188,7 @@ router.post("/:id/time-off", authenticateToken, async (req, res) => {
     const { body, params, headers } = req;
     const { id } = params;
 
-   
-
+  
     if (!(await validateAdmin(headers.authorization))) {
       return res
         .status(401)
@@ -197,14 +196,17 @@ router.post("/:id/time-off", authenticateToken, async (req, res) => {
         .end();
     }
 
+    const user = await UserController.get(id);
+    if(!user){
+      return res.status(400).json({ error: "User with this id doesn't exist" });
+    }
     const timeOffAvailable = await UserController.getAvailableTimeoff(id);
     if (timeOffAvailable < body.number_of_days) {
-      res
-        .status(400)
-        .json({ error: "You don't have sufficient days available" });
+      res.status(400).json({ error: "You don't have sufficient days available" });
     }
 
     const pto = await UserController.requestPto(body, id);
+    console.log("ptoooooo", pto)
 
     return res.status(200).json({ pto }).end();
   } catch (error) {
@@ -212,7 +214,6 @@ router.post("/:id/time-off", authenticateToken, async (req, res) => {
     return res.status(400).json({ error }).end();
   }
 });
-
 
 
 // kur puntori bon kerkese vet
