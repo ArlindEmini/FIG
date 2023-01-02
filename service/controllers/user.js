@@ -27,7 +27,7 @@ export default class UserService {
       raw: true,
     });
 
-    console.log("userss", users[0].username);
+    
 
     return users.length ? users[0] : null;
   };
@@ -123,17 +123,17 @@ export default class UserService {
   };
 
   static requestPto = async (body, user_id) => {
-    console.log("userIdController", user_id);
+    
 
-    const userAndTime = await database.query(getUserAndTimeOff, {
-      replacements: {
-        user_id: user_id,
-      },
-      type: QueryTypes.SELECT,
-    });
+    // const userAndTime = await database.query(getUserAndTimeOff, {
+    //   replacements: {
+    //     user_id: user_id,
+    //   },
+    //   type: QueryTypes.SELECT,
+    // });
 
-    if (userAndTime[0].req_date_off > userAndTime[0].timeoff_available) {
-    }
+    // if (userAndTime[0].req_date_off > userAndTime[0].timeoff_available) {
+    // }
 
     return await database.query(insertPtoQuery, {
       replacements: {
@@ -149,7 +149,7 @@ export default class UserService {
   };
 
   static getPtoByUserId = async (user_id) => {
-    console.log("idFromtoken", user_id);
+    
     const ptos = await database.query(getPtoByUserId, {
       replacements: {
         user_id: user_id,
@@ -182,7 +182,6 @@ export default class UserService {
       },
       type: QueryTypes.UPDATE,
     });
-    console.log("responseupdatedTimeOff", updatedTimeOff);
 
     return updatedTimeOff;
   };

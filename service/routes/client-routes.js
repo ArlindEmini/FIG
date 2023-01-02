@@ -72,7 +72,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
     
         return res.status(200).json({client}).end();
     } catch (error) {
-        console.log("ERROr", error);
+      
         return res.status(400).json({error}).end();
     }
 });
