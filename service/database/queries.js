@@ -127,6 +127,10 @@ LIMIT 1
 `;
 
 //     <<<==== pto(time_off) queries ====>>>
+export const getAllPtos = `
+SELECT * from time_off
+WHERE status = 0
+`;
 
 export const insertPtoQuery = `
 INSERT INTO
