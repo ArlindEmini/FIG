@@ -124,17 +124,7 @@ export default class UserService {
 
   static requestPto = async (body, user_id) => {
     
-
-    // const userAndTime = await database.query(getUserAndTimeOff, {
-    //   replacements: {
-    //     user_id: user_id,
-    //   },
-    //   type: QueryTypes.SELECT,
-    // });
-
-    // if (userAndTime[0].req_date_off > userAndTime[0].timeoff_available) {
-    // }
-
+    console.log("dasy requested", body.number_of_days)
     return await database.query(insertPtoQuery, {
       replacements: {
         user_id: user_id,
@@ -143,6 +133,7 @@ export default class UserService {
         start_date: body.start_date,
         end_date: body.end_date,
         status: 0,
+        days_requested: body.number_of_days,
       },
       type: QueryTypes.INSERT,
     });

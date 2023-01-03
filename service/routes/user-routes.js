@@ -187,7 +187,6 @@ router.post("/:id/time-off", authenticateToken, async (req, res) => {
   try {
     const { body, params, headers } = req;
     const { id } = params;
-
   
     if (!(await validateAdmin(headers.authorization))) {
       return res
@@ -206,11 +205,11 @@ router.post("/:id/time-off", authenticateToken, async (req, res) => {
     }
 
     const pto = await UserController.requestPto(body, id);
-    console.log("ptoooooo", pto)
+    
 
     return res.status(200).json({ pto }).end();
   } catch (error) {
-    
+    console.log("errooooooor", error)
     return res.status(400).json({ error }).end();
   }
 });

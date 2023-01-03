@@ -130,8 +130,8 @@ LIMIT 1
 
 export const insertPtoQuery = `
 INSERT INTO
-time_off (user_id, type, comment,  created_date, start_date, end_date )
-VALUES (:user_id, :type, :comment, NOW(),  :start_date, :end_date);
+time_off (user_id, type, status, comment, days_requested, created_date, start_date, end_date)
+VALUES (:user_id, :type, :status, :comment, :days_requested, NOW(),  :start_date, :end_date);
 `;
 
 export const getPtoByUserId = `
@@ -159,6 +159,7 @@ DATEDIFF(t.end_date, t.start_date) as req_date_off,
 t.is_approved from time_off t 
 inner join users u on t.user_id = u.id where t.user_id = :user_id
 `;
+
 
 export const getAvailableTimeOff = `
 SELECT
