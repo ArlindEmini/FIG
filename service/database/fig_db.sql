@@ -88,7 +88,7 @@ CREATE TABLE `notifications` (
   `message` varchar(255)§§
 );
 
-CREATE TABLE `passses` {
+CREATE TABLE `passes` {
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
   `affair_id` int,
