@@ -225,3 +225,34 @@ DELETE FROM contracts WHERE id = :id;
 export const checkContractExistence = `
 SELECT * FROM contracts WHERE client_id = :client_id AND signed_date = :signed_date AND end_date = :end_date AND affair_limit = :affair_limit limit 1;
 `;
+
+//Affair Queries
+export const insertAffairQuery = `
+INSERT INTO
+affairs (client_id, contract_id, affair_type, affair_limit, affair_description, start_date, end_date, address, status, created_date)
+VALUES (:client_id, :contract_id, :affair_type, :affair_limit, :affair_description, :start_date, :end_date, :address, :status, now());
+`;
+
+export const getAffairById = `
+SELECT *
+FROM affairs
+WHERE id = :id limit 1;
+`;
+
+export const updateAffairQuery = `
+UPDATE affairs
+SET affair_type = :affair_type, affair_limit = :affair_limit, affair_description = :affair_description, start_date = :start_date, end_date = :end_date, address = :address, status = :status
+WHERE id = :id;
+`;
+
+export const fetchAllAffairs = `
+SELECT * FROM affairs
+`;
+
+export const deleteAffair = `
+DELETE FROM affairs WHERE id = :id;
+`;
+
+export const checkAffairExistence = `
+SELECT * FROM affairs WHERE client_id = :client_id AND contract_id = :contract_id AND affair_type = :affair_type AND affair_limit = :affair_limit AND affair_description = :affair_description limit 1;
+`;
