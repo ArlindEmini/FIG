@@ -59,7 +59,7 @@ CREATE TABLE `affairs` (
   `contract_id` int,
   `affair_type` int,
   `affair_limit` int,
-  `comment` varchar(255),
+  `affair_description` varchar(255),
   `start_date` timestamp,
   `end_date` timestamp,
   `address` varchar(255),
