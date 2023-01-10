@@ -64,7 +64,9 @@ CREATE TABLE `affairs` (
   `end_date` timestamp,
   `address` varchar(255),
   `status` smallint,
-  `created_date` timestamp
+  `created_date` timestamp,
+  `price` varchar(255),
+  `pass_type` smallint,
 );
 
 CREATE TABLE `user_affairs` (

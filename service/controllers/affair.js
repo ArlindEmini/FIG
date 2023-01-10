@@ -93,7 +93,9 @@ export default class AffairService {
 					start_date: body.start_date || existingAffair.start_date,
                     end_date: body.end_date || existingAffair.end_date,
                     address: body.address || existingAffair.address,
-                    status: body.status || existingAffair.status
+                    status: body.status || existingAffair.status,
+					price: body.price || existingAffair.price,
+					pass_type: body.pass_type || existingAffair.pass_type
 				},
 				type: QueryTypes.UPDATE,
 			},
