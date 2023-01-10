@@ -229,8 +229,8 @@ SELECT * FROM contracts WHERE client_id = :client_id AND signed_date = :signed_d
 //Affair Queries
 export const insertAffairQuery = `
 INSERT INTO
-affairs (client_id, contract_id, affair_type, affair_limit, affair_description, start_date, end_date, address, status, created_date)
-VALUES (:client_id, :contract_id, :affair_type, :affair_limit, :affair_description, :start_date, :end_date, :address, :status, now());
+affairs (client_id, contract_id, affair_type, affair_limit, affair_description, start_date, end_date, address, status, created_date, price, pass_type)
+VALUES (:client_id, :contract_id, :affair_type, :affair_limit, :affair_description, :start_date, :end_date, :address, :status, now(), :price, :pass_type);
 `;
 
 export const getAffairById = `
@@ -241,7 +241,7 @@ WHERE id = :id limit 1;
 
 export const updateAffairQuery = `
 UPDATE affairs
-SET affair_type = :affair_type, affair_limit = :affair_limit, affair_description = :affair_description, start_date = :start_date, end_date = :end_date, address = :address, status = :status
+SET affair_type = :affair_type, affair_limit = :affair_limit, affair_description = :affair_description, start_date = :start_date, end_date = :end_date, address = :address, status = :status, price = :price, pass_type = :pass_type
 WHERE id = :id;
 `;
 
