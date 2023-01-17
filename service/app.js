@@ -9,6 +9,7 @@ import clientRoutes from './routes/client-routes.js';
 import notificationsRoutes from "./routes/notifications-routes.js";
 import contractRoutes from './routes/contract-routes.js';
 import affairRoutes from './routes/affair-routes.js';
+import passRoutes from './routes/passes-routes.js';
 
 export const app = express();
 
@@ -22,6 +23,7 @@ app.use('/api/v1/clients', clientRoutes);
 app.use('/api/v1/noticifations', notificationsRoutes)
 app.use('/api/v1/contracts', contractRoutes);
 app.use('/api/v1/affairs', affairRoutes);
+app.use('/api/v1/passes', passRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);

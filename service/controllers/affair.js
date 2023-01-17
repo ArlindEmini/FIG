@@ -1,7 +1,7 @@
 import { QueryTypes } from 'sequelize';
 
 import {
-	insertAffairQuery, getAffairById, updateAffairQuery, fetchAllAffairs, deleteAffair, checkAffairExistence,
+	insertAffairQuery, getAffairById, updateAffairQuery, fetchAllAffairs, deleteAffair, checkAffairExistence, getAffairByQrCode
 } from '../database/queries.js';
 import { database } from '../database/connection.js';
 
@@ -14,6 +14,23 @@ export default class AffairService {
 			{
 				replacements: {
 					id
+				},
+				type: QueryTypes.SELECT,
+				raw: true,
+			},
+		);
+
+		return affairs.length ? affairs[0] : null;
+	};
+
+	static getByQrCode = async (
+		qrCode,
+	) => {
+		const affairs = await database.query(
+			getAffairByQrCode,
+			{
+				replacements: {
+					qr_code: qrCode
 				},
 				type: QueryTypes.SELECT,
 				raw: true,
@@ -95,7 +112,8 @@ export default class AffairService {
                     address: body.address || existingAffair.address,
                     status: body.status || existingAffair.status,
 					price: body.price || existingAffair.price,
-					pass_type: body.pass_type || existingAffair.pass_type
+					pass_type: body.pass_type || existingAffair.pass_type,
+					qr_code: body.qr_code || existingAffair.qr_code
 				},
 				type: QueryTypes.UPDATE,
 			},
