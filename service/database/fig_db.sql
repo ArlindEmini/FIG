@@ -67,6 +67,7 @@ CREATE TABLE `affairs` (
   `created_date` timestamp,
   `price` varchar(255),
   `pass_type` smallint,
+  `qr_code` varchar(255)
 );
 
 CREATE TABLE `user_affairs` (
@@ -90,14 +91,14 @@ CREATE TABLE `notifications` (
   `message` varchar(255)§§
 );
 
-CREATE TABLE `passes` {
+CREATE TABLE `passes` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
   `affair_id` int,
   `check_in` timestamp,
   `check_out` timestamp,
   `is_confirmed` smallint
-}
+)
 
 ALTER TABLE `working_hours` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
@@ -119,4 +120,4 @@ ALTER TABLE `notifications` ADD FOREIGN KEY (`affair_id`) REFERENCES `affairs` (
 
 ALTER TABLE `notifications` ADD FOREIGN KEY (`created_by`) REFERENCES `users` (`id`);
 
-ALTER TABLE `passses` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);ßß
+ALTER TABLE `passses` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);

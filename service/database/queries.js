@@ -239,9 +239,15 @@ FROM affairs
 WHERE id = :id limit 1;
 `;
 
+export const getAffairByQrCode = `
+SELECT *
+FROM affairs
+WHERE qr_code = :qr_code limit 1;
+`;
+
 export const updateAffairQuery = `
 UPDATE affairs
-SET affair_type = :affair_type, affair_limit = :affair_limit, affair_description = :affair_description, start_date = :start_date, end_date = :end_date, address = :address, status = :status, price = :price, pass_type = :pass_type
+SET affair_type = :affair_type, affair_limit = :affair_limit, affair_description = :affair_description, start_date = :start_date, end_date = :end_date, address = :address, status = :status, price = :price, pass_type = :pass_type, qr_code = :qr_code
 WHERE id = :id;
 `;
 
@@ -255,4 +261,47 @@ DELETE FROM affairs WHERE id = :id;
 
 export const checkAffairExistence = `
 SELECT * FROM affairs WHERE client_id = :client_id AND contract_id = :contract_id AND affair_type = :affair_type AND affair_limit = :affair_limit AND affair_description = :affair_description limit 1;
+`;
+
+//Passes Queries
+export const passCheckIn = `
+INSERT INTO
+passes (user_id, affair_id, check_in, is_confirmed)
+VALUES (:user_id, :affair_id, NOW(), 0);
+`;
+
+export const passCheckOut = `
+UPDATE passes
+SET check_out = NOW()
+WHERE id = :id;
+`;
+
+export const passConfirm = `
+UPDATE passes
+SET is_confirmed = 1
+WHERE id = :id;
+`;
+
+export const getPassById = `
+SELECT *
+FROM passes
+WHERE id = :id limit 1;
+`;
+
+export const fetchAllPasses = `
+SELECT * FROM passes
+`;
+
+export const fetchPassByAffairId = `
+SELECT * FROM passes
+WHERE affair_id = :affair_id;
+`;
+
+export const fetchPassByUserId = `
+SELECT * FROM passes
+WHERE user_id = :user_id;
+`;
+
+export const deletePass = `
+DELETE FROM passes WHERE id = :id;
 `;
