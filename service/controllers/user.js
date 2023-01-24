@@ -124,8 +124,7 @@ export default class UserService {
   };
 
   static requestPto = async (body, user_id) => {
-    
-    console.log("dasy requested", body.number_of_days)
+
     return await database.query(insertPtoQuery, {
       replacements: {
         user_id: user_id,
@@ -133,7 +132,7 @@ export default class UserService {
         comment: body.comment,
         start_date: body.start_date,
         end_date: body.end_date,
-        status: 0,
+        is_approved: 0,
         days_requested: body.number_of_days,
       },
       type: QueryTypes.INSERT,
@@ -178,12 +177,12 @@ export default class UserService {
     return response;
   };
 
-  static updateTimeOffStatus = async (tid, status) => {
+  static updateTimeOffStatus = async (tid, is_approved) => {
 
     const updatedTimeOff = await database.query(updatePtoStatus, {
       replacements: {
         id: tid,
-        status: status,
+        is_approved: is_approved,
       },
       type: QueryTypes.UPDATE,
     });

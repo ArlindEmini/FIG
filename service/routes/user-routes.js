@@ -260,7 +260,7 @@ router.put("/time-off/:tid", authenticateToken, async (req, res) => {
   try {
     const { params, headers, body } = req;
     const { tid } = params;
-    const { status } = body;
+    const { is_approved } = body;
 
     if (!(await validateAdmin(headers.authorization))) {
       return res
@@ -268,7 +268,7 @@ router.put("/time-off/:tid", authenticateToken, async (req, res) => {
         .json({ error: "Unauthorised action for this user" })
         .end();
     }
-    const updatedPto = await UserController.updateTimeOffStatus(tid, status);
+    const updatedPto = await UserController.updateTimeOffStatus(tid, is_approved);
 
     return res.status(200).json({ updatedPto }).end();
   } catch (error) {

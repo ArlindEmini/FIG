@@ -134,8 +134,8 @@ WHERE status = 0
 
 export const insertPtoQuery = `
 INSERT INTO
-time_off (user_id, type, status, comment, days_requested, created_date, start_date, end_date)
-VALUES (:user_id, :type, :status, :comment, :days_requested, NOW(),  :start_date, :end_date);
+time_off (user_id, type, comment, days_requested, is_approved, created_date, start_date, end_date)
+VALUES (:user_id, :type, :comment, :days_requested, :is_approved, NOW(),  :start_date, :end_date);
 `;
 
 export const getPtoByUserId = `
@@ -146,8 +146,7 @@ type,
 comment,
 created_date,
 start_date,
-end_date,
-status
+end_date
 FROM time_off
 WHERE user_id = :user_id
 `;
@@ -175,7 +174,7 @@ LIMIT 1;
 `;
 
 export const updatePtoStatus = `
-UPDATE time_off SET status= :status WHERE id= :id
+UPDATE time_off SET is_approved= :is_approved WHERE id= :id
 `;
 
 //     <<<==== notifications(Notifications) queries ====>>>
