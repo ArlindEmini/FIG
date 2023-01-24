@@ -47,7 +47,6 @@ router.post(
 
       return res.status(200).json({ contract }).end();
     } catch (error) {
-      
       return res.status(400).json({ error }).end();
     }
   }
@@ -83,6 +82,7 @@ router.put("/:id", authenticateToken, async (req, res) => {
 
     return res.status(200).json({ contract }).end();
   } catch (error) {
+    console.log("erroooorror", error);
     return res.status(400).json({ error }).end();
   }
 });

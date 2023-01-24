@@ -32,7 +32,6 @@ export default class ContractService {
 			signed_date,
 			end_date,
 			contract_details,
-			affair_limit
 		} = body;
 
 		const contract = await database.query(
@@ -42,7 +41,6 @@ export default class ContractService {
 					client_id,
 					signed_date,
 					end_date,
-					affair_limit
 				},
 				type: QueryTypes.SELECT,
 			},
@@ -58,7 +56,6 @@ export default class ContractService {
 						client_id,
 						contract_details: JSON.stringify(contract_details),
 						created_by,
-						affair_limit,
 						signed_date,
 						end_date
 					},
@@ -74,7 +71,6 @@ export default class ContractService {
 					client_id,
 					signed_date,
 					end_date,
-					affair_limit
 				},
 				type: QueryTypes.SELECT,
 			},
@@ -95,7 +91,6 @@ export default class ContractService {
 					id,
 					client_id: body.client_id || existingContract.client_id,
 					contract_details: (body.contract_details && JSON.stringify(body.contract_details)) || existingContract.contract_details,
-					affair_limit: body.affair_limit || existingContract.affair_limit,
 					signed_date: body.signed_date || existingContract.signed_date,
 					end_date: body.end_date || existingContract.end_date
 				},

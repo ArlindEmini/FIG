@@ -89,7 +89,7 @@ export default class UserService {
         username: body.username || existingUser.username,
         email: body.email || existingUser.email,
         contact: body.contact || existingUser.contact,
-		timeoff_available: body.timeoff_available || existingUser.timeoff_available,
+		    timeoff_available: body.timeoff_available || existingUser.timeoff_available,
         password,
         id,
       },

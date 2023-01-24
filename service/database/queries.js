@@ -101,8 +101,8 @@ LIMIT 1;
 
 export const insertClientQuery = `
 INSERT INTO
-clients (full_name, email, client_type, contact, created_date, updated_date, is_deleted)
-VALUES (:full_name, :email, :client_type, :contact, NOW(), NOW(), 0);
+clients (full_name, email, client_type, contact, address, created_date, updated_date, is_deleted)
+VALUES (:full_name, :email, :client_type, :contact,:address, NOW(), NOW(), 0);
 `;
 
 export const fetchAllClients = `
@@ -198,8 +198,8 @@ VALUES (:affair_id, :time_off_id, :created_by, NOW(),  :next_run, :notification_
 //contract queries
 export const insertContractQuery = `
 INSERT INTO
-contracts (client_id, contract_details, created_by, affair_limit, signed_date, end_date, created_date)
-VALUES (:client_id, :contract_details, :created_by, :affair_limit, :signed_date, :end_date, NOW());
+contracts (client_id, contract_details, created_by, signed_date, end_date, created_date)
+VALUES (:client_id, :contract_details, :created_by, :signed_date, :end_date, NOW());
 `;
 
 export const getContractById = `
@@ -210,7 +210,7 @@ WHERE id = :id limit 1;
 
 export const updateContractQuery = `
 UPDATE contracts
-SET client_id = :client_id, contract_details = :contract_details, affair_limit = :affair_limit, signed_date = :signed_date, end_date = :end_date, updated_date = NOW()
+SET client_id = :client_id, contract_details = :contract_details, signed_date = :signed_date, end_date = :end_date
 WHERE id = :id;
 `;
 
@@ -223,7 +223,7 @@ DELETE FROM contracts WHERE id = :id;
 `;
 
 export const checkContractExistence = `
-SELECT * FROM contracts WHERE client_id = :client_id AND signed_date = :signed_date AND end_date = :end_date AND affair_limit = :affair_limit limit 1;
+SELECT * FROM contracts WHERE client_id = :client_id AND signed_date = :signed_date AND end_date = :end_date limit 1;
 `;
 
 //Affair Queries
