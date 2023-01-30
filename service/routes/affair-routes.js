@@ -133,6 +133,20 @@ router.get("/", authenticateToken, async (req, res) => {
   }
 });
 
+//Get all urgeency affairs
+router.get("/all/urgencies", authenticateToken, async (req, res) => {
+  try {
+    const { headers, query } = req;
+    console.log("urgencies routes")
+    const urgencies = await AffairController.fetchAllUrgencies(query);
+
+    return res.status(200).json({ urgencies }).end();
+  } catch (error) {
+    console.log("erroooor", error)
+    return res.status(400).json({ error }).end();
+  }
+});
+
 //Delete existing affair by id
 router.delete("/:id", authenticateToken, async (req, res) => {
   try {

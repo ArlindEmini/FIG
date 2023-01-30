@@ -1,7 +1,15 @@
 import { QueryTypes } from 'sequelize';
 
 import {
-	insertAffairQuery, getAffairById, updateAffairQuery, fetchAllAffairs, deleteAffair, checkAffairExistence, getAffairByQrCode,insertNotificationQuery
+	insertAffairQuery, 
+	getAffairById,
+	updateAffairQuery,
+	fetchAllAffairs,
+	deleteAffair,
+	checkAffairExistence,
+	getAffairByQrCode,
+	insertNotificationQuery,
+	fetchAllUrgencies
 } from '../database/queries.js';
 import { database } from '../database/connection.js';
 
@@ -134,7 +142,7 @@ export default class AffairService {
 	) => {
 		const { client_id, contract_id } = query;
 		let customQuery = fetchAllAffairs;
-
+		console.log("queryyyyy",query)
 		if (client_id) {
 			customQuery += ` WHERE client_id = '${client_id}'`
 		}
@@ -142,6 +150,24 @@ export default class AffairService {
         if (contract_id) {
             customQuery += ` AND contract_id = '${contract_id}'`;
         }
+
+		return await database.query(
+			customQuery,
+			{
+				type: QueryTypes.SELECT
+			}
+		)
+	};
+
+	static fetchAllUrgencies = async (
+		query
+	) => {
+		const { date } = query;
+		let customQuery = fetchAllUrgencies;
+		console.log("urgencies")
+		if (date) {
+			customQuery += ` WHERE created_date = '${date}'`
+		}
 
 		return await database.query(
 			customQuery,

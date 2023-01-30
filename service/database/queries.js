@@ -254,6 +254,10 @@ export const fetchAllAffairs = `
 SELECT * FROM affairs
 `;
 
+export const fetchAllUrgencies = `
+SELECT * FROM affairs
+`;
+
 export const deleteAffair = `
 DELETE FROM affairs WHERE id = :id;
 `;
