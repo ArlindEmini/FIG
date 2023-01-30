@@ -164,9 +164,9 @@ export default class AffairService {
 	) => {
 		const { date } = query;
 		let customQuery = fetchAllUrgencies;
-		console.log("urgencies")
+		console.log("urgenciesqueryyyyy", query)
 		if (date) {
-			customQuery += ` WHERE created_date = '${date}'`
+			customQuery += ` WHERE created_date >= '${date}'`
 		}
 
 		return await database.query(
