@@ -184,8 +184,8 @@ SELECT * from notifications
 
 export const insertNotificationQuery = `
 INSERT INTO
-notifications (affair_id, time_off_id, created_by, created_date,  next_run, notification_type, run_all, message )
-VALUES (:affair_id, :time_off_id, :created_by, NOW(),  :next_run, :notification_type, :run_all, :message);
+notifications (affair_id, time_off_id, created_date, message )
+VALUES (:affair_id, :time_off_id, NOW(), :message);
 `;
 
 //     <<<==== pto(time_off) queries ====>>>
@@ -228,8 +228,8 @@ SELECT * FROM contracts WHERE client_id = :client_id AND signed_date = :signed_d
 //Affair Queries
 export const insertAffairQuery = `
 INSERT INTO
-affairs (client_id, contract_id, affair_type, affair_limit, affair_description, start_date, end_date, address, status, created_date, price, pass_type)
-VALUES (:client_id, :contract_id, :affair_type, :affair_limit, :affair_description, :start_date, :end_date, :address, :status, now(), :price, :pass_type);
+affairs (client_id, contract_id, affair_type, affair_limit, affair_description, start_date, end_date, address, status, created_date, price, pass_type, is_urgency)
+VALUES (:client_id, :contract_id, :affair_type, :affair_limit, :affair_description, :start_date, :end_date, :address, :status, now(), :price, :pass_type, :is_urgency);
 `;
 
 export const getAffairById = `

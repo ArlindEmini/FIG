@@ -11,24 +11,13 @@ export default class NotificationsService {
     return notifications;
   };
 
-  static createAffairNotification = async (body, user_id, affair_id) => {
-    const {
-      created_date,
-      next_run,
-      notification_type,
-      run_all,
-      message
-    } = body;
+  static createAffairNotification = async (created_date, message,affair_id) => {
 
     const notification = await database.query(insertNotificationQuery, {
       replacements: {
         affair_id: affair_id,
         time_off_id: null,
-        created_by: user_id,
         created_date: created_date,
-        next_run: next_run,
-		    notification_type : notification_type,
-        run_all: run_all,
         message: message
       },
       type: QueryTypes.INSERT,
@@ -36,24 +25,13 @@ export default class NotificationsService {
     return notification;
   };
 
-  static createTimeOffNotification = async (body, user_id, time_off_id) => {
-    const {
-      created_date,
-      next_run,
-      notification_type,
-      run_all,
-      message
-    } = body;
+  static createTimeOffNotification = async (created_date, message,time_off_id) => {
 
     const notification = await database.query(insertNotificationQuery, {
       replacements: {
         affair_id: null,
         time_off_id: time_off_id,
-        created_by: user_id,
         created_date: created_date,
-        next_run: next_run,
-		    notification_type : notification_type,
-        run_all: run_all,
         message: message
       },
       type: QueryTypes.INSERT,

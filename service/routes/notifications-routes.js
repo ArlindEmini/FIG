@@ -26,10 +26,15 @@ router.post("/affair/:affair_id", authenticateToken, async (req, res) => {
   try {
     const { body, params, headers } = req;
     
+    const {
+      created_date,
+      message
+    } = body;
+
     const {affair_id} = params;
     
     const idFromtoken = await getIdFromToken(headers.authorization);
-    const response = await NotificationsController.createAffairNotification(body, idFromtoken,affair_id);
+    const response = await NotificationsController.createAffairNotification(created_date, message,affair_id);
 
     return res.status(200).json(response).end();
   } catch (error) {

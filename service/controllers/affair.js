@@ -1,9 +1,11 @@
 import { QueryTypes } from 'sequelize';
 
 import {
-	insertAffairQuery, getAffairById, updateAffairQuery, fetchAllAffairs, deleteAffair, checkAffairExistence, getAffairByQrCode
+	insertAffairQuery, getAffairById, updateAffairQuery, fetchAllAffairs, deleteAffair, checkAffairExistence, getAffairByQrCode,insertNotificationQuery
 } from '../database/queries.js';
 import { database } from '../database/connection.js';
+
+import NotificationsController from "../controllers/notifications.js";
 
 export default class AffairService {
 	static get = async (
@@ -46,7 +48,8 @@ export default class AffairService {
             contract_id,
             affair_type,
             affair_limit,
-            affair_description
+            affair_description,
+			is_urgency
 		} = body;
 
 		const affair = await database.query(
@@ -90,6 +93,12 @@ export default class AffairService {
 				type: QueryTypes.SELECT,
 			},
 		);
+			
+		console.log("responseiaffairssss", response[0].created_date, response[0].affair_description, response[0].id)
+		if(is_urgency == 1){
+			console.log("responseiaffairssss", response[0].created_date, response[0].affair_description, response[0].id)
+			const notificationResponse = NotificationsController.createAffairNotification(response[0].created_date, response[0].affair_description, response[0].id)
+		}
 
 		return response.length ? response[0] : null;
 	};
