@@ -162,12 +162,18 @@ export default class AffairService {
 	static fetchAllUrgencies = async (
 		query
 	) => {
-		const { date } = query;
+		const { start_date, end_date } = query;
 		let customQuery = fetchAllUrgencies;
-		console.log("urgenciesqueryyyyy", query)
-		if (date) {
-			customQuery += ` WHERE created_date >= '${date}'`
+
+		if (start_date) {
+			customQuery += ` WHERE created_date >= '${start_date}'`
 		}
+		if (start_date && end_date) {
+			customQuery = fetchAllUrgencies
+			customQuery += ` WHERE created_date BETWEEN '${start_date}' AND '${end_date}' `
+		}
+		
+		console.log("queryyyy", customQuery)
 
 		return await database.query(
 			customQuery,

@@ -257,6 +257,10 @@ SELECT * FROM affairs
 export const fetchAllUrgencies = `
 SELECT * FROM affairs
 `;
+export const fetchAllUrgenciesBetweenDates = `
+SELECT * FROM affairs
+WHERE start_date BETWEEN 'start_date' AND 'end_date';
+`;
 
 export const deleteAffair = `
 DELETE FROM affairs WHERE id = :id;
