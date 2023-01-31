@@ -10,7 +10,7 @@ import notificationsRoutes from "./routes/notifications-routes.js";
 import contractRoutes from './routes/contract-routes.js';
 import affairRoutes from './routes/affair-routes.js';
 import passRoutes from './routes/passes-routes.js';
-
+import reportsRoutes from "./routes/reports-routes.js"
 export const app = express();
 
 app.use(cors());
@@ -24,6 +24,7 @@ app.use('/api/v1/noticifations', notificationsRoutes)
 app.use('/api/v1/contracts', contractRoutes);
 app.use('/api/v1/affairs', affairRoutes);
 app.use('/api/v1/passes', passRoutes);
+app.use("/api/v1/reports", reportsRoutes)
 
 app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);
