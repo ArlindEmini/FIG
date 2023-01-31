@@ -13,12 +13,9 @@ router.get("/", authenticateToken, async (req, res) => {
   try {
     const { query, headers } = req;
 
-    if (await validateAdmin(headers.authorization)) {
       const response = await AffairController.fetchAll(query);
       return res.status(200).json({ response }).end();
-    } else {
-      return res.status(401).json({ error: "Unauthorised to fetch the affairs"}).end();
-    }
+
   } catch (error) {
     return res.status(400).json({ error }).end();
   }
