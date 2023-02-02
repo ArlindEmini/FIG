@@ -76,7 +76,7 @@ router.post("/:id/confirm", authenticateToken, async (req, res) => {
   
       await passController.passConfirm(id);
   
-      return res.status(200).json({ message: "Check out completed successfully" }).end();
+      return res.status(200).json({ message: "Pass confirmed successfully" }).end();
     } catch (error) {
       console.log("ERR", error);
       return res.status(400).json({ error }).end();

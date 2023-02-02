@@ -9,7 +9,8 @@ import {
 	checkAffairExistence,
 	getAffairByQrCode,
 	insertNotificationQuery,
-	fetchAllUrgencies
+	fetchAllUrgencies,
+	passCountQuery
 } from '../database/queries.js';
 import { database } from '../database/connection.js';
 
@@ -151,13 +152,39 @@ export default class AffairService {
             customQuery += ` AND contract_id = '${contract_id}'`;
         }
 
-		return await database.query(
+		let affairs = await database.query(
 			customQuery,
 			{
 				type: QueryTypes.SELECT
 			}
-		)
+		);
+
+		if (affairs && affairs.length) {
+			affairs = await Promise.all(affairs.map(async affair => {
+				console.log("AF", affair);
+				affair.passes = await this.getAffairPassCount(affair.id);
+				return affair;
+			}))
+		}
+		return affairs;
 	};
+
+	static getAffairPassCount = async (id) => {
+		const response = await database.query(
+			passCountQuery,
+			{
+				replacements: {
+					id
+				},
+				type: QueryTypes.SELECT
+			}
+		);
+
+		console.log("Response", response);
+		if (response && response.length) {
+			return response[0].count;
+		}
+	}
 
 	static fetchAllUrgencies = async (
 		query

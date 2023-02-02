@@ -266,6 +266,10 @@ export const deleteAffair = `
 DELETE FROM affairs WHERE id = :id;
 `;
 
+export const passCountQuery = `
+SELECT count(DISTINCT 'date') as count FROM passes WHERE affair_id = :id;
+`;
+
 export const checkAffairExistence = `
 SELECT * FROM affairs WHERE client_id = :client_id AND contract_id = :contract_id AND affair_type = :affair_type AND affair_limit = :affair_limit AND affair_description = :affair_description limit 1;
 `;
@@ -273,8 +277,8 @@ SELECT * FROM affairs WHERE client_id = :client_id AND contract_id = :contract_i
 //Passes Queries
 export const passCheckIn = `
 INSERT INTO
-passes (user_id, affair_id, check_in, is_confirmed)
-VALUES (:user_id, :affair_id, NOW(), 0);
+passes (user_id, affair_id, check_in, is_confirmed, date)
+VALUES (:user_id, :affair_id, NOW(), 0, :date);
 `;
 
 export const passCheckOut = `

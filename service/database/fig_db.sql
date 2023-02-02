@@ -88,7 +88,7 @@ CREATE TABLE `notifications` (
   `next_run` timestamp,
   `notification_type` smallint
   `run_all` smallint,
-  `message` varchar(255)§§
+  `message` varchar(255)
 );
 
 CREATE TABLE `passes` (
@@ -98,6 +98,7 @@ CREATE TABLE `passes` (
   `check_in` timestamp,
   `check_out` timestamp,
   `is_confirmed` smallint
+  `date` varchar(100)
 )
 
 ALTER TABLE `working_hours` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);

@@ -4,6 +4,7 @@ import {
 	passCheckIn, passCheckOut, passConfirm, getPassById, fetchAllPasses, deletePass
 } from '../database/queries.js';
 import { database } from '../database/connection.js';
+import { getDate } from '../utils/utils.js';
 
 export default class PassService {
 	static get = async (
@@ -24,12 +25,14 @@ export default class PassService {
 	};
 
 	static checkIn = async (affairId, userId) => {
+		const date = getDate();
         await database.query(
             passCheckIn,
             {
                 replacements: {
                     affair_id: affairId,
-                    user_id: userId
+                    user_id: userId,
+					date
                 },
                 type: QueryTypes.INSERT,
             },
@@ -71,7 +74,7 @@ export default class PassService {
 		}
 
         if (affair_id) {
-            customQuery += ` AND affair_id = '${affair_id}'`;
+            customQuery +=  ` ${user_id? 'AND' : 'WHERE'} affair_id = '${affair_id}'`;
         }
 
 		return await database.query(
