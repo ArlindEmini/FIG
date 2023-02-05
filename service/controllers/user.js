@@ -14,7 +14,8 @@ import {
   getUserAndTimeOff,
   getAvailableTimeOff,
   updatePtoStatus,
-  getAllPtos
+  getAllPtos,
+  userCheckIn
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -120,6 +121,26 @@ export default class UserService {
         id,
       },
       type: QueryTypes.UPDATE,
+    });
+  };
+
+  static checkIn = async (id) => {
+    return await database.query(userCheckIn, {
+      replacements: {
+        id,
+        type: 0 //0 is enum for checkin
+      },
+      type: QueryTypes.INSERT,
+    });
+  };
+
+  static checkOut = async (id) => {
+    return await database.query(userCheckIn, {
+      replacements: {
+        id,
+        type: 1 //1 is enum for checkout
+      },
+      type: QueryTypes.INSERT,
     });
   };
 

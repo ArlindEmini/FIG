@@ -89,6 +89,36 @@ router.post("/", authenticateToken, async (req, res) => {
   }
 });
 
+router.post("/check-in", authenticateToken, async (req, res) => {
+  try {
+    const { body, headers } = req;
+
+    const userId = getIdFromToken(headers.authorization);
+
+    await UserController.checkIn(userId);
+   
+    return res.status(200).json({ response: "User successfully checked in" }).end();
+  } catch (error) {
+    
+    return res.status(400).json({ error }).end();
+  }
+});
+
+router.post("/check-out", authenticateToken, async (req, res) => {
+  try {
+    const { body, headers } = req;
+
+    const userId = getIdFromToken(headers.authorization);
+
+    await UserController.checkOut(userId);
+   
+    return res.status(200).json({ response: "User successfully checked out" }).end();
+  } catch (error) {
+    
+    return res.status(400).json({ error }).end();
+  }
+});
+
 // edit employee
 router.put("/:id", authenticateToken, async (req, res) => {
  

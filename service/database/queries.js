@@ -126,6 +126,13 @@ SELECT * from clients where full_name = :full_name AND email = :email
 LIMIT 1
 `;
 
+export const userCheckIn = `
+INSERT INTO
+working_hours (user_id, action_type, created_date)
+VALUES (:id, :type, NOW());
+`;
+
+
 //     <<<==== pto(time_off) queries ====>>>
 export const getAllPtos = `
 SELECT * from time_off
