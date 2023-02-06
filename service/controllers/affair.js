@@ -82,7 +82,8 @@ export default class AffairService {
 				insertAffairQuery,
 				{
 					replacements: {
-                        ...body
+                        ...body,
+						qr_code: body.qr_code || 0
 					},
 					type: QueryTypes.INSERT,
 				},
