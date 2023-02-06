@@ -274,7 +274,7 @@ DELETE FROM affairs WHERE id = :id;
 `;
 
 export const passCountQuery = `
-SELECT count(DISTINCT date) as count FROM passes WHERE affair_id = :id;
+SELECT count(DISTINCT date) as count FROM passes WHERE affair_id = :id and check_out is not null;
 `;
 
 export const checkAffairExistence = `
@@ -286,6 +286,12 @@ export const passCheckIn = `
 INSERT INTO
 passes (user_id, affair_id, check_in, is_confirmed, date)
 VALUES (:user_id, :affair_id, NOW(), 0, :date);
+`;
+
+export const passCheckInBAU = `
+INSERT INTO
+passes (user_id, affair_id, check_in, check_out, is_confirmed, date)
+VALUES (:user_id, :affair_id, NOW(), NOW(), 1, :date);
 `;
 
 export const passCheckOut = `

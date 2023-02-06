@@ -1,7 +1,7 @@
 import { QueryTypes } from 'sequelize';
 
 import {
-	passCheckIn, passCheckOut, passConfirm, getPassById, fetchAllPasses, deletePass
+	passCheckIn, passCheckOut, passConfirm, getPassById, fetchAllPasses, deletePass, passCheckInBAU
 } from '../database/queries.js';
 import { database } from '../database/connection.js';
 import { getDate } from '../utils/utils.js';
@@ -28,6 +28,21 @@ export default class PassService {
 		const date = getDate();
         await database.query(
             passCheckIn,
+            {
+                replacements: {
+                    affair_id: affairId,
+                    user_id: userId,
+					date
+                },
+                type: QueryTypes.INSERT,
+            },
+        );
+	};
+
+	static checkInBAU = async (affairId, userId) => {
+		const date = getDate();
+        await database.query(
+            passCheckInBAU,
             {
                 replacements: {
                     affair_id: affairId,

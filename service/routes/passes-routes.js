@@ -28,6 +28,26 @@ router.get("/", authenticateToken, async (req, res) => {
   }
 });
 
+//Checkin bau
+router.post(
+  "/check-in/affairs/:id/bau",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { headers, params } = req;
+      const { id } = params;
+
+      const userId = getIdFromToken(headers.authorization);
+      await passController.checkInBAU(id, userId);
+
+      return res.status(200).json({ message: "Pass completed successfully"}).end();
+    } catch (error) {
+      console.log("error", error);
+      return res.status(400).json({ error }).end();
+    }
+  }
+);
+
 //checkIn
 router.post(
   "/check-in/affairs/:id",

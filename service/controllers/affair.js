@@ -161,7 +161,6 @@ export default class AffairService {
 
 		if (affairs && affairs.length) {
 			affairs = await Promise.all(affairs.map(async affair => {
-				console.log("AF", affair);
 				affair.passes = await this.getAffairPassCount(affair.id);
 				return affair;
 			}))
