@@ -274,7 +274,7 @@ DELETE FROM affairs WHERE id = :id;
 `;
 
 export const passCountQuery = `
-SELECT count(DISTINCT 'date') as count FROM passes WHERE affair_id = :id;
+SELECT count(DISTINCT date) as count FROM passes WHERE affair_id = :id;
 `;
 
 export const checkAffairExistence = `
