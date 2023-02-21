@@ -136,7 +136,7 @@ VALUES (:id, :type, NOW());
 //     <<<==== pto(time_off) queries ====>>>
 export const getAllPtos = `
 SELECT * from time_off
-WHERE status = 0
+WHERE is_approved = 0
 `;
 
 export const insertPtoQuery = `
