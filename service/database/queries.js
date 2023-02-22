@@ -89,6 +89,7 @@ SELECT
 id,
 email,
 full_name,
+address,
 client_type,
 contact,
 created_date,
