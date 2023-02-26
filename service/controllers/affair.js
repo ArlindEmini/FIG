@@ -58,7 +58,6 @@ export default class AffairService {
             affair_type,
             affair_limit,
             affair_description,
-			is_urgency
 		} = body;
 
 		const affair = await database.query(
@@ -104,11 +103,11 @@ export default class AffairService {
 			},
 		);
 			
-		console.log("responseiaffairssss", response[0].created_date, response[0].affair_description, response[0].id)
-		if(is_urgency == 1){
-			console.log("responseiaffairssss", response[0].created_date, response[0].affair_description, response[0].id)
-			const notificationResponse = NotificationsController.createAffairNotification(response[0].created_date, response[0].affair_description, response[0].id)
-		}
+		// console.log("responseiaffairssss", response[0].created_date, response[0].affair_description, response[0].id)
+		// if(is_urgency == 1){
+		// 	console.log("responseiaffairssss", response[0].created_date, response[0].affair_description, response[0].id)
+		// 	const notificationResponse = NotificationsController.createAffairNotification(response[0].created_date, response[0].affair_description, response[0].id)
+		// }
 
 		return response.length ? response[0] : null;
 	};
