@@ -93,12 +93,12 @@ export default class UrgencyService {
 		)
 	};
 
-	static checkIn = async (affairId) => {
+	static checkIn = async (urgencyId) => {
         await database.query(
             passCheckInUregency,
             {
                 replacements: {
-                    affair_id: affairId,
+                    urgencyId: urgencyId,
                 },
                 type: QueryTypes.INSERT,
             },
