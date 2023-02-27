@@ -17,9 +17,9 @@ const router = express.Router();
 
 router.get("/", async (req,res) => {
     try {
-        // const { query, headers } = req;
+        const { query, headers } = req;
     
-        const response = await UrgencyController.fetchAll();
+        const response = await UrgencyController.fetchAll(query);
     
         return res.status(200).json({ response }).end();
       } catch (error) {

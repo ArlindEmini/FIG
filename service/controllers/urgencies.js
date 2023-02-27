@@ -31,18 +31,18 @@ export default class UrgencyService {
 	};
 
     static fetchAll = async (query) => {
-        // const { username, email } = query;
-        // let customQuery = fetchAllQuery;
+		const { start_date, end_date } = query;
+		let customQuery = fetchAllUrgencies;
+
+		if (start_date) {
+			customQuery += ` WHERE start_date >= '${start_date}'`
+		}
+		if (start_date && end_date) {
+			customQuery = fetchAllUrgencies
+			customQuery += ` WHERE end_date BETWEEN '${start_date}' AND '${end_date}' `
+		}
     
-        // if (username) {
-        //   customQuery += ` AND username = '${username}'`;
-        // }
-    
-        // if (email) {
-        //   customQuery += ` AND email = '${email}'`;
-        // }
-    
-        return await database.query(fetchAllUrgencies, {
+        return await database.query(customQuery, {
           type: QueryTypes.SELECT,
         });
       };
