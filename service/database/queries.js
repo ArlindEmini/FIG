@@ -351,3 +351,9 @@ WHERE id = :id;
 export const deleteUrgency = `
 DELETE FROM urgencies WHERE id = :id;
 `;
+
+export const passCheckInUregency = `
+UPDATE urgencies
+SET start_date = NOW(), end_date = NOW(), status = 1
+WHERE id = :affair_id;
+`;

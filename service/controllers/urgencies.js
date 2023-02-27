@@ -5,7 +5,8 @@ import {fetchAllUrgencies,
         insertUrgencyQuery,
         getUrgencyById,
         updateUrgencyQuery,
-        deleteUrgency      
+        deleteUrgency,
+		passCheckInUregency      
     }
          from "../database/queries.js";
 import { database } from "../database/connection.js";
@@ -90,5 +91,17 @@ export default class UrgencyService {
 				type: QueryTypes.DELETE
 			}
 		)
+	};
+
+	static checkIn = async (affairId) => {
+        await database.query(
+            passCheckInUregency,
+            {
+                replacements: {
+                    affair_id: affairId,
+                },
+                type: QueryTypes.INSERT,
+            },
+        );
 	};
 }

@@ -137,6 +137,26 @@ router.delete("/:id", authenticateToken, async (req, res) => {
   }
 });
 
+router.post(
+  "/check-in/urgencies/:id/",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { headers, params } = req;
+      const { id } = params;
+      console.log("id", id)
+
+      const userId = getIdFromToken(headers.authorization);
+      await UrgencyController.checkIn(id);
+
+      return res.status(200).json({ message: "Urgency completed successfully"}).end();
+    } catch (error) {
+      console.log("error", error);
+      return res.status(400).json({ error }).end();
+    }
+  }
+);
+
 
 
 export default router;
