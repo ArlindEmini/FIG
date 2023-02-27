@@ -4,7 +4,8 @@ import { QueryTypes } from "sequelize";
 import {fetchAllUrgencies,
         insertUrgencyQuery,
         getUrgencyById,
-        updateUrgencyQuery      
+        updateUrgencyQuery,
+        deleteUrgency      
     }
          from "../database/queries.js";
 import { database } from "../database/connection.js";
@@ -59,8 +60,8 @@ export default class UrgencyService {
       };
 
       static update = async (
-		id,
-		body,
+		    id,
+		    body,
         existingUrgency
 	) => {
 		await database.query(
@@ -75,5 +76,19 @@ export default class UrgencyService {
 				type: QueryTypes.UPDATE,
 			},
 		);
+	};
+
+  static delete = async (
+		id
+	) => {
+		return await database.query(
+			deleteUrgency,
+			{
+				replacements: {
+					id
+				},
+				type: QueryTypes.DELETE
+			}
+		)
 	};
 }

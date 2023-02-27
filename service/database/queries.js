@@ -347,3 +347,7 @@ UPDATE urgencies
 SET urgency_description = :urgency_description, address = :address, price = :price
 WHERE id = :id;
 `;
+
+export const deleteUrgency = `
+DELETE FROM urgencies WHERE id = :id;
+`;

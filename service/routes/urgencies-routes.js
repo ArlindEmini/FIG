@@ -89,7 +89,7 @@ router.post("/", authenticateToken, async (req, res) => {
         .end();
     }
 
-    const existingUrgency = await existingUrgency.get(id);
+    const existingUrgency = await UrgencyController.get(id);
 
     if (!existingUrgency) {
       return res
@@ -106,7 +106,33 @@ router.post("/", authenticateToken, async (req, res) => {
 
     return res.status(200).json({ urgency }).end();
   } catch (error) {
-    console.log("ERR", error);
+    
+    return res.status(400).json({ error }).end();
+  }
+});
+
+router.delete("/:id", authenticateToken, async (req, res) => {
+  try {
+    const { params, headers } = req;
+    const { id } = params;
+
+    if (!(await validateAdmin(headers.authorization))) {
+      return res
+        .status(401)
+        .json({ error: "Unauthorised action for this user" })
+        .end();
+    }
+
+    const existingUrgency = await UrgencyController.get(id);
+
+    if (!existingUrgency) {
+      return res.status(404).json({ error: "Unable to find the urgency" }).end();
+    }
+
+    await UrgencyController.delete(id);
+
+    return res.status(200).json({ res: "affair deleted successfully" }).end();
+  } catch (error) {
     return res.status(400).json({ error }).end();
   }
 });
