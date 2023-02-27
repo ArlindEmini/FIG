@@ -262,13 +262,10 @@ export const fetchAllAffairs = `
 SELECT * FROM affairs
 `;
 
-export const fetchAllUrgencies = `
-SELECT * FROM affairs
-`;
-export const fetchAllUrgenciesBetweenDates = `
-SELECT * FROM affairs
-WHERE start_date BETWEEN 'start_date' AND 'end_date';
-`;
+// export const fetchAllUrgenciesBetweenDates = `
+// SELECT * FROM affairs
+// WHERE start_date BETWEEN 'start_date' AND 'end_date';
+// `;
 
 export const deleteAffair = `
 DELETE FROM affairs WHERE id = :id;
@@ -329,4 +326,34 @@ WHERE user_id = :user_id;
 
 export const deletePass = `
 DELETE FROM passes WHERE id = :id;
+`;
+
+export const fetchAllUrgencies = `SELECT * FROM urgencies`
+
+export const insertUrgencyQuery = `
+INSERT INTO
+urgencies (urgency_description, address, price, status, created_date)
+VALUES (:urgency_description, :address, :price, 0 , NOW());
+`;
+
+export const getUrgencyById = `
+SELECT *
+FROM urgencies
+WHERE id = :id limit 1;
+`;
+
+export const updateUrgencyQuery = `
+UPDATE urgencies
+SET urgency_description = :urgency_description, address = :address, price = :price
+WHERE id = :id;
+`;
+
+export const deleteUrgency = `
+DELETE FROM urgencies WHERE id = :id;
+`;
+
+export const passCheckInUregency = `
+UPDATE urgencies
+SET start_date = NOW(), end_date = NOW(), status = 1
+WHERE id = :urgencyId;
 `;

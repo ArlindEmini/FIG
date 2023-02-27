@@ -56,6 +56,7 @@ router.get("/", authenticateToken, async (req, res) => {
   
   try {
     const { query, headers } = req;
+    console.log("query", query)
 
     const response = await UserController.fetchAll(query);
 
