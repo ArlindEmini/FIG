@@ -15,7 +15,8 @@ import {
   getAvailableTimeOff,
   updatePtoStatus,
   getAllPtos,
-  userCheckIn
+  userCheckIn,
+  getAllCurrentPtos
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -189,6 +190,22 @@ export default class UserService {
   static getAllPtos = async () => {
 
     const response = await database.query(getAllPtos, {
+      type: QueryTypes.SELECT,
+    });
+
+    console.log("response", response)
+
+
+    return response;
+  };
+  static getAllCurrentPtos = async () => {
+    
+    let date = new Date();
+
+    const response = await database.query(getAllCurrentPtos, {
+      replacements: {
+        date,
+      },
       type: QueryTypes.SELECT,
     });
 

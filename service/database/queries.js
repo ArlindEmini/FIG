@@ -139,6 +139,10 @@ export const getAllPtos = `
 SELECT * from time_off
 WHERE is_approved = 0
 `;
+export const getAllCurrentPtos = `
+SELECT * from time_off
+WHERE is_approved = 1 AND end_date >= :date AND start_date <= :date
+`;
 
 export const insertPtoQuery = `
 INSERT INTO

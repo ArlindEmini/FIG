@@ -178,6 +178,19 @@ router.get("/all/time-off", authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/all/current/time-off", authenticateToken, async (req, res) => {
+  try {
+    const { query } = req;
+
+    const ptos = await UserController.getAllCurrentPtos(query);
+
+    return res.status(200).json({ ptos }).end();
+  } catch (error) {
+   
+    return res.status(400).json({ error }).end();
+  }
+});
+
 // get employee by id
 router.get("/:id", authenticateToken, async (req, res) => {
   try {
