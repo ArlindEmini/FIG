@@ -357,3 +357,5 @@ UPDATE urgencies
 SET start_date = NOW(), end_date = NOW(), status = 1
 WHERE id = :urgencyId;
 `;
+
+export const fetchAllUrgenciesPasses = `SELECT * FROM urgencies WHERE status = 1`

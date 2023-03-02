@@ -15,7 +15,22 @@ import validateUser from "../validators/user-validator.js";
 
 const router = express.Router();
 
+router.get("/passes", async (req,res) => {
+  console.log("1")
+  try {
+      const { query, headers } = req;
+  
+      const response = await UrgencyController.fetchUrgencyPasses(query);
+  
+      return res.status(200).json({ response }).end();
+    } catch (error) {
+      
+      return res.status(400).json({ error }).end();
+    }
+})
+
 router.get("/", async (req,res) => {
+  console.log("2")
     try {
         const { query, headers } = req;
     
@@ -156,6 +171,8 @@ router.post(
     }
   }
 );
+
+
 
 
 

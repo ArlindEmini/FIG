@@ -6,7 +6,8 @@ import {fetchAllUrgencies,
         getUrgencyById,
         updateUrgencyQuery,
         deleteUrgency,
-		passCheckInUregency      
+		passCheckInUregency,
+		fetchAllUrgenciesPasses      
     }
          from "../database/queries.js";
 import { database } from "../database/connection.js";
@@ -105,4 +106,21 @@ export default class UrgencyService {
             },
         );
 	};
+
+	static fetchUrgencyPasses = async (query) => {
+		const { start_date, end_date } = query;
+		let customQuery = fetchAllUrgenciesPasses;
+
+		if (start_date) {
+			customQuery += ` AND created_date >= '${start_date}'`
+		}
+		if (start_date && end_date) {
+			customQuery = fetchAllUrgenciesPasses
+			customQuery += ` AND created_date BETWEEN '${start_date}' AND '${end_date}' `
+		}
+    
+        return await database.query(customQuery, {
+          type: QueryTypes.SELECT,
+        });
+      };
 }
