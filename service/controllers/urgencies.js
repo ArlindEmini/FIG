@@ -35,11 +35,11 @@ export default class UrgencyService {
 		let customQuery = fetchAllUrgencies;
 
 		if (start_date) {
-			customQuery += ` WHERE start_date >= '${start_date}'`
+			customQuery += ` AND created_date >= '${start_date}'`
 		}
 		if (start_date && end_date) {
 			customQuery = fetchAllUrgencies
-			customQuery += ` WHERE end_date BETWEEN '${start_date}' AND '${end_date}' `
+			customQuery += ` AND created_date BETWEEN '${start_date}' AND '${end_date}' `
 		}
     
         return await database.query(customQuery, {
