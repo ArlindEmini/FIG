@@ -328,12 +328,12 @@ export const deletePass = `
 DELETE FROM passes WHERE id = :id;
 `;
 
-export const fetchAllUrgencies = `SELECT * FROM urgencies`
+export const fetchAllUrgencies = `SELECT * FROM urgencies WHERE status = 0`
 
 export const insertUrgencyQuery = `
 INSERT INTO
-urgencies (urgency_description, address, price, status, created_date)
-VALUES (:urgency_description, :address, :price, 0 , NOW());
+urgencies (urgency_description, address, price, status, created_date,employee_type)
+VALUES (:urgency_description, :address, :price, 0 , NOW(), :employee_type);
 `;
 
 export const getUrgencyById = `

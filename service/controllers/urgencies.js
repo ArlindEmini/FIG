@@ -48,13 +48,14 @@ export default class UrgencyService {
       };
 
       static createUrgency = async (body) => {
-        const { urgency_description, address, price } = body;
-        
+        const { urgency_description, address, price, employee_type } = body;
+        console.log("employee_type",employee_type)
           return await database.query(insertUrgencyQuery, {
             replacements: {
                 urgency_description,
                 address,
                 price,
+				employee_type
             },
             type: QueryTypes.INSERT,
           });
