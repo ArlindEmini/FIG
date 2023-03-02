@@ -140,8 +140,12 @@ SELECT * from time_off
 WHERE is_approved = 0
 `;
 export const getAllCurrentPtos = `
-SELECT * from time_off
-WHERE is_approved = 1 AND end_date >= :date AND start_date <= :date
+SELECT u.*, t.*
+FROM users u
+INNER JOIN (
+  SELECT * FROM time_off
+  WHERE is_approved = 1 AND end_date >= :date AND start_date <= :date
+) t ON u.id = t.user_id;
 `;
 
 export const insertPtoQuery = `
