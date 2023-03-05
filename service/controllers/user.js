@@ -16,7 +16,7 @@ import {
   updatePtoStatus,
   getAllPtos,
   userCheckIn,
-  getAllCurrentPtos
+  getAllCurrentPtos,
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -29,8 +29,6 @@ export default class UserService {
       type: QueryTypes.SELECT,
       raw: true,
     });
-
-    
 
     return users.length ? users[0] : null;
   };
@@ -48,8 +46,16 @@ export default class UserService {
   };
 
   static create = async (body) => {
-    const { full_name, username, email, password, contact, user_type, timeoff_available } = body;
-    
+    const {
+      full_name,
+      username,
+      email,
+      password,
+      contact,
+      user_type,
+      timeoff_available,
+    } = body;
+
     const user = await database.query(checkUserExistenceQuery, {
       replacements: {
         username,
@@ -70,7 +76,7 @@ export default class UserService {
           password: hashedPassword,
           contact,
           user_type,
-		  timeoff_available
+          timeoff_available,
         },
         type: QueryTypes.INSERT,
       });
@@ -91,7 +97,8 @@ export default class UserService {
         username: body.username || existingUser.username,
         email: body.email || existingUser.email,
         contact: body.contact || existingUser.contact,
-		    timeoff_available: body.timeoff_available || existingUser.timeoff_available,
+        timeoff_available:
+          body.timeoff_available || existingUser.timeoff_available,
         password,
         id,
       },
@@ -129,7 +136,7 @@ export default class UserService {
     return await database.query(userCheckIn, {
       replacements: {
         id,
-        type: 0 //0 is enum for checkin
+        type: 0, //0 is enum for checkin
       },
       type: QueryTypes.INSERT,
     });
@@ -139,14 +146,13 @@ export default class UserService {
     return await database.query(userCheckIn, {
       replacements: {
         id,
-        type: 1 //1 is enum for checkout
+        type: 1, //1 is enum for checkout
       },
       type: QueryTypes.INSERT,
     });
   };
 
   static requestPto = async (body, user_id) => {
-
     return await database.query(insertPtoQuery, {
       replacements: {
         user_id: user_id,
@@ -162,7 +168,6 @@ export default class UserService {
   };
 
   static getPtoByUserId = async (user_id) => {
-    
     const ptos = await database.query(getPtoByUserId, {
       replacements: {
         user_id: user_id,
@@ -188,18 +193,15 @@ export default class UserService {
   };
 
   static getAllPtos = async () => {
-
     const response = await database.query(getAllPtos, {
       type: QueryTypes.SELECT,
     });
 
-    console.log("response", response)
-
+    console.log("response", response);
 
     return response;
   };
   static getAllCurrentPtos = async () => {
-    
     let date = new Date();
 
     const response = await database.query(getAllCurrentPtos, {
@@ -209,14 +211,12 @@ export default class UserService {
       type: QueryTypes.SELECT,
     });
 
-    console.log("response", response)
-
+    console.log("response", response);
 
     return response;
   };
 
   static updateTimeOffStatus = async (tid, is_approved) => {
-
     const updatedTimeOff = await database.query(updatePtoStatus, {
       replacements: {
         id: tid,

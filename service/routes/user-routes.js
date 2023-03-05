@@ -13,7 +13,6 @@ import validateUser from "../validators/user-validator.js";
 
 const router = express.Router();
 
-
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -46,23 +45,20 @@ router.post("/login", async (req, res) => {
       })
       .end();
   } catch (error) {
-    
     return res.status(400).json({ error }).end();
   }
 });
 
 // get all users
 router.get("/", authenticateToken, async (req, res) => {
-  
   try {
     const { query, headers } = req;
-    console.log("query", query)
+    console.log("query", query);
 
     const response = await UserController.fetchAll(query);
 
     return res.status(200).json({ response }).end();
   } catch (error) {
-    
     return res.status(400).json({ error }).end();
   }
 });
@@ -81,11 +77,9 @@ router.post("/", authenticateToken, async (req, res) => {
     }
 
     const user = await UserController.create(body);
-   
 
     return res.status(200).json({ user }).end();
   } catch (error) {
-    
     return res.status(400).json({ error }).end();
   }
 });
@@ -97,10 +91,12 @@ router.post("/check-in", authenticateToken, async (req, res) => {
     const userId = getIdFromToken(headers.authorization);
 
     await UserController.checkIn(userId);
-   
-    return res.status(200).json({ response: "User successfully checked in" }).end();
+
+    return res
+      .status(200)
+      .json({ response: "User successfully checked in" })
+      .end();
   } catch (error) {
-    
     return res.status(400).json({ error }).end();
   }
 });
@@ -112,17 +108,18 @@ router.post("/check-out", authenticateToken, async (req, res) => {
     const userId = getIdFromToken(headers.authorization);
 
     await UserController.checkOut(userId);
-   
-    return res.status(200).json({ response: "User successfully checked out" }).end();
+
+    return res
+      .status(200)
+      .json({ response: "User successfully checked out" })
+      .end();
   } catch (error) {
-    
     return res.status(400).json({ error }).end();
   }
 });
 
 // edit employee
 router.put("/:id", authenticateToken, async (req, res) => {
- 
   try {
     const { body, headers, params } = req;
     const { id } = params;
@@ -150,17 +147,15 @@ router.put("/:id", authenticateToken, async (req, res) => {
 
 // get timeoff requests by the person id, who made the request, id is taken from token
 router.get("/time-off", authenticateToken, async (req, res) => {
-
   try {
     const { params, headers } = req;
 
     const idFromtoken = await getIdFromToken(headers.authorization);
-    
+
     const pto = await UserController.getPtoByUserId(idFromtoken);
 
     return res.status(200).json({ pto }).end();
   } catch (error) {
-   
     return res.status(400).json({ error }).end();
   }
 });
@@ -173,7 +168,6 @@ router.get("/all/time-off", authenticateToken, async (req, res) => {
 
     return res.status(200).json({ ptos }).end();
   } catch (error) {
-   
     return res.status(400).json({ error }).end();
   }
 });
@@ -186,7 +180,6 @@ router.get("/all/current/time-off", authenticateToken, async (req, res) => {
 
     return res.status(200).json({ ptos }).end();
   } catch (error) {
-   
     return res.status(400).json({ error }).end();
   }
 });
@@ -197,7 +190,7 @@ router.get("/:id", authenticateToken, async (req, res) => {
     const { params, headers } = req;
     const { id } = params;
     const idFromtoken = await getIdFromToken(headers.authorization);
-    
+
     const user = await UserController.get(id);
 
     if (!user) {
@@ -206,7 +199,6 @@ router.get("/:id", authenticateToken, async (req, res) => {
 
     return res.status(200).json({ user }).end();
   } catch (error) {
-    
     return res.status(400).json({ error }).end();
   }
 });
@@ -238,13 +230,12 @@ router.delete("/:id", authenticateToken, async (req, res) => {
   }
 });
 
-
 // kur admini ben kerkese per puntorin
 router.post("/:id/time-off", authenticateToken, async (req, res) => {
   try {
     const { body, params, headers } = req;
     const { id } = params;
-  
+
     if (!(await validateAdmin(headers.authorization))) {
       return res
         .status(401)
@@ -253,24 +244,24 @@ router.post("/:id/time-off", authenticateToken, async (req, res) => {
     }
 
     const user = await UserController.get(id);
-    if(!user){
+    if (!user) {
       return res.status(400).json({ error: "User with this id doesn't exist" });
     }
     const timeOffAvailable = await UserController.getAvailableTimeoff(id);
     if (timeOffAvailable < body.number_of_days) {
-      res.status(400).json({ error: "You don't have sufficient days available" });
+      res
+        .status(400)
+        .json({ error: "You don't have sufficient days available" });
     }
 
     const pto = await UserController.requestPto(body, id);
-    
 
     return res.status(200).json({ pto }).end();
   } catch (error) {
-    console.log("errooooooor", error)
+    console.log("errooooooor", error);
     return res.status(400).json({ error }).end();
   }
 });
-
 
 // kur puntori bon kerkese vet
 router.post("/time-off", authenticateToken, async (req, res) => {
@@ -312,7 +303,10 @@ router.put("/time-off/:tid", authenticateToken, async (req, res) => {
         .json({ error: "Unauthorised action for this user" })
         .end();
     }
-    const updatedPto = await UserController.updateTimeOffStatus(tid, is_approved);
+    const updatedPto = await UserController.updateTimeOffStatus(
+      tid,
+      is_approved
+    );
 
     return res.status(200).json({ updatedPto }).end();
   } catch (error) {

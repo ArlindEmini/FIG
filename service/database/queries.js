@@ -133,7 +133,6 @@ working_hours (user_id, action_type, created_date)
 VALUES (:id, :type, NOW());
 `;
 
-
 //     <<<==== pto(time_off) queries ====>>>
 export const getAllPtos = `
 SELECT * from time_off
@@ -178,7 +177,6 @@ DATEDIFF(t.end_date, t.start_date) as req_date_off,
 t.is_approved from time_off t 
 inner join users u on t.user_id = u.id where t.user_id = :user_id
 `;
-
 
 export const getAvailableTimeOff = `
 SELECT
@@ -322,6 +320,28 @@ export const fetchAllPasses = `
 SELECT * FROM passes
 `;
 
+// export const fetchAllReportsPasses = `
+// SELECT * FROM passes
+// `;
+
+export const fetchAllReportsPasses = `
+SELECT a.*, p.*
+FROM affairs a
+INNER JOIN (
+  SELECT * FROM passes
+  WHERE check_in BETWEEN :start_date AND :end_date
+) p ON p.affair_id = a.id ;
+`;
+
+// export const getAllCurrentPtos = `
+// SELECT u.*, t.*
+// FROM users u
+// INNER JOIN (
+//   SELECT * FROM time_off
+//   WHERE is_approved = 1 AND end_date >= :date AND start_date <= :date
+// ) t ON u.id = t.user_id;
+// `;
+
 export const fetchPassByAffairId = `
 SELECT * FROM passes
 WHERE affair_id = :affair_id;
@@ -336,7 +356,7 @@ export const deletePass = `
 DELETE FROM passes WHERE id = :id;
 `;
 
-export const fetchAllUrgencies = `SELECT * FROM urgencies WHERE status = 0`
+export const fetchAllUrgencies = `SELECT * FROM urgencies WHERE status = 0`;
 
 export const insertUrgencyQuery = `
 INSERT INTO
@@ -366,4 +386,4 @@ SET start_date = NOW(), end_date = NOW(), status = 1
 WHERE id = :urgencyId;
 `;
 
-export const fetchAllUrgenciesPasses = `SELECT * FROM urgencies WHERE status = 1`
+export const fetchAllUrgenciesPasses = `SELECT * FROM urgencies WHERE status = 1`;
