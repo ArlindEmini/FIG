@@ -96,16 +96,6 @@ export default class PassService {
 
   static fetchAllReportsPasses = async (query) => {
     const { start_date, end_date } = query;
-    let date = new Date();
-    let customQuery = fetchAllReportsPasses;
-
-    // if (start_date) {
-    //   customQuery += ` WHERE check_in >= '${start_date}'`;
-    // }
-    // if (start_date && end_date) {
-    //   customQuery = fetchAllReportsPasses;
-    //   customQuery += ` WHERE check_in BETWEEN '${start_date}' AND '${end_date}' `;
-    // }
 
     return await database.query(fetchAllReportsPasses, {
       replacements: {
