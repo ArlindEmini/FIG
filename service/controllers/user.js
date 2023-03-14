@@ -18,7 +18,8 @@ import {
   userCheckIn,
   getAllCurrentPtos,
   getPtoById,
-  updatePto
+  updatePto,
+  cleanerCheckIn,
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -134,6 +135,28 @@ export default class UserService {
     });
   };
 
+  static checkInCleaners = async (user_id, client_id) => {
+    return await database.query(cleanerCheckIn, {
+      replacements: {
+        id: user_id,
+        type: 0, //0 is enum for checkin
+        client_id,
+      },
+      type: QueryTypes.INSERT,
+    });
+  };
+
+  static checkOutCleaners = async (user_id, client_id) => {
+    return await database.query(cleanerCheckIn, {
+      replacements: {
+        id: user_id,
+        type: 1, //1 is enum for checkout
+        client_id,
+      },
+      type: QueryTypes.INSERT,
+    });
+  };
+
   static checkIn = async (id) => {
     return await database.query(userCheckIn, {
       replacements: {
@@ -232,19 +255,18 @@ export default class UserService {
   };
 
   static updateTimeOffStatus = async (tid, is_approved) => {
-
     const timeOff = await database.query(getPtoById, {
       replacements: {
-        id : tid,
+        id: tid,
       },
       type: QueryTypes.SELECT,
     });
 
-    const timeOffAvailable = timeOff[0].timeoff_available - timeOff[0].days_requested
-    
+    const timeOffAvailable =
+      timeOff[0].timeoff_available - timeOff[0].days_requested;
+
     const timeOffAvailableStr = timeOffAvailable.toString();
 
-    
     const updatedTimeOffApprove = await database.query(updatePtoStatus, {
       replacements: {
         id: tid,
@@ -253,15 +275,15 @@ export default class UserService {
       type: QueryTypes.UPDATE,
     });
 
-    if(is_approved == 1){
-    const updatedTimeOff = await database.query(updatePto, {
-      replacements: {
-        uid : timeOff[0].user_id,
-        timeOffAvailableStr
-      },
-      type: QueryTypes.UPDATE,
-    });
-  }
+    if (is_approved == 1) {
+      const updatedTimeOff = await database.query(updatePto, {
+        replacements: {
+          uid: timeOff[0].user_id,
+          timeOffAvailableStr,
+        },
+        type: QueryTypes.UPDATE,
+      });
+    }
 
     return updatedTimeOffApprove;
   };

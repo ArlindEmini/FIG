@@ -129,8 +129,13 @@ LIMIT 1
 
 export const userCheckIn = `
 INSERT INTO
-working_hours (user_id, action_type, created_date)
+working_hours (user_id, action_type, created_date,)
 VALUES (:id, :type, NOW());
+`;
+export const cleanerCheckIn = `
+INSERT INTO
+working_hours (user_id, action_type, created_date, client_id)
+VALUES (:id, :type, NOW(), :client_id);
 `;
 
 //     <<<==== pto(time_off) queries ====>>>
@@ -213,7 +218,6 @@ FROM time_off
 INNER JOIN users ON time_off.user_id = users.id
 WHERE time_off.id = :id;
 `;
-
 
 // select u.id, u.full_name, u.timeoff_available, t.start_date, t.end_date, DATEDIFF(t.end_date, t.start_date) as req_date, t.is_approved from time_off t inner join users u on t.user_id = u.id where t.user_id = 2
 // contract queries
