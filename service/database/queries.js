@@ -188,7 +188,10 @@ LIMIT 1;
 `;
 
 export const updatePtoStatus = `
-UPDATE time_off SET is_approved= :is_approved WHERE id= :id
+UPDATE time_off SET is_approved= :is_approved WHERE id= :id;
+`;
+export const updatePto = `
+UPDATE users SET timeoff_available = :timeOffAvailableStr WHERE id = :uid
 `;
 
 //     <<<==== notifications(Notifications) queries ====>>>
@@ -203,6 +206,14 @@ VALUES (:affair_id, :time_off_id, NOW(), :message);
 `;
 
 //     <<<==== pto(time_off) queries ====>>>
+
+export const getPtoById = `
+SELECT time_off.user_id, time_off.*, users.*
+FROM time_off
+INNER JOIN users ON time_off.user_id = users.id
+WHERE time_off.id = :id;
+`;
+
 
 // select u.id, u.full_name, u.timeoff_available, t.start_date, t.end_date, DATEDIFF(t.end_date, t.start_date) as req_date, t.is_approved from time_off t inner join users u on t.user_id = u.id where t.user_id = 2
 // contract queries

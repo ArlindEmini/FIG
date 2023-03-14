@@ -17,6 +17,8 @@ import {
   getAllPtos,
   userCheckIn,
   getAllCurrentPtos,
+  getPtoById,
+  updatePto
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -201,6 +203,21 @@ export default class UserService {
 
     return response;
   };
+
+  // static getPtoById = async (id) => {
+  //   let date = new Date();
+
+  //   const response = await database.query(getPtoById, {
+  //     replacements: {
+  //       id,
+  //     },
+  //     type: QueryTypes.SELECT,
+  //   });
+
+  //   console.log("response", response);
+
+  //   return response;
+  // };
   static getAllCurrentPtos = async () => {
     let date = new Date();
 
@@ -211,13 +228,24 @@ export default class UserService {
       type: QueryTypes.SELECT,
     });
 
-    console.log("response", response);
-
     return response;
   };
 
   static updateTimeOffStatus = async (tid, is_approved) => {
-    const updatedTimeOff = await database.query(updatePtoStatus, {
+
+    const timeOff = await database.query(getPtoById, {
+      replacements: {
+        id : tid,
+      },
+      type: QueryTypes.SELECT,
+    });
+
+    const timeOffAvailable = timeOff[0].timeoff_available - timeOff[0].days_requested
+    
+    const timeOffAvailableStr = timeOffAvailable.toString();
+
+    
+    const updatedTimeOffApprove = await database.query(updatePtoStatus, {
       replacements: {
         id: tid,
         is_approved: is_approved,
@@ -225,6 +253,16 @@ export default class UserService {
       type: QueryTypes.UPDATE,
     });
 
-    return updatedTimeOff;
+    if(is_approved == 1){
+    const updatedTimeOff = await database.query(updatePto, {
+      replacements: {
+        uid : timeOff[0].user_id,
+        timeOffAvailableStr
+      },
+      type: QueryTypes.UPDATE,
+    });
+  }
+
+    return updatedTimeOffApprove;
   };
 }
