@@ -97,6 +97,7 @@ router.post("/check-in", authenticateToken, async (req, res) => {
       .json({ response: "User successfully checked in" })
       .end();
   } catch (error) {
+    console.log("error", error);
     return res.status(400).json({ error }).end();
   }
 });
@@ -153,6 +154,20 @@ router.post("/check-out", authenticateToken, async (req, res) => {
       .json({ response: "User successfully checked out" })
       .end();
   } catch (error) {
+    return res.status(400).json({ error }).end();
+  }
+});
+
+router.get("/reports/checkin", authenticateToken, async (req, res) => {
+  try {
+    const { query, headers } = req;
+    console.log("query", query);
+
+    const response = await UserController.fetchAllCheckinReports(query);
+
+    return res.status(200).json({ response }).end();
+  } catch (error) {
+    console.log("error", error);
     return res.status(400).json({ error }).end();
   }
 });

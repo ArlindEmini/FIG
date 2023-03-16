@@ -129,13 +129,21 @@ LIMIT 1
 
 export const userCheckIn = `
 INSERT INTO
-working_hours (user_id, action_type, created_date,)
+working_hours (user_id, action_type, created_date)
 VALUES (:id, :type, NOW());
 `;
 export const cleanerCheckIn = `
 INSERT INTO
 working_hours (user_id, action_type, created_date, client_id)
 VALUES (:id, :type, NOW(), :client_id);
+`;
+export const fetchAllCheckinReports = `
+SELECT u.*, w.*
+FROM users u
+INNER JOIN (
+  SELECT * FROM working_hours
+  WHERE cast(created_date as date) >= :start_date AND cast(created_date as date) <= :end_date
+) w ON w.user_id = u.id ;
 `;
 
 //     <<<==== pto(time_off) queries ====>>>
