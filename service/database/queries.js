@@ -146,6 +146,15 @@ INNER JOIN (
 ) w ON w.user_id = u.id ;
 `;
 
+export const fetchCheckinReportsClients = `
+SELECT u.*, w.*
+FROM users u
+INNER JOIN (
+  SELECT * FROM working_hours
+  WHERE cast(created_date as date) >= :start_date AND cast(created_date as date) <= :end_date AND client_id = :id
+) w ON w.user_id = u.id ;
+`;
+
 //     <<<==== pto(time_off) queries ====>>>
 export const getAllPtos = `
 SELECT * from time_off

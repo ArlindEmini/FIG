@@ -21,6 +21,7 @@ import {
   updatePto,
   cleanerCheckIn,
   fetchAllCheckinReports,
+  fetchCheckinReportsClients,
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -142,6 +143,19 @@ export default class UserService {
       replacements: {
         start_date,
         end_date,
+      },
+      type: QueryTypes.SELECT,
+    });
+  };
+
+  static fetchCheckInReportsForClient = async (query, clientId) => {
+    const { start_date, end_date } = query;
+
+    return await database.query(fetchCheckinReportsClients, {
+      replacements: {
+        start_date,
+        end_date,
+        id: clientId,
       },
       type: QueryTypes.SELECT,
     });

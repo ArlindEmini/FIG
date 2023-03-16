@@ -161,13 +161,29 @@ router.post("/check-out", authenticateToken, async (req, res) => {
 router.get("/reports/checkin", authenticateToken, async (req, res) => {
   try {
     const { query, headers } = req;
-    console.log("query", query);
 
     const response = await UserController.fetchAllCheckinReports(query);
 
     return res.status(200).json({ response }).end();
   } catch (error) {
     console.log("error", error);
+    return res.status(400).json({ error }).end();
+  }
+});
+
+router.get("/reports/client/:id", authenticateToken, async (req, res) => {
+  try {
+    const { query, headers, params } = req;
+
+    const { id } = params;
+
+    const response = await UserController.fetchCheckInReportsForClient(
+      query,
+      id
+    );
+
+    return res.status(200).json({ response }).end();
+  } catch (error) {
     return res.status(400).json({ error }).end();
   }
 });
