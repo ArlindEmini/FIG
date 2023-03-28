@@ -90,7 +90,7 @@ router.post("/check-in", authenticateToken, async (req, res) => {
 
     const userId = getIdFromToken(headers.authorization);
 
-    await UserController.checkIn(userId);
+    await UserController.userCheckIn(userId);
 
     return res
       .status(200)
@@ -101,6 +101,44 @@ router.post("/check-in", authenticateToken, async (req, res) => {
     return res.status(400).json({ error }).end();
   }
 });
+
+router.post("/clients/:clientId/check-in", authenticateToken, async (req, res) => {
+  try {
+    const { body, headers, params } = req;
+    
+    const { id } = params;
+
+    const userId = getIdFromToken(headers.authorization);
+
+    await UserController.cleanerCheckIn(userId, id);
+
+    return res
+      .status(200)
+      .json({ response: "User successfully checked in" })
+      .end();
+  } catch (error) {
+    console.log("error", error);
+    return res.status(400).json({ error }).end();
+  }
+});
+
+// router.post("/check-in", authenticateToken, async (req, res) => {
+//   try {
+//     const { body, headers } = req;
+
+//     const userId = getIdFromToken(headers.authorization);
+
+//     await UserController.checkIn(userId);
+
+//     return res
+//       .status(200)
+//       .json({ response: "User successfully checked in" })
+//       .end();
+//   } catch (error) {
+//     console.log("error", error);
+//     return res.status(400).json({ error }).end();
+//   }
+// });
 
 router.post("/check-in/client/:id", authenticateToken, async (req, res) => {
   try {
@@ -121,42 +159,43 @@ router.post("/check-in/client/:id", authenticateToken, async (req, res) => {
     return res.status(400).json({ error }).end();
   }
 });
-router.post("/check-out/client/:id", authenticateToken, async (req, res) => {
-  try {
-    const { body, headers, params } = req;
 
-    const { id } = params;
+// router.post("/check-out/client/:id", authenticateToken, async (req, res) => {
+//   try {
+//     const { body, headers, params } = req;
 
-    const userId = getIdFromToken(headers.authorization);
+//     const { id } = params;
 
-    await UserController.checkOutCleaners(userId, id);
+//     const userId = getIdFromToken(headers.authorization);
 
-    return res
-      .status(200)
-      .json({ response: "Cleaner successfully checked out" })
-      .end();
-  } catch (error) {
-    console.log("error", error);
-    return res.status(400).json({ error }).end();
-  }
-});
+//     await UserController.checkOutCleaners(userId, id);
 
-router.post("/check-out", authenticateToken, async (req, res) => {
-  try {
-    const { body, headers } = req;
+//     return res
+//       .status(200)
+//       .json({ response: "Cleaner successfully checked out" })
+//       .end();
+//   } catch (error) {
+//     console.log("error", error);
+//     return res.status(400).json({ error }).end();
+//   }
+// });
 
-    const userId = getIdFromToken(headers.authorization);
+// router.post("/check-out", authenticateToken, async (req, res) => {
+//   try {
+//     const { body, headers } = req;
 
-    await UserController.checkOut(userId);
+//     const userId = getIdFromToken(headers.authorization);
 
-    return res
-      .status(200)
-      .json({ response: "User successfully checked out" })
-      .end();
-  } catch (error) {
-    return res.status(400).json({ error }).end();
-  }
-});
+//     await UserController.checkOut(userId);
+
+//     return res
+//       .status(200)
+//       .json({ response: "User successfully checked out" })
+//       .end();
+//   } catch (error) {
+//     return res.status(400).json({ error }).end();
+//   }
+// });
 
 router.get("/reports/checkin", authenticateToken, async (req, res) => {
   try {

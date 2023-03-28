@@ -129,14 +129,38 @@ LIMIT 1
 
 export const userCheckIn = `
 INSERT INTO
-working_hours (user_id, action_type, created_date)
+working_hours (user_id, action_type, checkin_time)
 VALUES (:id, :type, NOW());
 `;
+
 export const cleanerCheckIn = `
 INSERT INTO
-working_hours (user_id, action_type, created_date, client_id)
+working_hours (user_id, action_type, checkin_time, client_id)
 VALUES (:id, :type, NOW(), :client_id);
 `;
+
+export const userCheckOut = `
+UPDATE working_hours
+SET checkout_time = NOW()
+WHERE id = :id;
+`;
+
+export const cleanerCheckOut = `
+UPDATE working_hours
+SET checkout_time = NOW()
+WHERE id = :id;
+`;
+
+export const getCleanerCheckInDetails = `
+SELECT * from working_hours where user_id = :id AND client_id = :client_id AND DATE(checkin_time) = CURDATE();
+LIMIT 1
+`;
+
+export const getCheckinDetails = `
+SELECT * from working_hours where user_id = :id AND DATE(checkin_time) = CURDATE();
+LIMIT 1
+`;
+
 export const fetchAllCheckinReports = `
 SELECT u.*, w.*
 FROM users u

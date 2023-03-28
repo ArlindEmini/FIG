@@ -15,8 +15,10 @@ CREATE TABLE `users` (
 CREATE TABLE `working_hours` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
+  `client_id` int,
   `action_type` int,
-  `created_date` timestamp
+  `checkin_time` timestamp,
+  `checkout_time` timestamp
 );
 
 CREATE TABLE `time_off` (
