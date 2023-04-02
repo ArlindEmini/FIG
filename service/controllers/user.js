@@ -22,6 +22,10 @@ import {
   cleanerCheckIn,
   fetchAllCheckinReports,
   fetchCheckinReportsClients,
+  userCheckOut,
+  cleanerCheckOut,
+  getCleanerCheckInDetails,
+  getCheckinDetails
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -172,8 +176,35 @@ export default class UserService {
     });
   };
 
-  static checkOutCleaners = async (user_id, client_id) => {
-    return await database.query(cleanerCheckIn, {
+  static cleanerCheckIn = async (user_id, client_id) => {
+    const checkInDetails = await database.query(getCleanerCheckInDetails, {
+      replacements: {
+        id: user_id,
+        client_id
+      },
+      type: QueryTypes.SELECT,
+    });
+
+    if (checkInDetails && checkInDetails.length) {
+      await database.query(cleanerCheckOut, {
+        replacements: {
+          id: checkInDetails[0].id,
+        },
+        type: QueryTypes.UPDATE,
+      });
+    } else {
+      await database.query(cleanerCheckIn, {
+        replacements: {
+          id: user_id,
+          client_id,
+        },
+        type: QueryTypes.INSERT,
+      });
+    }
+  }
+
+  static checkOutCleaners = (user_id, client_id) => {
+    return database.query(cleanerCheckIn, {
       replacements: {
         id: user_id,
         type: 1, //1 is enum for checkout
@@ -183,14 +214,29 @@ export default class UserService {
     });
   };
 
-  static checkIn = async (id) => {
-    return await database.query(userCheckIn, {
+  static userCheckIn = async (id) => {
+    const checkInDetails = await database.query(getCheckinDetails, {
       replacements: {
-        id,
-        type: 0, //0 is enum for checkin
+        id: id
       },
-      type: QueryTypes.INSERT,
+      type: QueryTypes.SELECT,
     });
+
+    if (checkInDetails && checkInDetails.length) {
+      await database.query(userCheckOut, {
+        replacements: {
+          id: checkInDetails[0].id,
+        },
+        type: QueryTypes.UPDATE,
+      });
+    } else {
+      await database.query(userCheckIn, {
+        replacements: {
+          id: id
+        },
+        type: QueryTypes.INSERT,
+      });
+    }
   };
 
   static checkOut = async (id) => {
