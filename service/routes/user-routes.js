@@ -106,11 +106,11 @@ router.post("/clients/:clientId/check-in", authenticateToken, async (req, res) =
   try {
     const { body, headers, params } = req;
     
-    const { id } = params;
+    const { clientId } = params;
 
     const userId = getIdFromToken(headers.authorization);
 
-    await UserController.cleanerCheckIn(userId, id);
+    await UserController.cleanerCheckIn(userId, Number(clientId));
 
     return res
       .status(200)
@@ -140,25 +140,25 @@ router.post("/clients/:clientId/check-in", authenticateToken, async (req, res) =
 //   }
 // });
 
-router.post("/check-in/client/:id", authenticateToken, async (req, res) => {
-  try {
-    const { body, headers, params } = req;
+// router.post("/check-in/client/:id", authenticateToken, async (req, res) => {
+//   try {
+//     const { body, headers, params } = req;
 
-    const { id } = params;
+//     const { id } = params;
 
-    const userId = getIdFromToken(headers.authorization);
+//     const userId = getIdFromToken(headers.authorization);
 
-    await UserController.checkInCleaners(userId, id);
+//     await UserController.checkInCleaners(userId, id);
 
-    return res
-      .status(200)
-      .json({ response: "Cleaner successfully checked in" })
-      .end();
-  } catch (error) {
-    console.log("error", error);
-    return res.status(400).json({ error }).end();
-  }
-});
+//     return res
+//       .status(200)
+//       .json({ response: "Cleaner successfully checked in" })
+//       .end();
+//   } catch (error) {
+//     console.log("error", error);
+//     return res.status(400).json({ error }).end();
+//   }
+// });
 
 // router.post("/check-out/client/:id", authenticateToken, async (req, res) => {
 //   try {

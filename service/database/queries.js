@@ -129,14 +129,14 @@ LIMIT 1
 
 export const userCheckIn = `
 INSERT INTO
-working_hours (user_id, action_type, checkin_time)
-VALUES (:id, :type, NOW());
+working_hours (user_id, checkin_time)
+VALUES (:id, NOW());
 `;
 
 export const cleanerCheckIn = `
 INSERT INTO
-working_hours (user_id, action_type, checkin_time, client_id)
-VALUES (:id, :type, NOW(), :client_id);
+working_hours (user_id, client_id, checkin_time)
+VALUES (:id, :client_id, NOW());
 `;
 
 export const userCheckOut = `
@@ -152,13 +152,11 @@ WHERE id = :id;
 `;
 
 export const getCleanerCheckInDetails = `
-SELECT * from working_hours where user_id = :id AND client_id = :client_id AND DATE(checkin_time) = CURDATE();
-LIMIT 1
+SELECT * from working_hours where user_id = :id AND client_id = :client_id AND DATE(checkin_time) = CURDATE() AND checkout_time IS NULL LIMIT 1
 `;
 
 export const getCheckinDetails = `
-SELECT * from working_hours where user_id = :id AND DATE(checkin_time) = CURDATE();
-LIMIT 1
+SELECT * from working_hours where user_id = :id AND DATE(checkin_time) = CURDATE() AND checkout_time IS NULL LIMIT 1
 `;
 
 export const fetchAllCheckinReports = `
@@ -166,7 +164,7 @@ SELECT u.*, w.*
 FROM users u
 INNER JOIN (
   SELECT * FROM working_hours
-  WHERE cast(created_date as date) >= :start_date AND cast(created_date as date) <= :end_date
+  WHERE cast(checkin_time as date) >= :start_date AND cast(checkout_time as date) <= :end_date
 ) w ON w.user_id = u.id ;
 `;
 

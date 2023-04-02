@@ -214,7 +214,7 @@ export default class UserService {
     });
   };
 
-  static checkIn = async (id) => {
+  static userCheckIn = async (id) => {
     const checkInDetails = await database.query(getCheckinDetails, {
       replacements: {
         id: id
