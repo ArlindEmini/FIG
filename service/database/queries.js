@@ -160,12 +160,9 @@ SELECT * from working_hours where user_id = :id AND DATE(checkin_time) = CURDATE
 `;
 
 export const fetchAllCheckinReports = `
-SELECT u.*, w.*
-FROM users u
-INNER JOIN (
-  SELECT * FROM working_hours
-  WHERE cast(checkin_time as date) >= :start_date AND cast(checkout_time as date) <= :end_date
-) w ON w.user_id = u.id ;
+SELECT u.full_name , checkin_time, checkout_time,  timediff(checkout_time, checkin_time) as total FROM working_hours
+inner join users u on u.id = user_id
+where cast(checkin_time as date) >= :start_date and cast(checkin_time as date) <= :end_date
 `;
 
 export const fetchCheckinReportsClients = `
