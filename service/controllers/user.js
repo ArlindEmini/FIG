@@ -25,7 +25,7 @@ import {
   userCheckOut,
   cleanerCheckOut,
   getCleanerCheckInDetails,
-  getCheckinDetails
+  getCheckinDetails,
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -180,7 +180,7 @@ export default class UserService {
     const checkInDetails = await database.query(getCleanerCheckInDetails, {
       replacements: {
         id: user_id,
-        client_id
+        client_id,
       },
       type: QueryTypes.SELECT,
     });
@@ -201,7 +201,7 @@ export default class UserService {
         type: QueryTypes.INSERT,
       });
     }
-  }
+  };
 
   static checkOutCleaners = (user_id, client_id) => {
     return database.query(cleanerCheckIn, {
@@ -217,7 +217,7 @@ export default class UserService {
   static userCheckIn = async (id) => {
     const checkInDetails = await database.query(getCheckinDetails, {
       replacements: {
-        id: id
+        id: id,
       },
       type: QueryTypes.SELECT,
     });
@@ -232,7 +232,7 @@ export default class UserService {
     } else {
       await database.query(userCheckIn, {
         replacements: {
-          id: id
+          id: id,
         },
         type: QueryTypes.INSERT,
       });

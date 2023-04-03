@@ -169,12 +169,10 @@ INNER JOIN (
 `;
 
 export const fetchCheckinReportsClients = `
-SELECT u.*, w.*
-FROM users u
-INNER JOIN (
-  SELECT * FROM working_hours
-  WHERE cast(created_date as date) >= :start_date AND cast(created_date as date) <= :end_date AND client_id = :id
-) w ON w.user_id = u.id ;
+SELECT c.full_name as client, u.full_name as cleaner , checkin_time, checkout_time,  timediff(checkout_time, checkin_time) as total FROM working_hours
+inner join clients c on c.id = client_id
+inner join users u on u.id = user_id
+where client_id = 2 and cast(checkin_time as date) >= :start_date and cast(checkin_time as date) <= :end_date
 `;
 
 //     <<<==== pto(time_off) queries ====>>>

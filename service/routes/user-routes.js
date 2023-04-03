@@ -102,25 +102,29 @@ router.post("/check-in", authenticateToken, async (req, res) => {
   }
 });
 
-router.post("/clients/:clientId/check-in", authenticateToken, async (req, res) => {
-  try {
-    const { body, headers, params } = req;
-    
-    const { clientId } = params;
+router.post(
+  "/clients/:clientId/check-in",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { body, headers, params } = req;
 
-    const userId = getIdFromToken(headers.authorization);
+      const { clientId } = params;
 
-    await UserController.cleanerCheckIn(userId, Number(clientId));
+      const userId = getIdFromToken(headers.authorization);
 
-    return res
-      .status(200)
-      .json({ response: "User successfully checked in" })
-      .end();
-  } catch (error) {
-    console.log("error", error);
-    return res.status(400).json({ error }).end();
+      await UserController.cleanerCheckIn(userId, Number(clientId));
+
+      return res
+        .status(200)
+        .json({ response: "User successfully checked in" })
+        .end();
+    } catch (error) {
+      console.log("error", error);
+      return res.status(400).json({ error }).end();
+    }
   }
-});
+);
 
 // router.post("/check-in", authenticateToken, async (req, res) => {
 //   try {
