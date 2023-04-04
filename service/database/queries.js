@@ -169,7 +169,7 @@ export const fetchCheckinReportsClients = `
 SELECT c.full_name as client, u.full_name as cleaner , checkin_time, checkout_time,  timediff(checkout_time, checkin_time) as total FROM working_hours
 inner join clients c on c.id = client_id
 inner join users u on u.id = user_id
-where client_id = 2 and cast(checkin_time as date) >= :start_date and cast(checkin_time as date) <= :end_date
+where client_id = :id and cast(checkin_time as date) >= :start_date and cast(checkin_time as date) <= :end_date
 `;
 
 //     <<<==== pto(time_off) queries ====>>>
