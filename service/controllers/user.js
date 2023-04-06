@@ -116,6 +116,7 @@ export default class UserService {
     });
   };
   static disableUser = async (id) => {
+    console.log("id", id);
     await database.query(disableUser, {
       replacements: {
         id,

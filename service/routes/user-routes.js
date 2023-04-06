@@ -259,18 +259,18 @@ router.put("/:id", authenticateToken, async (req, res) => {
 });
 
 // employe to delete himself
-router.put("/disable/user/:id", authenticateToken, async (req, res) => {
+router.put("/disable/user", authenticateToken, async (req, res) => {
   try {
-    const { params } = req;
-    const { id } = params;
+    const { headers } = req;
 
-    const existingUser = await UserController.get(id);
+    const userId = getIdFromToken(headers.authorization);
+    const existingUser = await UserController.get(userId);
 
     if (!existingUser) {
       return res.status(404).json({ error: "Unable to find the user" }).end();
     }
 
-    const user = await UserController.disableUser(id);
+    const user = await UserController.disableUser(userId);
 
     return res.status(200).json("Employee deleted succesfully").end();
   } catch (error) {
@@ -284,7 +284,7 @@ router.get("/time-off", authenticateToken, async (req, res) => {
   try {
     const { params, headers } = req;
 
-    const idFromtoken = await getIdFromToken(headers.authorization);
+    const idFromtoken = getIdFromToken(headers.authorization);
 
     const pto = await UserController.getPtoByUserId(idFromtoken);
 
@@ -323,7 +323,7 @@ router.get("/:id", authenticateToken, async (req, res) => {
   try {
     const { params, headers } = req;
     const { id } = params;
-    const idFromtoken = await getIdFromToken(headers.authorization);
+    const idFromtoken = getIdFromToken(headers.authorization);
 
     const user = await UserController.get(id);
 
@@ -403,7 +403,7 @@ router.post("/time-off", authenticateToken, async (req, res) => {
     const { body, params, headers } = req;
     const { id } = params;
 
-    const idFromtoken = await getIdFromToken(headers.authorization);
+    const idFromtoken = getIdFromToken(headers.authorization);
 
     const timeOffAvailable = await UserController.getAvailableTimeoff(
       idFromtoken
