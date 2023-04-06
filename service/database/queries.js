@@ -63,6 +63,12 @@ SET is_deleted = 1, updated_date = NOW()
 WHERE id = :id;
 `;
 
+export const disableUser = `
+UPDATE users
+SET is_deleted = 1, updated_date = NOW()
+WHERE id = :id;
+`;
+
 export const checkUserExistenceQuery = `
 SELECT * from users where username = :username AND email = :email
 LIMIT 1

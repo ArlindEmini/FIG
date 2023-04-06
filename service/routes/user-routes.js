@@ -258,6 +258,27 @@ router.put("/:id", authenticateToken, async (req, res) => {
   }
 });
 
+// employe to delete himself
+router.put("/disable/user/:id", authenticateToken, async (req, res) => {
+  try {
+    const { params } = req;
+    const { id } = params;
+
+    const existingUser = await UserController.get(id);
+
+    if (!existingUser) {
+      return res.status(404).json({ error: "Unable to find the user" }).end();
+    }
+
+    const user = await UserController.disableUser(id);
+
+    return res.status(200).json("Employee deleted succesfully").end();
+  } catch (error) {
+    console.log("error", error);
+    return res.status(400).json({ error }).end();
+  }
+});
+
 // get timeoff requests by the person id, who made the request, id is taken from token
 router.get("/time-off", authenticateToken, async (req, res) => {
   try {

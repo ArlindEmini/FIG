@@ -26,6 +26,7 @@ import {
   cleanerCheckOut,
   getCleanerCheckInDetails,
   getCheckinDetails,
+  disableUser,
 } from "../database/queries.js";
 import { database } from "../database/connection.js";
 
@@ -109,6 +110,14 @@ export default class UserService {
         timeoff_available:
           body.timeoff_available || existingUser.timeoff_available,
         password,
+        id,
+      },
+      type: QueryTypes.UPDATE,
+    });
+  };
+  static disableUser = async (id) => {
+    await database.query(disableUser, {
+      replacements: {
         id,
       },
       type: QueryTypes.UPDATE,
