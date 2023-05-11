@@ -12,13 +12,14 @@ import contractRoutes from "./routes/contract-routes.js";
 import affairRoutes from "./routes/affair-routes.js";
 import passRoutes from "./routes/passes-routes.js";
 import urgencyRoutes from "./routes/urgencies-routes.js";
-
+import homeRoutes from "./routes/home-routes.js";
 export const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use("/", homeRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/clients", clientRoutes);
