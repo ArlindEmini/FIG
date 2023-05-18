@@ -11,11 +11,14 @@ services:
       # Password for root access
       # For Production use very secure password
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    # ports:
+    ports:
       # Port forwarding
       # Port on Host : Port in Container
-      # - ${MYSQL_LOCAL_PORT}:3306
+      - ${MYSQL_LOCAL_PORT}:3306
+    expose:
+      - 3306
     volumes:
+      - ./database/data:/docker-entrypoint-initdb.d
       - mysql-db:/var/lib/mysql
 
   fig-backend:
@@ -24,11 +27,13 @@ services:
     depends_on:
       - fig-db
     build: 
-      context: ./
+      context: ./service
       dockerfile: ./Dockerfile
     environment:
+      PORT: ${PORT}
+      SECRET_TOKEN: ${SECRET_TOKEN}
       MYSQL_HOST: fig-db
-      MYSQL_LOCAL_PORT: 3306
+      MYSQL_PORT: ${MYSQL_LOCAL_PORT}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
