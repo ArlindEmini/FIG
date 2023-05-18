@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  db:
+  fig-db:
     image: mysql:5.7.42-debian
     restart: always
     environment:
@@ -9,16 +9,35 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       # Password for root access
+      # For Production use very secure password
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    ports:
-      # <Port exposed> : <MySQL Port running inside container>
-      - ${MYSQL_LOCAL_PORT}:3306
-    expose:
-      # Opens port 3306 on the container
-      - '3306'
-      # Where our data will be persisted
+    # ports:
+      # Port forwarding
+      # Port on Host : Port in Container
+      # - ${MYSQL_LOCAL_PORT}:3306
     volumes:
       - mysql-db:/var/lib/mysql
+
+  fig-backend:
+    image: fig-backend:latest
+    restart: always
+    depends_on:
+      - fig-db
+    build: 
+      context: ./
+      dockerfile: ./Dockerfile
+    environment:
+      MYSQL_HOST: fig-db
+      MYSQL_LOCAL_PORT: 3306
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      # Port forwarding
+      # Port on Host : Port in Container
+      - 3000:3000
 
 # Names our volume
 volumes:
