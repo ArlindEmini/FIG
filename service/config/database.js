@@ -7,15 +7,22 @@ const Sequelize = require("sequelize");
 // const DB_USERNAME = process.env.DB_USERNAME;
 // const DB_PASSWORD = process.env.DB_PASSWORD;
 
-const DB_HOST = "localhost";
-const DB_PORT = "3001";
-const DB_DATABASE = "figdatabase";
-const DB_USERNAME = "root";
-const DB_PASSWORD = "password";
-
-const sequelize = new Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
-  dialect: "mysql",
-  host: DB_HOST,
-});
+export const database = new Sequelize(
+	process.env.MYSQL_DATABASE,
+	process.env.MYSQL_USER,
+	process.env.MYSQL_PASSWORD,
+	{
+		host: process.env.MYSQL_HOST,
+		database: process.env.MYSQL_DATABASE,
+		port: Number(process.env.MYSQL_LOCAL_PORT),
+		dialect: 'mysql',
+		pool: {
+			max: 3,
+			min: 0,
+			idle: 20 * 1000,
+			acquire: 30 * 1000,
+		},
+	},
+);
 
 module.exports = sequelize;
