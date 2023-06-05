@@ -7,13 +7,14 @@ import authRoutes from "./routes/authentication-routes.js";
 import userRoutes from "./routes/user-routes.js";
 import clientRoutes from "./routes/client-routes.js";
 // import contractRoutes from './routes/contract-routes.js';
-
+import infoRoute from "./routes/info-route.js";
 export const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use("/info", infoRoute);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/clients", clientRoutes);
