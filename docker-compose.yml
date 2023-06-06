@@ -15,8 +15,6 @@ services:
       # Port forwarding
       # Port on Host : Port in Container
       - ${MYSQL_LOCAL_PORT}:3306
-    expose:
-      - 3306
     volumes:
       - ./database/data:/docker-entrypoint-initdb.d
       - mysql-db:/var/lib/mysql
