@@ -40,7 +40,7 @@ services:
     ports:
       # Port forwarding
       # Port on Host : Port in Container
-      - 80:80
+      - 443:443
 
 # Names our volume
 volumes:
