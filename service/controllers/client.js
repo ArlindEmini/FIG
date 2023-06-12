@@ -34,6 +34,8 @@ export default class ClientService {
 			address
 		} = body;
 
+		console.log('addressssss', address);
+
 		const client = await database.query(
 			checkClientExistenceQuery,
 			{
@@ -44,7 +46,7 @@ export default class ClientService {
 				type: QueryTypes.SELECT,
 			},
 		);
-
+				
 		if (client && client.length) {
 			await ClientService.update(client[0].id, body, client[0]);
 		} else {
