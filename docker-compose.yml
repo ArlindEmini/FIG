@@ -4,19 +4,18 @@ services:
   fig-db:
     image: mysql:5.7.42-debian
     restart: always
+    env_file: ./.env
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQLDB_DATABASE}
+      # MYSQL_USER: ${MYSQL_USER}
+      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       # Password for root access
       # For Production use very secure password
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
     ports:
       # Port forwarding
       # Port on Host : Port in Container
-      - ${MYSQL_LOCAL_PORT}:3306
-    expose:
-      - 3306
+      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
     volumes:
       - ./database/data:/docker-entrypoint-initdb.d
       - mysql-db:/var/lib/mysql
@@ -30,19 +29,19 @@ services:
       context: ./service
       dockerfile: ./Dockerfile
     environment:
-      PORT: ${PORT}
+      PORT: ${NODE_DOCKER_PORT}
       SECRET_TOKEN: ${SECRET_TOKEN}
-      MYSQL_HOST: fig-db
-      MYSQL_PORT: ${MYSQL_LOCAL_PORT}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      # Password for root access
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # Database envs
+      MYSQL_DATABASE: ${MYSQLDB_DATABASE}
+      MYSQL_USER: ${MYSQLDB_USER}
+      MYSQL_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
+      MYSQL_HOST: ${MYSQLDB_HOST}
+      MYSQL_LOCAL_PORT: ${MYSQLDB_LOCAL_PORT}
+      
     ports:
       # Port forwarding
       # Port on Host : Port in Container
-      - 3000:3000
+      - ${NODE_LOCAL_PORT}:${NODE_DOCKER_PORT}
 
 # Names our volume
 volumes:
