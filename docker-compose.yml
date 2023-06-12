@@ -1,26 +1,28 @@
 version: '3.3'
 
 services:
+
   fig-db:
+    container_name: mysql
     image: mysql:5.7.42-debian
-    restart: always
+    restart: unless-stopped
+    tty: true
     env_file: ./.env
     environment:
       MYSQL_DATABASE: ${MYSQLDB_DATABASE}
-      # MYSQL_USER: ${MYSQL_USER}
-      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      # Password for root access
-      # For Production use very secure password
       MYSQL_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql   
     ports:
-      # Port forwarding
-      # Port on Host : Port in Container
       - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
     volumes:
       - ./database/data:/docker-entrypoint-initdb.d
       - mysql-db:/var/lib/mysql
-
+    networks:
+      - app-network
+        
   fig-backend:
+    container_name: fig-backend
     image: fig-backend:latest
     restart: always
     depends_on:
@@ -37,12 +39,58 @@ services:
       MYSQL_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
       MYSQL_HOST: ${MYSQLDB_HOST}
       MYSQL_LOCAL_PORT: ${MYSQLDB_LOCAL_PORT}
-      
     ports:
       # Port forwarding
       # Port on Host : Port in Container
       - ${NODE_LOCAL_PORT}:${NODE_DOCKER_PORT}
+    networks: 
+      - app-network
+
+  # Nginx Service
+  webserver:
+    image: nginx:mainline-alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:80"
+      - "443:443"
+    volumes:
+      - web-root:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    depends_on:
+      - fig-backend
+    networks:
+      - app-network 
+
+  # Certificates      
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - webserver
+    command: certonly --webroot --webroot-path=/var/www/html --email arlind.emini7@gmail.com --agree-tos --no-eff-email --force-renewal -d fig-app.com -d www.fig-app.com
+
+# Docker Networks
+networks:
+  app-network:
+    driver: bridge
 
 # Names our volume
 volumes:
   mysql-db:
+  certbot-etc:
+  certbot-var:
+  web-root:
+    driver: local
+    driver_opts:
+      type: none
+      device: /FIG/
+      o: bind
+        
