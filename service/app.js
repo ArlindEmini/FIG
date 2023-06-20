@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.use("/", homeRoutes);
+app.use("", infoRoute);
 app.use("/info", infoRoute);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
