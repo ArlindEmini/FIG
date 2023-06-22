@@ -2,28 +2,81 @@ version: '3.3'
 
 services:
 
+  traefik:
+    container_name: traefik
+    image: traefik:v2.9.1
+    restart: always
+    command:
+      # Docker swarm configuration
+      - --providers.docker
+      - --providers.docker.endpoint=unix:///var/run/docker.sock
+      #- --providers.docker.swarmMode=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=frontend
+      # Configure entrypoint
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # SSL configuration
+      - --certificatesresolvers.letsencryptresolver.acme.httpchallenge=true
+      - --certificatesresolvers.letsencryptresolver.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.letsencryptresolver.acme.email=infra@fig-app.com
+      - --certificatesresolvers.letsencryptresolver.acme.storage=/letsencrypt/acme.json
+      # Global HTTP -> HTTPS
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      # Enable dashboard
+      - --api.dashboard=true
+      - --api=true
+      - --log=true
+      - --log.level=ERROR
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./volumes/data-letsencrypt/:/letsencrypt
+      - ./volumes/data-traefik/:/data"
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.routers.dashboard.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.dashboard.rule=Host(`fig-app.com`) && PathPrefix(`/dashboard`)"
+      - "traefik.http.routers.dashboard.service=dashboard@internal"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.api.rule=Host(`fig-app.com`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.entrypoints=websecure"
+
   fig-db:
     container_name: mysql
     image: mysql:5.7.42-debian
+    networks:
+      - web
     restart: unless-stopped
     tty: true
     env_file: ./.env
     environment:
       MYSQL_DATABASE: ${MYSQLDB_DATABASE}
+      # MYSQL_USER: ${MYSQL_USER}
+      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      # Password for root access
+      # For Production use very secure password
       MYSQL_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql   
-    ports:
-      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
+    # ports:
+      # - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
     volumes:
       - ./database/data:/docker-entrypoint-initdb.d
       - mysql-db:/var/lib/mysql
-    networks:
-      - app-network
         
   fig-backend:
     container_name: fig-backend
     image: fig-backend:latest
+    networks:
+      - web
     restart: always
     depends_on:
       - fig-db
@@ -39,27 +92,25 @@ services:
       MYSQL_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
       MYSQL_HOST: ${MYSQLDB_HOST}
       MYSQL_LOCAL_PORT: ${MYSQLDB_LOCAL_PORT}
-    ports:
+    # ports:
       # Port forwarding
       # Port on Host : Port in Container
-      - ${NODE_LOCAL_PORT}:${NODE_DOCKER_PORT}
-    networks: 
-      - app-network
+      # - ${NODE_LOCAL_PORT}:${NODE_DOCKER_PORT}
+    labels:
+    # Explicitly tell Traefik to expose this container
+      traefik.enable: "true"
+      # The domain the service will respond to
+      traefik.http.routers.appsmith.rule: "Host(`fig-app.com`)"
+      traefik.http.routers.appsmith.tls.certresolver: 'letsencryptresolver'
+      traefik.http.routers.appsmith.entrypoints: 'websecure'
+      traefik.http.services.appsmith.loadbalancer.server.port: ${NODE_DOCKER_PORT}
 
 # Docker Networks
 networks:
-  app-network:
-    driver: bridge
+  web:
+    external: true
 
 # Names our volume
 volumes:
   mysql-db:
-  certbot-etc:
-  certbot-var:
-  web-root:
-    driver: local
-    driver_opts:
-      type: none
-      device: /FIG/
-      o: bind
         
