@@ -12,6 +12,7 @@ import passRoutes from "./routes/passes-routes.js";
 import urgencyRoutes from "./routes/urgencies-routes.js";
 import homeRoutes from "./routes/home-routes.js";
 import infoRoute from "./routes/info-route.js";
+import configRoutes from "./routes/config-routes.js";
 export const app = express();
 
 app.use(cors());
@@ -29,6 +30,7 @@ app.use("/api/v1/contracts", contractRoutes);
 app.use("/api/v1/affairs", affairRoutes);
 app.use("/api/v1/passes", passRoutes);
 app.use("/api/v1/urgencies", urgencyRoutes);
+app.use("/api/v1/configs", configRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);

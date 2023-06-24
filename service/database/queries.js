@@ -431,3 +431,11 @@ WHERE id = :urgencyId;
 `;
 
 export const fetchAllUrgenciesPasses = `SELECT * FROM urgencies WHERE status = 1`;
+
+export const fetchAllQrCodes = `SELECT * FROM app_configs`;
+
+export const insertQrCode = `
+UPDATE app_configs
+SET qr_codes = CONCAT(qr_codes, ',', :qr_codes)
+WHERE id = 1;
+`;
