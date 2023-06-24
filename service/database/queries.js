@@ -99,7 +99,9 @@ address,
 client_type,
 contact,
 created_date,
-updated_date
+updated_date,
+qr_code,
+pass_type
 FROM clients
 WHERE id = :id
 and is_deleted = 0
@@ -108,8 +110,8 @@ LIMIT 1;
 
 export const insertClientQuery = `
 INSERT INTO
-clients (full_name, email, client_type, contact, address, created_date, updated_date, is_deleted)
-VALUES (:full_name, :email, :client_type, :contact,:address, NOW(), NOW(), 0);
+clients (full_name, email, client_type, contact, address, created_date, updated_date, is_deleted, qr_code, pass_type)
+VALUES (:full_name, :email, :client_type, :contact,:address, NOW(), NOW(), 0, :qr_code, :pass_type);
 `;
 
 export const fetchAllClients = `
@@ -118,7 +120,7 @@ SELECT * from clients where is_deleted = 0
 
 export const updateClientQuery = `
 UPDATE clients
-SET full_name = :full_name, email = :email, contact = :contact, is_deleted = 0, updated_date = NOW()
+SET full_name = :full_name, email = :email, contact = :contact, is_deleted = 0, updated_date = NOW(), qr_code = :qr_code, pass_type= :pass_type
 WHERE id = :id;
 `;
 
