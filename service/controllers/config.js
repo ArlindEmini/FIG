@@ -10,7 +10,7 @@ export default class ConfigService {
       type: QueryTypes.SELECT,
     });
 
-    const qrCodesArray = qrCodes[0].qr_codes.split(",");
+    const qrCodesArray = qrCodes.map((item) => item.qr_codes);
 
     return qrCodesArray;
   };

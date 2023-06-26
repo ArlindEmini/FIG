@@ -19,6 +19,7 @@ router.get("/", async (req, res) => {
 
     return res.status(200).json({ qr_codes }).end();
   } catch (error) {
+    console.log("error", error);
     return res.status(400).json({ error }).end();
   }
 });

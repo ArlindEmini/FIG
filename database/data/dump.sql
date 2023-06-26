@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `fig_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE  IF NOT EXISTS `fig_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `fig_db`;
 -- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
 --
@@ -44,7 +44,7 @@ CREATE TABLE `affairs` (
   KEY `contract_id` (`contract_id`),
   CONSTRAINT `affairs_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
   CONSTRAINT `affairs_ibfk_2` FOREIGN KEY (`contract_id`) REFERENCES `contracts` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -55,6 +55,30 @@ LOCK TABLES `affairs` WRITE;
 /*!40000 ALTER TABLE `affairs` DISABLE KEYS */;
 INSERT INTO `affairs` VALUES (2,2,2,1,16,'Mowing the grass','2023-06-08 00:25:24','2024-06-08 00:25:24','Mitrovice, 40000, rrg. Nexhmedin Musliu',2,'2023-01-24 21:07:19','3000',0,'abc123'),(3,2,2,2,11,'cute the grass','2023-05-08 00:25:24','2024-09-08 00:25:24','Mitrovice, 40000, rrg. Nexhmedin Musliu',1,'2023-01-24 21:07:54','2000',0,NULL),(5,2,2,2,5,'cute the flowers','2023-05-08 00:25:24','2024-09-08 00:25:24','Mitrovice, 40000, rrg. Zhabar',1,'2023-01-30 13:49:59','2000',0,NULL),(6,2,2,2,8,'cute the flowerssss','2023-05-08 00:25:24','2024-09-08 00:25:24','Mitrovice, 40000, rrg. shupkofc',1,'2023-01-30 21:45:37','2000',0,NULL),(7,2,2,2,12,'cute the apples','2023-05-08 00:25:24','2024-09-08 00:25:24','Mitrovice, 40000, rrg. Bajr',1,'2023-01-30 22:19:21','2000',0,NULL),(8,2,2,2,13,'cute the applesss','2023-05-08 00:25:24','2024-09-08 00:25:24','Mitrovice, 40000, rrg. Bajrii',1,'2023-01-30 22:24:40','2000',0,NULL),(9,2,2,2,12,'cute the applesss','2023-05-08 00:25:24','2024-09-08 00:25:24','Mitrovice, 40000, rrg. Bajrrii',1,'2023-01-30 22:25:53','2000',0,NULL),(10,2,2,2,16,'cute the apple','2023-05-08 00:25:24','2024-09-08 00:25:24','Mitrovice, 40000, rrg. Bajrrii2',1,'2023-01-30 22:27:26','2000',0,NULL),(11,2,2,2,18,'cute the apple test','2023-05-08 00:25:24','2024-09-08 00:25:24','Mitrovice, 4000, rrg. Bajrritesyi2',1,'2023-02-24 21:57:24','2000',0,'0'),(12,2,2,2,4,'cute the  test','2023-05-08 00:25:24','2024-09-08 00:25:24','Mitrovicee, 4000, rrg. Bajrritesyi2',1,'2023-02-24 21:59:29','3000',0,'0'),(13,2,2,2,5,'cute the  test','2023-05-08 00:25:24','2024-09-08 00:25:24','Micee, 4000, rrg. Bajrritesyi2',1,'2023-02-26 17:51:28','4000',0,'0');
 /*!40000 ALTER TABLE `affairs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_configs`
+--
+
+DROP TABLE IF EXISTS `app_configs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `app_configs` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `qr_codes` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_configs`
+--
+
+LOCK TABLES `app_configs` WRITE;
+/*!40000 ALTER TABLE `app_configs` DISABLE KEYS */;
+INSERT INTO `app_configs` VALUES (2,'asdasdsad'),(3,'123gds');
+/*!40000 ALTER TABLE `app_configs` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -74,8 +98,10 @@ CREATE TABLE `clients` (
   `created_date` timestamp NULL DEFAULT NULL,
   `updated_date` timestamp NULL DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT NULL,
+  `qr_code` varchar(255) DEFAULT NULL,
+  `pass_type` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,7 +110,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,'John','john@mail.com',1,NULL,'+38349800700','2023-01-23 23:41:43','2023-01-23 23:50:58',0),(2,'Tyson','Tyson@mail.com',1,'rrg.Gustav Mayer, Pr, 10000','+38349800700','2023-01-23 23:49:30','2023-01-23 23:49:30',0),(3,'Alen','Alen@mail.com',1,'rrg.Gustav Mayer, Pr, 10000','+38349800700','2023-01-24 17:58:18','2023-01-24 17:58:18',0),(4,'Alejandro','Alejandro@mail.com',0,'rrg.Gustav Mayer, Pr, 10000','+38349800700','2023-01-24 17:58:51','2023-01-24 18:08:01',0);
+INSERT INTO `clients` VALUES (1,'John','john@mail.com',1,NULL,'+38349800700','2023-01-23 23:41:43','2023-01-23 23:50:58',0,NULL,NULL),(2,'Tyson','Tyson@mail.com',1,'rrg.Gustav Mayer, Pr, 10000','+38349800700','2023-01-23 23:49:30','2023-01-23 23:49:30',0,NULL,NULL),(3,'Alen','Alen@mail.com',1,'rrg.Gustav Mayer, Pr, 10000','+38349800700','2023-01-24 17:58:18','2023-01-24 17:58:18',0,NULL,NULL),(4,'Alejandro','Alejandro@mail.com',0,'rrg.Gustav Mayer, Pr, 10000','+38349800700','2023-01-24 17:58:51','2023-01-24 18:08:01',0,NULL,NULL),(6,'arlindshpk','arlind@mail.com',0,'rrg.Shaban IDrizi, 40000','+38349800299','2023-06-24 16:11:40','2023-06-24 16:21:24',0,'9475bfdsbfhsh4hfdufhu4h',0);
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,7 +134,7 @@ CREATE TABLE `contracts` (
   KEY `created_by` (`created_by`),
   CONSTRAINT `contracts_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
   CONSTRAINT `contracts_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -135,7 +161,7 @@ CREATE TABLE `notifications` (
   `created_date` timestamp NULL DEFAULT NULL,
   `message` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +190,7 @@ CREATE TABLE `passes` (
   `is_confirmed` smallint DEFAULT NULL,
   `date` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,7 +223,7 @@ CREATE TABLE `time_off` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `time_off_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -228,7 +254,7 @@ CREATE TABLE `urgencies` (
   `price` varchar(255) DEFAULT NULL,
   `employee_type` smallint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -260,7 +286,7 @@ CREATE TABLE `user_affairs` (
   KEY `affair_id` (`affair_id`),
   CONSTRAINT `user_affairs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `user_affairs_ibfk_2` FOREIGN KEY (`affair_id`) REFERENCES `affairs` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -292,7 +318,7 @@ CREATE TABLE `users` (
   `timeoff_available` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -321,7 +347,7 @@ CREATE TABLE `working_hours` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `working_hours_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -343,4 +369,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-18 15:30:08
+-- Dump completed on 2023-06-26 12:08:55
